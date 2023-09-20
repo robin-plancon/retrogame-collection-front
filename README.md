@@ -1,6 +1,6 @@
-# Retr'Ogame Collection #
+# Retr'Ogame Collection
 
-## Description ##
+## Description
 
 This project is a web application to manage a retrogaming collection.
 This repository contains the frontend part of the application.
