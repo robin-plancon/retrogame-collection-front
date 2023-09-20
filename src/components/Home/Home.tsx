@@ -1,14 +1,12 @@
-import './App.scss';
-
 import React, { useState } from 'react';
 
-import logo from './logo.svg';
+import logo from '../../assets/logo.svg';
 
-function App() {
+function Home() {
 	const [count, setCount] = useState(0);
 
 	return (
-		<div className="App">
+		<div className="Home">
 			<header className="App-header">
 				<img src={logo} className="App-logo" alt="logo" />
 				<p className="header">
@@ -51,4 +49,4 @@ function App() {
 	);
 }
 
-export default App;
+export default Home;
