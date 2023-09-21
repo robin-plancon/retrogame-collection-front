@@ -1,0 +1,14 @@
+@use '../../../styles/variables' as v;
+
+.header {
+	width: 100%;
+	display: flex;
+	justify-content: start;
+	align-items: center;
+	gap: v.$halfGutter;
+	margin: v.$halfGutter auto;
+
+	&-logo {
+		height: 8rem;
+	}
+}
