@@ -2,17 +2,18 @@
 @use 'sass:color';
 
 .about {
-	
+
 	&-title {
-		width: 33%;
+		font-family: BebbasNeue;
+		width: 40%;
+		margin-bottom: v.$gutter;
+		padding: v.$halfGutter;
 		font-size: 1.8rem;
 		font-weight: 700;
-		margin-bottom: v.$gutter;
 		text-align: center;
 		text-transform: uppercase;
-		padding: v.$halfGutter;
-		background-color: color.scale(v.$primary-color, $lightness: 5%);
 		color: v.$secondary-color;
+		background-color: color.scale(v.$primary-color, $lightness: 5%);
 	}
 
 	&-resume {
@@ -26,7 +27,18 @@
 		display: flex;
 		flex-wrap: wrap;
 		justify-content: space-between;
-		margin: 0 auto;
 		width: 90%;
+		margin: 0 auto;
+	}
+
+	@media (max-width: v.$small) {
+		&-title {
+			width: 100%;
+		}
+
+		&-team {
+			flex-direction: column;
+			align-items: center;
+		}
 	}
 }
