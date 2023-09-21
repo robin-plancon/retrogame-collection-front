@@ -1,0 +1,46 @@
+@use '../../styles/variables' as v;
+@use 'sass:color';
+
+.about {
+	&-title {
+		width: 33%;
+		font-size: 1.8rem;
+		font-weight: 700;
+		margin-bottom: v.$gutter;
+		text-align: center;
+		text-transform: uppercase;
+		padding: v.$halfGutter;
+		background-color: color.scale(v.$primary-color, $lightness: 5%);
+		color: v.$secondary-color;
+	}
+	&-resume {
+		width: 90%;
+		margin: 0 auto v.$gutter;
+		padding: v.$halfGutter;
+		text-align: start;
+	}
+}
+
+.team-card {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	margin: v.$gutter 0;
+	gap: v.$halfGutter;
+	&--image {
+		width: 10rem;
+		height: 10rem;
+		border-radius: 50%;
+	}
+	&--name {
+		font-size: 1.2rem;
+		font-weight: 700;
+	}
+	&--role {
+		font-size: 1rem;
+		font-weight: 400;
+		font-style: italic;
+	}
+
+}
