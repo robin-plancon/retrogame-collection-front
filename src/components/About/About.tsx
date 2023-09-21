@@ -1,6 +1,7 @@
 import './About.scss';
 
 import avatar from '../../../resources/avatar.jpg';
+import TeamCard from './TeamCard/TeamCard';
 
 function About() {
 	return (
@@ -13,10 +14,12 @@ function About() {
 				souhaits.
 			</p>
 			<h2 className="about-title">L&apos;équipe</h2>
-			<div className="team-card">
-				<img src={avatar} alt="Avatar de John" className="team-card--image" />
-				<h3 className="team-card--name">John</h3>
-				<p className="team-card--role">Product Owner</p>
+			<div className="about-team">
+				<TeamCard avatar={avatar} />
+				<TeamCard avatar={avatar} />
+				<TeamCard avatar={avatar} />
+				<TeamCard avatar={avatar} />
+				<TeamCard avatar={avatar} />
 			</div>
 		</div>
 	);
