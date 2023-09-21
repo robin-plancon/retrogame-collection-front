@@ -1,0 +1,15 @@
+@use '../../../styles/variables' as v;
+
+.footer {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: v.$halfGutter;
+	margin: v.$halfGutter 0;
+
+	&-link {
+		&:hover {
+			color: v.$secondary-color;
+		}
+	}
+}
