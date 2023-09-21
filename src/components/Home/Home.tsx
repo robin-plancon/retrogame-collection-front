@@ -1,3 +1,5 @@
+import './Home.scss';
+
 import React, { useState } from 'react';
 
 import logo from '../../assets/logo.svg';
