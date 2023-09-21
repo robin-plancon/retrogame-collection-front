@@ -2,6 +2,7 @@
 @use 'sass:color';
 
 .about {
+	flex-grow: 1;
 
 	&-title {
 		font-family: BebbasNeue;
