@@ -1,14 +1,11 @@
 import React, { useState } from 'react';
 
-import logo from '../../assets/logo.svg';
-
 function Home() {
 	const [count, setCount] = useState(0);
 
 	return (
 		<div className="Home">
 			<header className="App-header">
-				<img src={logo} className="App-logo" alt="logo" />
 				<p className="header">
 					🚀 Vite + React + Typescript 🤘 & <br />
 					Eslint 🔥+ Prettier
