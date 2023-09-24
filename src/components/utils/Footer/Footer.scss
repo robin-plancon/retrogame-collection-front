@@ -2,6 +2,7 @@
 
 .footer {
 	display: flex;
+	flex-direction: column;
 	justify-content: center;
 	align-items: center;
 	gap: v.$halfGutter;
@@ -11,5 +12,9 @@
 		&:hover {
 			color: v.$secondary-color;
 		}
+	}
+
+	@media (min-width: v.$small) {
+		flex-direction: row;
 	}
 }

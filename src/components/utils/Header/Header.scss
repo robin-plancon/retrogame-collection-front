@@ -9,6 +9,12 @@
 	margin: v.$halfGutter auto;
 
 	&-logo {
-		height: 8rem;
+		height: 4rem;
+	}
+
+	@media (min-width: v.$small) {
+		&-logo {
+			height: 6rem;
+		}
 	}
 }
