@@ -2,7 +2,18 @@ import './Signup.scss';
 
 import { SubmitHandler, useForm } from 'react-hook-form';
 
+import { useAppDispatch } from '../../hooks/redux';
+import { signup } from '../../store/reducers/user';
+
+type FormProps = {
+	pseudo?: string;
+	email?: string;
+	password?: string;
+	confirmPassword?: string;
+};
+
 function Signup() {
+	const dispacth = useAppDispatch();
 	const {
 		register,
 		handleSubmit,
@@ -12,19 +23,12 @@ function Signup() {
 
 	const watchPassword: string = watch('password');
 
-	type FormData = {
-		pseudo?: string;
-		email?: string;
-		password?: string;
-		confirmPassword?: string;
-	};
-
-	const onSubmit: SubmitHandler<FormData> = (data, event) => {
+	const onSubmit: SubmitHandler<FormProps> = (data, event) => {
 		if (event) {
 			event.preventDefault();
 		}
 		console.log(JSON.stringify(data));
-		return JSON.stringify(data);
+		dispacth(signup(data));
 	};
 
 	return (
