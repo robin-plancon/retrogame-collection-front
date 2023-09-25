@@ -1,30 +1,27 @@
 import './Signup.scss';
 
+import Input from '../utils/Input/Input';
+
 function Signup() {
 	return (
 		<div className="signup">
 			<h1 className="signup-title">Inscription</h1>
 			<form className="signup-form" /* onSubmit={handleSubmit} */>
-				<label htmlFor="pseudo" className="signup-label">
-					Pseudo
-				</label>
-				<input type="text" id="pseudo" name="pseudo" className="signup-input" />
-				<label htmlFor="email" className="signup-label">
-					Email
-				</label>
-				<input type="email" id="email" name="email" className="signup-input" />
-				<label htmlFor="password" className="signup-label">
-					Mot de passe
-				</label>
-				<input type="password" id="password" name="password" className="signup-input" />
-				<label htmlFor="confirmPassword" className="signup-label">
-					Confirmer le mot de passe
-				</label>
-				<input
+				<Input type="text" id="pseudo" name="pseudo" label="Pseudo" className="signup" />
+				<Input type="email" id="email" name="email" label="Email" className="signup" />
+				<Input
+					type="password"
+					id="password"
+					name="password"
+					label="Mot de passe"
+					className="signup"
+				/>
+				<Input
 					type="password"
 					id="confirmPassword"
 					name="confirmPassword"
-					className="signup-input"
+					label="Confirmer le mot de passe"
+					className="signup"
 				/>
 				<button type="submit" className="signup-button">
 					Créer un compte
