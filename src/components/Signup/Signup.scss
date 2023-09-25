@@ -1,0 +1,30 @@
+@use '../../styles/variables' as v;
+
+.signup {
+	align-self: center;
+	width: 90%;
+	margin: v.$gutter auto;
+	padding: v.$gutter;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	border: 2px solid v.$tertiary-color;
+	border-radius: 1rem;
+
+	&-title {
+		font-size: 2rem;
+		font-weight: 700;
+		margin: v.$gutter 0;
+		color: v.$secondary-color;
+	}
+
+	&-form {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: v.$gutter;
+	}
+}
