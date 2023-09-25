@@ -1,5 +1,3 @@
-import './Input.scss';
-
 import React from 'react';
 
 interface InputProps {
