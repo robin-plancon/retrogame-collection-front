@@ -64,7 +64,8 @@ gap: 0.5rem; /* Space between the cards */
     margin: 0.5rem;
     padding: 0.5rem;
     color: #a4a5a7;
-    max-width: 500px;
+    max-width: 480px;
+    overflow-y: visible;
   
     /* Neon animation */
     animation: neon-border1 1.5s infinite alternate,
@@ -90,7 +91,7 @@ p {
   margin: 0.2rem 0;
 }
 
-// Desktop Media queries 
+// Media queries for desktop
 //@media (min-width: v.$medium) {
     
 //    .game-card {
@@ -105,6 +106,7 @@ p {
       gap: 1rem; /* Space between the pic and the text */
       align-items: center; /* Align the content in the center of the card */
       justify-content: center; 
+      height: 300px;
     }
   
     .game-card img {

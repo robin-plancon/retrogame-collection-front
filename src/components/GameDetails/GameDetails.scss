@@ -1,0 +1,100 @@
+@keyframes neon-border1 {
+    0% {
+      box-shadow: 0 0 10px #fa3294;
+    }
+    25% {
+      box-shadow: 0 0 15px #fa3294;
+    }
+    50% {
+      box-shadow: 0 0 20px #fa3294;
+    }
+    75% {
+      box-shadow: 0 0 15px #fa3294;
+    }
+    100% {
+      box-shadow: 0 0 10px #fa3294;
+    }
+  }
+  
+  @keyframes neon-border2 {
+    0% {
+      box-shadow: 0 0 10px #fa3294;
+    }
+    25% {
+      box-shadow: 0 0 15px #fa3294;
+    }
+    50% {
+      box-shadow: 0 0 20px #fa3294;
+    }
+    75% {
+      box-shadow: 0 0 15px #fa3294;
+    }
+    100% {
+      box-shadow: 0 0 10px #fa3294;
+    }
+  }
+  
+  @keyframes neon-circular {
+    0% {
+      transform: rotate(0deg) translateX(1px);
+    }
+    100% {
+      transform: rotate(360deg) translateX(1px);
+    }
+  }
+
+.game-details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    background-color: #0a0e17;
+    border-radius: 8px;
+    border: 2px solid #fa3294;
+    padding: 1rem;
+    color: #a4a5a7;
+    max-width: 100%;
+    max-width: 480px;
+    margin: 0 auto;
+  
+  
+  animation: neon-border1 1.5s infinite alternate,
+  neon-border2 2s infinite alternate,
+  neon-border3 2.5s infinite alternate;
+}
+
+  .game-card-details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .game-card-details img {
+    max-width: 100%;
+  }
+  
+  .game-details-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 1rem;
+  }
+  
+  .label {
+    font-weight: bold;
+  }
+  
+  .game-value {
+    margin-top: 0.5rem;
+  }
+
+  .game-description {
+    max-width: 80%;
+  }
+  
+  h2 {
+    font-weight: bold;
+    color: #bfbdc1;
+    font-size: 24px;
+    margin-top: 0.5rem;
+  }
