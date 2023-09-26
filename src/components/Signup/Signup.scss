@@ -1,0 +1,71 @@
+@use '../../styles/variables' as v;
+
+.signup {
+	align-self: center;
+	width: 90%;
+	margin: v.$gutter auto;
+	padding: v.$gutter;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	border: 2px solid v.$tertiary-color;
+	border-radius: 1rem;
+
+	&-title {
+		font-size: 2rem;
+		font-weight: 700;
+		margin: v.$gutter 0;
+		color: v.$secondary-color;
+	}
+
+	&-form {
+		width: 90%;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: v.$halfGutter;
+	}
+
+	&-label {
+		align-self: start;
+		font-size: 1.2rem;
+		font-weight: 700;
+		color: v.$label-color;
+	}
+
+	&-input {
+		width: 100%;
+		padding: v.$halfGutter;
+		border: 2px solid v.$primary-color;
+		border-radius: 0.5rem;
+		font-size: 1.2rem;
+		font-weight: 700;
+		color: v.$primary-color;
+		background-color: v.$input-color;
+	}
+
+	&-button {
+		width: 100%;
+		margin: v.$gutter 0;
+		padding: v.$halfGutter;
+		border: 2px solid v.$secondary-color;
+		border-radius: 0.5rem;
+		font-size: 1.5rem;
+		font-weight: 700;
+		color: v.$secondary-color;
+		background-color: v.$primary-color;
+		cursor: pointer;
+		transition: all 0.2s ease-in-out;
+
+		&:hover {
+			background-color: v.$secondary-color;
+			color: v.$primary-color;
+		}
+	}
+
+	@media (min-width: v.$medium) {
+		width: 50%;
+	}
+}
