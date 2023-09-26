@@ -5,6 +5,7 @@ import { Route, Routes } from 'react-router-dom';
 
 import About from './About/About';
 import Home from './Home/Home';
+import Signin from './Signin/Signin';
 import Signup from './Signup/Signup';
 import Footer from './utils/Footer/Footer';
 import Header from './utils/Header/Header';
@@ -18,6 +19,7 @@ function App() {
 					<Route path="/" element={<Home />} />
 					<Route path="/about" element={<About />} />
 					<Route path="/signup" element={<Signup />} />
+					<Route path="/signin" element={<Signin />} />
 					<Route path="*" element={<div>404</div>} />
 				</Routes>
 			</div>

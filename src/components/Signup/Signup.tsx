@@ -34,7 +34,14 @@ function Signup() {
 		if (event) {
 			event.preventDefault();
 		}
-		console.log(JSON.stringify(data));
+		const { nickname, email, password, confirmation } = data;
+		const sendData = {
+			nickname: nickname?.trim(),
+			email: email?.trim(),
+			password: password,
+			confirmation: confirmation,
+		};
+		console.log(JSON.stringify(sendData));
 		// dispatch signup action with data from the form
 		// dispacth(signup(data));
 	};
