@@ -2,18 +2,23 @@ import './Signup.scss';
 
 import { SubmitHandler, useForm } from 'react-hook-form';
 
-import { useAppDispatch } from '../../hooks/redux';
-import { signup } from '../../store/reducers/user';
+// import { useAppDispatch } from '../../hooks/redux';
+// import { signup } from '../../store/reducers/user';
 
 type FormProps = {
-	pseudo?: string;
+	nickname?: string;
 	email?: string;
 	password?: string;
-	confirmPassword?: string;
+	confirmation?: string;
 };
 
 function Signup() {
-	const dispacth = useAppDispatch();
+	// dispatch is a function that allows us to send an action to the store
+	// const dispacth = useAppDispatch();
+	// register is a function that allows us to register a field in the form
+	// handleSubmit is a function that allows us to handle the form submission
+	// watch is a function that allows us to watch the value of a field
+	// formState is an object that contains the state of the form
 	const {
 		register,
 		handleSubmit,
@@ -21,28 +26,31 @@ function Signup() {
 		formState: { errors },
 	} = useForm();
 
+	// watch to get the value of the password field to compare it with the confirmation field
 	const watchPassword: string = watch('password');
 
+	// onSubmit is a function that will be called when the form is submitted
 	const onSubmit: SubmitHandler<FormProps> = (data, event) => {
 		if (event) {
 			event.preventDefault();
 		}
 		console.log(JSON.stringify(data));
-		dispacth(signup(data));
+		// dispatch signup action with data from the form
+		// dispacth(signup(data));
 	};
 
 	return (
 		<div className="signup">
 			<h1 className="signup-title">Inscription</h1>
 			<form className="signup-form" onSubmit={handleSubmit(onSubmit)}>
-				<label htmlFor="pseudo" className="signup-label">
+				<label htmlFor="nickname" className="signup-label">
 					Pseudo
 				</label>
 				<input
 					type="text"
-					id="pseudo"
+					id="nickname"
 					className="signup-input"
-					{...register('pseudo', {
+					{...register('nickname', {
 						required: 'Ce champ est requis',
 						minLength: {
 							value: 3,
@@ -58,8 +66,8 @@ function Signup() {
 						},
 					})}
 				/>
-				{errors.pseudo && (
-					<span className="signup-error">{errors.pseudo.message as string}</span>
+				{errors.nickname && (
+					<span className="signup-error">{errors.nickname.message as string}</span>
 				)}
 				<label htmlFor="email" className="signup-label">
 					Email
@@ -71,7 +79,7 @@ function Signup() {
 					{...register('email', {
 						required: 'Ce champ est requis',
 						pattern: {
-							value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+							value: /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/,
 							message: 'Adresse email invalide',
 						},
 					})}
@@ -102,22 +110,22 @@ function Signup() {
 				{errors.password && (
 					<span className="signup-error">{errors.password.message as string}</span>
 				)}
-				<label htmlFor="confirmPassword" className="signup-label">
+				<label htmlFor="confirmation" className="signup-label">
 					Confirmer le mot de passe
 				</label>
 				<input
 					type="password"
-					id="confirmPassword"
+					id="confirmation"
 					className="signup-input"
-					{...register('confirmPassword', {
+					{...register('confirmation', {
 						required: 'Ce champ est requis',
 						validate: (value) => {
 							return value === watchPassword || 'Les mots de passe ne correspondent pas';
 						},
 					})}
 				/>
-				{errors.confirmPassword && (
-					<span className="signup-error">{errors.confirmPassword.message as string}</span>
+				{errors.confirmation && (
+					<span className="signup-error">{errors.confirmation.message as string}</span>
 				)}
 				<button type="submit" className="signup-button">
 					Créer un compte

@@ -1,5 +1,6 @@
 import { createAsyncThunk, createReducer } from '@reduxjs/toolkit';
 
+// TODO: add a status in the state to know request status
 interface UserState {
 	isLoading: boolean;
 	pseudo: string | null;
@@ -7,10 +8,10 @@ interface UserState {
 }
 
 type FormProps = {
-	pseudo?: string;
+	nickname?: string;
 	email?: string;
 	password?: string;
-	confirmPassword?: string;
+	confirmation?: string;
 };
 
 const initialState: UserState = {
@@ -19,6 +20,7 @@ const initialState: UserState = {
 	token: null,
 };
 
+// signup thunk call the api and return the data of signup
 export const signup = createAsyncThunk(
 	'user/signup',
 	async (formData: FormProps, thunkAPI) => {
@@ -26,29 +28,38 @@ export const signup = createAsyncThunk(
 		console.log(thunkAPI.getState());
 
 		console.log(formData);
+		// TODO: call the api
+		// try {
+		// 	const { data } = await fetch('http://localhost:3000/signup', {
+		// 		method: 'POST',
+		// 		body: JSON.stringify(formData),
+		// 		headers: {
+		// 			'Content-Type': 'application/json',
+		// 		},
+		// 	}).then((res) => res.json());
 
-		const { data } = await fetch('http://localhost:3000/api/user/signup', {
-			method: 'POST',
-			body: JSON.stringify(formData),
-			headers: {
-				'Content-Type': 'application/json',
-			},
-		}).then((res) => res.json());
-
-		return data;
+		// 	return data;
+		// } catch (err) {
+		// 	console.log(err);
+		// 	throw err;
+		// }
 	},
 );
 
+// createReducer is a function that take an initial state and an object of builder
+// builder is an object that has a method for each action type
 const userReducer = createReducer(initialState, (builder) => {
 	builder
-		.addCase(signup.pending, (state, action) => {
+		.addCase(signup.pending, (state) => {
+			// if the action is pending we set the isLoading to true
 			state.isLoading = true;
 		})
-		.addCase(signup.fulfilled, (state, action) => {
+		.addCase(signup.fulfilled, (state) => {
+			// if the action is fulfilled we set the isLoading to false
 			state.isLoading = false;
-			state.pseudo = action.payload.pseudo;
 		})
-		.addCase(signup.rejected, (state, action) => {
+		.addCase(signup.rejected, (state) => {
+			// if the action is rejected we set the isLoading to false
 			state.isLoading = false;
 		});
 });
