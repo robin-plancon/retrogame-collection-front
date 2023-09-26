@@ -18,7 +18,12 @@ function Signin() {
 		if (event) {
 			event.preventDefault();
 		}
-		console.log(JSON.stringify(data));
+		const { email, password } = data;
+		const sendData = {
+			email: email?.trim(),
+			password: password,
+		};
+		console.log(JSON.stringify(sendData));
 	};
 
 	return (
