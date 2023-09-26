@@ -1,20 +1,22 @@
 import './Header.scss';
 
+import { NavLink } from 'react-router-dom';
+
 import Logo from '../../../assets/logo.png';
 
 function Header() {
 	return (
 		<div className="header">
-			<a href="/" aria-label="Home">
+			<NavLink to="/" aria-label="Home">
 				<img className="header-logo" src={Logo} alt="Logo" />
-			</a>
+			</NavLink>
 			<div className="header-buttons">
-				<button className="header-button" aria-label="bouton vers la page d'inscription">
-					<a href="/signup">Inscription</a>
-				</button>
-				<button className="header-button" aria-label="bouton vers la page connexion">
-					<a href="/signin">Connexion</a>
-				</button>
+				<NavLink to="/signup" className={'header-button'}>
+					Inscription
+				</NavLink>
+				<NavLink to="/signin" className={'header-button'}>
+					Connexion
+				</NavLink>
 			</div>
 		</div>
 	);
