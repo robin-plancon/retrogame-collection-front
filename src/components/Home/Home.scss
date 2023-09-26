@@ -1,3 +1,23 @@
 .Home {
 	flex-grow: 1;
-}
+	display: flex;
+	justify-content: center; /* Center horizontally */
+	align-items: center; /* Center vertically */
+  }
+  
+  .game-list {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 0.5rem; /* Space between the cards */
+  }
+  
+  /* Media Query for desktop */
+  @media (min-width: 1024px) {
+	.game-list {
+	  max-width: 1200px; 
+	  width: 100%;
+	  margin: 0 auto;
+	  margin-right: 0.1rem;
+	}
+  }

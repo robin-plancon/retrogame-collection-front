@@ -1,10 +1,57 @@
-.game-card-container {
-    display: grid;
-    flex-wrap: wrap;
-    grid-template-columns: repeat(2, 1fr); 
-    gap: 2rem; /* Space between the cards */
-    justify-content: center;
+@use '../../styles/variables' as v;
+
+.body {
+display: flex;
+flex-wrap: wrap;
+justify-content: center;
+gap: 0.5rem; /* Space between the cards */
+}
+
+@keyframes neon-border1 {
+    0% {
+      box-shadow: 0 0 10px #fa3294;
+    }
+    25% {
+      box-shadow: 0 0 15px #fa3294;
+    }
+    50% {
+      box-shadow: 0 0 20px #fa3294;
+    }
+    75% {
+      box-shadow: 0 0 15px #fa3294;
+    }
+    100% {
+      box-shadow: 0 0 10px #fa3294;
+    }
   }
+  
+  @keyframes neon-border2 {
+    0% {
+      box-shadow: 0 0 10px #fa3294;
+    }
+    25% {
+      box-shadow: 0 0 15px #fa3294;
+    }
+    50% {
+      box-shadow: 0 0 20px #fa3294;
+    }
+    75% {
+      box-shadow: 0 0 15px #fa3294;
+    }
+    100% {
+      box-shadow: 0 0 10px #fa3294;
+    }
+  }
+  
+  @keyframes neon-circular {
+    0% {
+      transform: rotate(0deg) translateX(1px);
+    }
+    100% {
+      transform: rotate(360deg) translateX(1px);
+    }
+  }
+  
   
   .game-card {
     background-color: #0a0e17;
@@ -14,24 +61,81 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
-    margin: 1rem auto; 
-    padding: 1rem;
+    margin: 0.5rem;
+    padding: 0.5rem;
     color: #a4a5a7;
-    // width: calc(50% - 2rem); /* It's supposed to display 2 cards... */
-    max-width: 500px; /* Card size */
-  }
+    max-width: 500px;
   
-  .game-card img {
-    max-width: 100%;
-    border-radius: 8px; 
-  }
-  
-  h2 {
+    /* Neon animation */
+    animation: neon-border1 1.5s infinite alternate,
+    neon-border2 2s infinite alternate,
+    neon-border3 2.5s infinite alternate;
+}
+.game-card img {
+  max-width: 100%;
+  border-radius: 8px; 
+}
+
+.label {
     font-weight: bold;
-    margin: 0.5rem 0;
   }
+
+h2 {
+  font-weight: bold;
+  color: #bfbdc1;
+  margin: 0.5rem 0;
+}
+
+p {
+  margin: 0.2rem 0;
+}
+
+// Desktop Media queries 
+//@media (min-width: v.$medium) {
+    
+//    .game-card {
+//        display: grid;
+//        grid-template-columns: repeat(2, 1fr); 
+//  }
+//  }
+@media (min-width: 1024px) {
+    .game-card {
+      display: flex;
+      flex-direction: row; /* Align text and picture horizontally */
+      gap: 1rem; /* Space between the pic and the text */
+      align-items: center; /* Align the content in the center of the card */
+      justify-content: center; 
+    }
   
-  p {
-    margin: 0.2rem 0;
+    .game-card img {
+      max-width: 50%; /* Reduce the width of the image to 50% */
+      border-radius: 8px;
+    }
+  
+    .game-card-text {
+      display: flex;
+      flex-direction: column; /* Display column vertically */
+      flex-grow: 1; /* The text takes up all the remaining space */
+    }
+
+    .label {
+        text-align: left;
+        align-items: left;
+    }
+
+    .game-card-info .game-value {
+        text-align: left;
+      }
+    
+    h2 {
+      font-weight: bold;
+      text-align: center;
+      font-size: 20px;
+      margin: 0.5rem 0; /* Add margin around <h2> */
+    }
+  
+    p {
+      margin: 0.2rem 0; /* Add margin around <p> */
+    }
   }
   

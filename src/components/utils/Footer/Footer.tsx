@@ -4,9 +4,9 @@ function Footer() {
 	return (
 		<footer className="footer">
 			<a href="/about" className="footer-link">
-				A propos
+				À propos
 			</a>
-			<p className="footer-content">2023 RetrO&apos;Game Collection</p>
+			<p className="footer-content">©2023 RetrO&apos;Game Collection</p>
 		</footer>
 	);
 }

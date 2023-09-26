@@ -8,13 +8,21 @@
 	gap: v.$halfGutter;
 	margin: v.$halfGutter 0;
 
+	.footer-content {
+		color: #b2b0b5; 
+	  }
+	
 	&-link {
+		color: #c4c2c8;
+		font-weight: bold;
+		transition: color 0.3s ease;
 		&:hover {
 			color: v.$secondary-color;
 		}
 	}
 
 	@media (min-width: v.$small) {
+		margin-left: 15%;
 		flex-direction: row;
 	}
 }

@@ -1,3 +1,6 @@
+import '../GameCard/GameCard.scss';
+import './Home.scss';
+
 import React from 'react';
 
 import gameData from '../../data';
@@ -5,8 +8,6 @@ import GameCard from '../GameCard/GameCard';
 
 function Home() {
 	return (
-		// List of games
-
 		<div className="body">
 			<div className="game-list">
 				{gameData.map((game) => (
