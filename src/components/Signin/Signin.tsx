@@ -66,6 +66,9 @@ function Signin() {
 				{errors.password && (
 					<span className="signin-error">{errors.password.message as string}</span>
 				)}
+				<button type="submit" className="signin-button">
+					Se connecter
+				</button>
 			</form>
 		</div>
 	);
