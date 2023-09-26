@@ -4,7 +4,7 @@
 	align-self: center;
 	width: 90%;
 	margin: v.$gutter auto;
-	padding: v.$gutter;
+	padding: calc(2 * v.$gutter);
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -15,7 +15,6 @@
 	&-title {
 		font-size: 2rem;
 		font-weight: 700;
-		margin: v.$gutter 0;
 		color: v.$secondary-color;
 	}
 
