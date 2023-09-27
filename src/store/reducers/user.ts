@@ -57,6 +57,7 @@ export const signin = createAsyncThunk('user/signin', async (formData: FormProps
 });
 
 export const resetStatus = createAction('user/reset_status');
+export const signout = createAction('user/signout');
 
 // createReducer is a function that take an initial state and an object of builder
 // builder is an object that has a method for each action type
@@ -103,6 +104,10 @@ const userReducer = createReducer(initialState, (builder) => {
 			// if the action is rejected we set the isLoading to false
 			state.isLoading = false;
 			state.status = 'error';
+		})
+		.addCase(signout, (state) => {
+			state.nickname = null;
+			// state.token = null;
 		})
 		.addCase(resetStatus, (state) => {
 			delete state.status;

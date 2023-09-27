@@ -1,11 +1,11 @@
 import './Signin.scss';
 
+import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { resetStatus, signin } from '../../store/reducers/user';
-import { useEffect } from 'react';
 
 type FormProps = {
 	nickname?: string;
