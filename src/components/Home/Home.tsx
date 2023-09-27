@@ -1,9 +1,23 @@
 import './Home.scss';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+
+import { useAppDispatch } from '../../hooks/redux';
+import { getGames } from '../../store/reducers/game';
 
 function Home() {
 	const [count, setCount] = useState(0);
+	const [isFirst, setIsFirst] = useState(true);
+
+	const dispacth = useAppDispatch();
+
+	useEffect(() => {
+		if (isFirst) {
+			setIsFirst(false);
+			return;
+		}
+		dispacth(getGames());
+	}, [isFirst]);
 
 	return (
 		<div className="Home">
