@@ -4,6 +4,7 @@ import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 
 import About from './About/About';
+import GameDetails from './GameDetails/GameDetails';
 import Home from './Home/Home';
 import Signin from './Signin/Signin';
 import Signup from './Signup/Signup';
@@ -17,6 +18,7 @@ function App() {
 			<div className="content">
 				<Routes>
 					<Route path="/" element={<Home />} />
+          <Route path="/game/:id" element={<GameDetails />} />
 					<Route path="/about" element={<About />} />
 					<Route path="/signup" element={<Signup />} />
 					<Route path="/signin" element={<Signin />} />
