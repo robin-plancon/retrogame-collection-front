@@ -88,6 +88,7 @@ const userReducer = createReducer(initialState, (builder) => {
 			state.isLoading = true;
 		})
 		.addCase(signin.fulfilled, (state, action) => {
+			// if message is not null we set the status to error and we set the message
 			if (action.payload.message) {
 				state.isLoading = false;
 				state.status = 'error';
