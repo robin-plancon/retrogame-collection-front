@@ -1,11 +1,13 @@
 import './Footer.scss';
 
+import { Link } from 'react-router-dom';
+
 function Footer() {
 	return (
 		<footer className="footer">
-			<a href="/about" className="footer-link">
-				À propos
-			</a>
+			<Link to="/about" className="footer-link">
+				A propos
+			</Link>
 			<p className="footer-content">©2023 RetrO&apos;Game Collection</p>
 		</footer>
 	);
