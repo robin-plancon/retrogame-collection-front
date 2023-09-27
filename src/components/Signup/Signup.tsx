@@ -1,9 +1,10 @@
 import './Signup.scss';
 
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 
-// import { useAppDispatch } from '../../hooks/redux';
-// import { signup } from '../../store/reducers/user';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { signup } from '../../store/reducers/user';
 
 type FormProps = {
 	nickname?: string;
@@ -14,7 +15,14 @@ type FormProps = {
 
 function Signup() {
 	// dispatch is a function that allows us to send an action to the store
-	// const dispacth = useAppDispatch();
+	const dispacth = useAppDispatch();
+	// navigate is a function that allows us to navigate to a specific route
+	const navigate = useNavigate();
+
+	// states from the store
+	const isLoading = useAppSelector((state) => state.user.isLoading);
+	const status = useAppSelector((state) => state.user.status);
+	const message = useAppSelector((state) => state.user.message);
 	// register is a function that allows us to register a field in the form
 	// handleSubmit is a function that allows us to handle the form submission
 	// watch is a function that allows us to watch the value of a field
@@ -41,14 +49,20 @@ function Signup() {
 			password: password,
 			confirmation: confirmation,
 		};
-		console.log(JSON.stringify(sendData));
 		// dispatch signup action with data from the form
-		// dispacth(signup(data));
+		dispacth(signup(sendData));
+
+		if (status === 'ok') {
+			// redirect to the home page
+			navigate('/signin');
+		}
 	};
 
 	return (
 		<div className="signup">
 			<h1 className="signup-title">Inscription</h1>
+			{isLoading && <p>Chargement...</p>}
+			{status === 'error' && <p>{message}</p>}
 			<form className="signup-form" onSubmit={handleSubmit(onSubmit)}>
 				<label htmlFor="nickname" className="signup-label">
 					Pseudo
@@ -68,8 +82,9 @@ function Signup() {
 							message: 'Le pseudo doit contenir au maximum 20 caractères',
 						},
 						pattern: {
-							value: /^[A-Za-z0-9]+$/i,
-							message: 'Le pseudo ne doit contenir que des lettres et des chiffres',
+							value: /^[a-zA-Z][a-zA-Z0-9_-]{2,14}$/,
+							message:
+								'Le pseudo ne doit contenir que des lettres, des chiffres, des tirets et des underscores',
 						},
 					})}
 				/>
@@ -85,6 +100,14 @@ function Signup() {
 					className="signup-input"
 					{...register('email', {
 						required: 'Ce champ est requis',
+						minLength: {
+							value: 2,
+							message: 'Le pseudo doit contenir au moins 2 caractères',
+						},
+						maxLength: {
+							value: 14,
+							message: 'Le pseudo doit contenir au maximum 14 caractères',
+						},
 						pattern: {
 							value: /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/,
 							message: 'Adresse email invalide',
@@ -104,8 +127,12 @@ function Signup() {
 					{...register('password', {
 						required: 'Ce champ est requis',
 						minLength: {
-							value: 6,
-							message: 'Le mot de passe doit contenir au moins 6 caractères',
+							value: 8,
+							message: 'Le mot de passe doit contenir au moins 8 caractères',
+						},
+						maxLength: {
+							value: 14,
+							message: 'Le mot de passe doit contenir au maximum 14 caractères',
 						},
 						pattern: {
 							value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).*$/i,

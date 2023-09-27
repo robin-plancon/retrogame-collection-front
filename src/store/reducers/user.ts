@@ -4,7 +4,9 @@ import { createAsyncThunk, createReducer } from '@reduxjs/toolkit';
 interface UserState {
 	isLoading: boolean;
 	pseudo: string | null;
-	token: string | null;
+	// token: string | null;
+	status?: 'ok' | 'error';
+	message?: string;
 }
 
 type FormProps = {
@@ -17,32 +19,28 @@ type FormProps = {
 const initialState: UserState = {
 	isLoading: false,
 	pseudo: null,
-	token: null,
+	// token: null,
 };
 
 // signup thunk call the api and return the data of signup
 export const signup = createAsyncThunk(
 	'user/signup',
 	async (formData: FormProps, thunkAPI) => {
-		console.log(thunkAPI);
 		console.log(thunkAPI.getState());
+		try {
+			const data = await fetch('http://localhost:3000/signup', {
+				method: 'POST',
+				body: JSON.stringify(formData),
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			}).then((res) => res.json());
 
-		console.log(formData);
-		// TODO: call the api
-		// try {
-		// 	const { data } = await fetch('http://localhost:3000/signup', {
-		// 		method: 'POST',
-		// 		body: JSON.stringify(formData),
-		// 		headers: {
-		// 			'Content-Type': 'application/json',
-		// 		},
-		// 	}).then((res) => res.json());
-
-		// 	return data;
-		// } catch (err) {
-		// 	console.log(err);
-		// 	throw err;
-		// }
+			return data;
+		} catch (err) {
+			console.log(err);
+			throw err;
+		}
 	},
 );
 
@@ -54,13 +52,21 @@ const userReducer = createReducer(initialState, (builder) => {
 			// if the action is pending we set the isLoading to true
 			state.isLoading = true;
 		})
-		.addCase(signup.fulfilled, (state) => {
+		.addCase(signup.fulfilled, (state, action) => {
+			if (action.payload.message) {
+				state.isLoading = false;
+				state.status = 'error';
+				state.message = action.payload.message;
+				return;
+			}
 			// if the action is fulfilled we set the isLoading to false
 			state.isLoading = false;
+			state.status = 'ok';
 		})
 		.addCase(signup.rejected, (state) => {
 			// if the action is rejected we set the isLoading to false
 			state.isLoading = false;
+			state.status = 'error';
 		});
 });
 
