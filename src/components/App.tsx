@@ -1,12 +1,13 @@
+import './App.scss';
+
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
+
 import About from './About/About';
+import GameDetails from './GameDetails/GameDetails';
 import Home from './Home/Home';
 import Footer from './utils/Footer/Footer';
 import Header from './utils/Header/Header';
-import GameDetails from './GameDetails/GameDetails';
-
-import './App.scss';
 
 function App() {
 	return (
