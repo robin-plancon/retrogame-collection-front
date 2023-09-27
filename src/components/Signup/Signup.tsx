@@ -4,7 +4,8 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import { signup } from '../../store/reducers/user';
+import { resetStatus, signup } from '../../store/reducers/user';
+import { useEffect } from 'react';
 
 type FormProps = {
 	nickname?: string;
@@ -51,12 +52,15 @@ function Signup() {
 		};
 		// dispatch signup action with data from the form
 		dispacth(signup(sendData));
+	};
 
+	useEffect(() => {
 		if (status === 'ok') {
-			// redirect to the home page
+			// redirect to the home page and reset the status
+			dispacth(resetStatus());
 			navigate('/signin');
 		}
-	};
+	}, [status, dispacth, navigate]);
 
 	return (
 		<div className="signup">

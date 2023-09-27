@@ -1,6 +1,5 @@
-import { createAsyncThunk, createReducer } from '@reduxjs/toolkit';
+import { createAction, createAsyncThunk, createReducer } from '@reduxjs/toolkit';
 
-// TODO: add a status in the state to know request status
 interface UserState {
 	isLoading: boolean;
 	pseudo: string | null;
@@ -23,26 +22,24 @@ const initialState: UserState = {
 };
 
 // signup thunk call the api and return the data of signup
-export const signup = createAsyncThunk(
-	'user/signup',
-	async (formData: FormProps, thunkAPI) => {
-		console.log(thunkAPI.getState());
-		try {
-			const data = await fetch('http://localhost:3000/signup', {
-				method: 'POST',
-				body: JSON.stringify(formData),
-				headers: {
-					'Content-Type': 'application/json',
-				},
-			}).then((res) => res.json());
+export const signup = createAsyncThunk('user/signup', async (formData: FormProps) => {
+	try {
+		const data = await fetch('http://localhost:3000/signup', {
+			method: 'POST',
+			body: JSON.stringify(formData),
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		}).then((res) => res.json());
 
-			return data;
-		} catch (err) {
-			console.log(err);
-			throw err;
-		}
-	},
-);
+		return data;
+	} catch (err) {
+		console.log(err);
+		throw err;
+	}
+});
+
+export const resetStatus = createAction('user/reset_status');
 
 // createReducer is a function that take an initial state and an object of builder
 // builder is an object that has a method for each action type
@@ -67,6 +64,10 @@ const userReducer = createReducer(initialState, (builder) => {
 			// if the action is rejected we set the isLoading to false
 			state.isLoading = false;
 			state.status = 'error';
+		})
+		.addCase(resetStatus, (state) => {
+			delete state.status;
+			delete state.message;
 		});
 });
 
