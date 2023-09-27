@@ -2,7 +2,7 @@ import { createAction, createAsyncThunk, createReducer } from '@reduxjs/toolkit'
 
 interface UserState {
 	isLoading: boolean;
-	pseudo: string | null;
+	nickname: string | null;
 	// token: string | null;
 	status?: 'ok' | 'error';
 	message?: string;
@@ -17,7 +17,7 @@ type FormProps = {
 
 const initialState: UserState = {
 	isLoading: false,
-	pseudo: null,
+	nickname: null,
 	// token: null,
 };
 
@@ -25,6 +25,23 @@ const initialState: UserState = {
 export const signup = createAsyncThunk('user/signup', async (formData: FormProps) => {
 	try {
 		const data = await fetch('http://localhost:3000/signup', {
+			method: 'POST',
+			body: JSON.stringify(formData),
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		}).then((res) => res.json());
+
+		return data;
+	} catch (err) {
+		console.log(err);
+		throw err;
+	}
+});
+
+export const signin = createAsyncThunk('user/signin', async (formData: FormProps) => {
+	try {
+		const data = await fetch('http://localhost:3000/login', {
 			method: 'POST',
 			body: JSON.stringify(formData),
 			headers: {
@@ -61,6 +78,28 @@ const userReducer = createReducer(initialState, (builder) => {
 			state.status = 'ok';
 		})
 		.addCase(signup.rejected, (state) => {
+			// if the action is rejected we set the isLoading to false
+			state.isLoading = false;
+			state.status = 'error';
+		})
+		.addCase(signin.pending, (state) => {
+			// if the action is pending we set the isLoading to true
+			state.isLoading = true;
+		})
+		.addCase(signin.fulfilled, (state, action) => {
+			if (action.payload.message) {
+				state.isLoading = false;
+				state.status = 'error';
+				state.message = action.payload.message;
+				return;
+			}
+			// if the action is fulfilled we set the isLoading to false
+			state.isLoading = false;
+			state.status = 'ok';
+			state.nickname = action.payload.nickname;
+			// state.token = action.payload.token;
+		})
+		.addCase(signin.rejected, (state) => {
 			// if the action is rejected we set the isLoading to false
 			state.isLoading = false;
 			state.status = 'error';
