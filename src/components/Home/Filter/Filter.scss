@@ -1,0 +1,41 @@
+.filter-menu {
+    background-color: #090d19;
+    border-top-right-radius: 8px;
+    border-radius: 8px;
+    //border-bottom-right-radius: 8px;
+    padding: 5px;
+    color: #fbe377;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+.filter-button {
+    background-color: #090d19;
+    border: none;
+}
+  
+  .filter-icon {
+    width: 24px;
+    height: 24px;
+    margin-bottom: 5px;
+    cursor: pointer;
+  }
+  
+  .filter-section {
+    margin-bottom: 5px;
+  }
+  
+  .filter-title {
+    color: #fbe377;
+    font-weight: bold;
+  }
+  
+  .filter-value {
+    color: #e2e2e4;
+  }
+  
+  .italic {
+    font-style: italic;
+    color: #e2e2e4;
+  }
