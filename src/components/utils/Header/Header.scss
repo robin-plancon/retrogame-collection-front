@@ -2,42 +2,80 @@
 @use 'sass:color';
 
 .header {
-	width: 100%;
-	display: flex;
-	justify-content: start;
-	align-items: center;
-	gap: v.$halfGutter;
-	margin: v.$halfGutter auto;
-	padding: v.$halfGutter;
-	&-logo {
-		height: 4rem;
-	}
+  width: 100%;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: v.$halfGutter;
+  margin: v.$halfGutter auto;
+  padding: v.$halfGutter;
 
-	&-buttons {
-		align-self: center;
-		margin-left: auto;
-		display: flex;
-		gap: v.$halfGutter;
-	}
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: v.$halfGutter;
+  }
 
-	&-button {
-		border: 1px solid v.$secondary-color;
-		padding: v.$halfGutter;
-		// border: none;
-		border-radius: 0.5rem;
-		color: v.$secondary-color;
-		background-color: color.scale(v.$primary-color, $lightness: 5%);
-		font-size: 1.2rem;
-	}
+  &-logo {
+    height: 4rem;
+  }
 
-	&-button:hover {
-		color: v.$primary-color;
-		background-color: v.$secondary-color;
-	}
+  .search-bar {
+    display: flex;
+    align-items: center;
+    background-color: #111725; 
+    padding: 8px; 
+    border-radius: 10px;
+    width: auto; 
+    max-width: 800px;
+    margin-right: 205px; 
+  }
 
-	@media (min-width: v.$small) {
-		&-logo {
-			height: 6rem;
-		}
-	}
+  .search-input {
+    flex-grow: 1;
+    padding: 8px;
+    border: none;
+    background-color: transparent; 
+    color: white; 
+    font-size: 16px;
+  }
+
+  .search-button {
+    background-color: #111725; 
+    border: none;
+    padding: 0;
+  }
+  
+  .search-icon {
+    width: 16px;
+    height: 16px;
+    margin-right: 8px; /* space between the text and icon */
+    cursor: pointer;
+  }
+
+  .header-buttons {
+    display: flex;
+    gap: v.$halfGutter;
+    margin-left: auto; /* Move all buttons to the right */
+  }
+
+  .header-button {
+    border: 1px solid v.$secondary-color;
+    padding: v.$halfGutter;
+    border-radius: 0.5rem;
+    color: v.$secondary-color;
+    background-color: color.scale(v.$primary-color, $lightness: 5%);
+    font-size: 1.2rem;
+  }
+
+  .header-button:hover {
+    color: v.$primary-color;
+    background-color: v.$secondary-color;
+  }
+
+  @media (min-width: v.$small) {
+    &-logo {
+      height: 6rem;
+    }
+  }
 }
