@@ -4,8 +4,8 @@ import './Home.scss';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import gameData from '../../data';
-import { useAppDispatch } from '../../hooks/redux';
+// import gameData from '../../data';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { getGames } from '../../store/reducers/game';
 import GameCard from '../GameCard/GameCard';
 
@@ -13,6 +13,8 @@ function Home() {
 	const [isFirst, setIsFirst] = useState(true);
 
 	const dispacth = useAppDispatch();
+
+	const gameData = useAppSelector((state) => state.games.games);
 
 	useEffect(() => {
 		if (isFirst) {

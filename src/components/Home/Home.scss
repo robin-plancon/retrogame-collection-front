@@ -1,9 +1,31 @@
-.Home {
+ .Home {
 	flex-grow: 1;
-	display: flex;
-	justify-content: center; /* Center horizontally */
-	align-items: center; /* Center vertically */
+	display: relative; 
   }
+  
+  .filter-menu {
+	position: absolute; 
+	top: 0;
+	left: 0; 
+	width: 240px; 
+	background-color: #090d19;
+	border-top-right-radius: 8px;
+	padding: 16px;
+	color: #fbe377;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 16px;
+  }
+//.Home {
+	//flex-grow: 1;
+	//display: flex;
+	//justify-content: center;
+	//align-items: center;
+	//display: grid;
+  //grid-template-columns: 240px auto; /* Colonne de 240px pour le filtre, le reste pour les jeux */
+  //gap: 16px;
+  //}
   
   .game-list {
 	display: flex;
@@ -12,12 +34,22 @@
 	gap: 0.5rem; /* Space between the cards */
   }
   
-  /* Media Query for desktop */
-  @media (min-width: 1024px) {
-	.game-list {
-	  max-width: 1200px; 
-	  width: 100%;
-	  margin: 0 auto;
-	  margin-right: 0.1rem;
-	}
+  .load-more {
+	text-align: center; 
+	margin-top: 1rem;
+  }
+  
+  .load-more button {
+	background-color: #0e121d; 
+	border: 2px solid #fa3294; 
+	color: #fa3294; 
+	padding: 8px 16px; 
+	border-radius: 4px; 
+	cursor: pointer;
+	transition: background-color 0.3s, color 0.3s; 
+  }
+  
+  .load-more button:hover {
+	background-color: #fa3294; 
+	color: #0e121d; 
   }
