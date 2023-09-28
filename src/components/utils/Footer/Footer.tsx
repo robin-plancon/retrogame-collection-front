@@ -8,7 +8,7 @@ function Footer() {
 			<Link to="/about" className="footer-link">
 				A propos
 			</Link>
-			<p className="footer-content">©2023 RetrO&apos;Game Collection</p>
+			<p className="footer-text">©2023 RetrO&apos;Game Collection</p>
 		</footer>
 	);
 }
