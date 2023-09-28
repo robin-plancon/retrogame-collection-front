@@ -16,7 +16,6 @@ const initialState: GameState = {
 
 export const getGames = createAsyncThunk('game/getGame', async () => {
 	try {
-		console.log(import.meta.env.VITE_API_URL_DEV);
 		const data = await fetch(`${import.meta.env.VITE_API_URL_DEV}`, {
 			method: 'GET',
 			headers: {
