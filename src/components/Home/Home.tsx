@@ -4,7 +4,10 @@ import './Home.scss';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import gameData from '../../data';
+
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { getGames } from '../../store/reducers/game';
+
 import GameCard from '../GameCard/GameCard';
 //import Filter from './Filter/Filter';
 
@@ -12,9 +15,17 @@ function Home() {
 	const [visibleGames, setVisibleGames] = useState(4); // Number of cards to display initially
 	const gamesToShow = gameData.slice(0, visibleGames);
 
-	const handleShowMore = () => {
-		setVisibleGames(visibleGames + 4); // + 4 more games
-	};
+	const dispacth = useAppDispatch();
+
+	const gameData = useAppSelector((state) => state.games.games);
+
+	useEffect(() => {
+		if (isFirst) {
+			setIsFirst(false);
+			return;
+		}
+		dispacth(getGames());
+	}, [isFirst]);
 
 	return (
 		<div className="body">
