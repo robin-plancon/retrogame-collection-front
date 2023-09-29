@@ -20,6 +20,16 @@ function GameDetails() {
 		return <div>The game was not found</div>;
 	}
 
+	const date = new Date(game.first_release_date * 1000);
+	const formattedDate = date.toLocaleDateString('fr-FR', {
+		year: 'numeric',
+		month: 'long',
+		day: 'numeric',
+	});
+
+	const platforms = game.platforms?.map((platform) => platform.name).join(', ');
+	const genres = game.genres?.map((genre) => genre.name).join(', ') || 'non renseigné';
+
 	return (
 		<Link to="/">
 			<div className="game-details">
@@ -27,11 +37,11 @@ function GameDetails() {
 				<div className="game-details-info"></div>
 				<h2>{game.name}</h2>
 				<div className="label">Console:</div>{' '}
-				<div className="game-value">{game.platforms[0].name}</div>
+				<p className="game-card--value">{platforms}</p>
 				<div className="label">Genre:</div>
-				{game.genres && <div className="game-value">{game.genres[0]?.name}</div>}
+				<p className="game-card--value">{genres}</p>
 				<div className="label">Date de sortie:</div>{' '}
-				<div className="game-value">{game.first_release_date}</div>
+				<div className="game-value">{formattedDate}</div>
 				<div className="label">Description:</div>{' '}
 				<div className="game-description">{game.summary}</div>
 			</div>
