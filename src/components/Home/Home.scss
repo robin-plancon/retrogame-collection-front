@@ -1,55 +1,58 @@
- .Home {
+@use '../../styles/variables' as v;
+
+.Home {
 	flex-grow: 1;
-	display: relative; 
-  }
-  
-  .filter-menu {
-	position: absolute; 
-	top: 0;
-	left: 0; 
-	width: 240px; 
-	background-color: #090d19;
-	border-top-right-radius: 8px;
-	padding: 16px;
-	color: #fbe377;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	gap: 16px;
-  }
+	display: relative;
+}
+
+// .filter-menu {
+// position: absolute;
+// top: 0;
+// left: 0;
+// width: 240px;
+// background-color: #090d19;
+// border-top-right-radius: 8px;
+// padding: 16px;
+// color: #fbe377;
+// display: flex;
+// flex-direction: column;
+// align-items: center;
+// gap: 16px;
+// }
 //.Home {
-	//flex-grow: 1;
-	//display: flex;
-	//justify-content: center;
-	//align-items: center;
-	//display: grid;
-  //grid-template-columns: 240px auto; /* Colonne de 240px pour le filtre, le reste pour les jeux */
-  //gap: 16px;
-  //}
-  
-  .game-list {
+//flex-grow: 1;
+//display: flex;
+//justify-content: center;
+//align-items: center;
+//display: grid;
+//grid-template-columns: 240px auto; /* Colonne de 240px pour le filtre, le reste pour les jeux */
+//gap: 16px;
+//}
+
+.game-list {
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
 	gap: 0.5rem; /* Space between the cards */
-  }
-  
-  .load-more {
-	text-align: center; 
-	margin-top: 1rem;
-  }
-  
-  .load-more button {
-	background-color: #0e121d; 
-	border: 2px solid #fa3294; 
-	color: #fa3294; 
-	padding: 8px 16px; 
-	border-radius: 4px; 
-	cursor: pointer;
-	transition: background-color 0.3s, color 0.3s; 
-  }
-  
-  .load-more button:hover {
-	background-color: #fa3294; 
-	color: #0e121d; 
-  }
+}
+
+.load-more {
+	text-align: center;
+	margin: v.$gutter 0;
+
+	&--button {
+		background-color: #0e121d;
+		border: 2px solid v.$tertiary-color;
+		color: #fa3294;
+		padding: .5rem 1rem;
+		border-radius: 4px;
+		cursor: pointer;
+		transition: background-color 0.3s, color 0.3s;
+		font-size: 1.2rem;
+
+		&hover {
+			background-color: v.$tertiary-color;
+			color: #0e121d;
+		}
+	}
+}
