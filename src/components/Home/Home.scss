@@ -1,50 +1,41 @@
 @use '../../styles/variables' as v;
 
-.Home {
+.home {
 	flex-grow: 1;
-	display: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-between;
+
+	@media (min-width: v.$medium) {
+		flex-direction: row;
+		align-items: flex-start;
+		justify-content: space-between;
+
+	}
 }
 
-// .filter-menu {
-// position: absolute;
-// top: 0;
-// left: 0;
-// width: 240px;
-// background-color: #090d19;
-// border-top-right-radius: 8px;
-// padding: 16px;
-// color: #fbe377;
-// display: flex;
-// flex-direction: column;
-// align-items: center;
-// gap: 16px;
-// }
-//.Home {
-//flex-grow: 1;
-//display: flex;
-//justify-content: center;
-//align-items: center;
-//display: grid;
-//grid-template-columns: 240px auto; /* Colonne de 240px pour le filtre, le reste pour les jeux */
-//gap: 16px;
-//}
-
 .game-list {
+	flex-grow: 1;
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
 	gap: 0.5rem; /* Space between the cards */
+
+	@media (min-width: v.$medium) {
+		width: 60%;
+	}
 }
 
 .load-more {
-	text-align: center;
-	margin: v.$gutter 0;
+	align-self: center;
+	margin-top: v.$gutter;
 
 	&--button {
 		background-color: #0e121d;
 		border: 2px solid v.$tertiary-color;
 		color: #fa3294;
-		padding: .5rem 1rem;
+		padding: 0.5rem 1rem;
 		border-radius: 4px;
 		cursor: pointer;
 		transition: background-color 0.3s, color 0.3s;

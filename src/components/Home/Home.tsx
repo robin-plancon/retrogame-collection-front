@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { getGames } from '../../store/reducers/game';
 import GameCard from '../GameCard/GameCard';
-//import Filter from './Filter/Filter';
+import Filter from './Filter/Filter';
 
 function Home() {
 	const [visibleGames, setVisibleGames] = useState(4); // Number of cards to display initially
@@ -30,11 +30,14 @@ function Home() {
 	};
 
 	return (
-		<div className="body">
-			<div className="game-list">
-				{gamesToShow.map((game) => (
-					<GameCard key={game.id} game={game} />
-				))}
+		<>
+			<div className="home">
+				<Filter />
+				<div className="game-list">
+					{gamesToShow.map((game) => (
+						<GameCard key={game.id} game={game} />
+					))}
+				</div>
 			</div>
 			{visibleGames < gameData.length && (
 				<div className="load-more">
@@ -43,7 +46,7 @@ function Home() {
 					</button>
 				</div>
 			)}
-		</div>
+		</>
 	);
 }
 

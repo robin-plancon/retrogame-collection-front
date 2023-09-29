@@ -23,7 +23,7 @@ export const getGames = createAsyncThunk('game/getGame', async () => {
 			},
 		}).then((res) => res.json());
 
-		// console.log(data);
+		console.log(data);
 
 		return data;
 	} catch (err) {
