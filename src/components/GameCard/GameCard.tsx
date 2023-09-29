@@ -1,6 +1,10 @@
+import './GameCard.scss';
+
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import { Game } from '../../@types/game';
+import placeholder from '../../assets/placeholder_image.png';
 
 /*function GameCard({ game }) {
   return (
@@ -17,19 +21,33 @@ import { Game } from '../../@types/game';
 
 // The component renders a card and displays game information
 function GameCard({ game }: { game: Game }) {
+	const date = new Date(game.first_release_date * 1000);
+	const formattedDate = date.toLocaleDateString('fr-FR', {
+		year: 'numeric',
+		month: 'long',
+		day: 'numeric',
+	});
+
+	const platforms = game.platforms?.map((platform) => platform.name).join(', ');
+	const genres = game.genres?.map((genre) => genre.name).join(', ') || 'non renseigné';
+
 	return (
-		<div className="game-card">
-			<img src={game.cover?.url} alt={game.name} />
-			<div className="game-card-info">
-				<h2>{game.name}</h2>
-				<div className="label">Console:</div>{' '}
-				<div className="game-value">{game.platforms[0].name}</div>
-				<div className="label">Genre:</div>
-				{game.genres && <div className="game-value">{game.genres[0]?.name}</div>}
-				<div className="label">Date de sortie:</div>{' '}
-				<div className="game-value">{game.first_release_date}</div>
+		<Link to={`/game/${game.id}`} state={{ summary: game.summary }} className="game-card">
+			<img
+				src={game.cover?.url || placeholder}
+				alt={game.name}
+				className="game-card--image"
+			/>
+			<div className="game-card--info">
+				<h2 className="game-card--name">{game.name}</h2>
+				<p className="game-card--label">Console:</p>
+				<p className="game-card--value">{platforms}</p>
+				<p className="game-card--label">Genre:</p>
+				<p className="game-card--value">{genres}</p>
+				<p className="game-card--label">Date de sortie:</p>
+				<p className="game-card--value">{formattedDate}</p>
 			</div>
-		</div>
+		</Link>
 	);
 }
 

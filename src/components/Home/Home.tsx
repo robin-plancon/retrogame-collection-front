@@ -1,8 +1,6 @@
-import '../GameCard/GameCard.scss';
 import './Home.scss';
 
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { getGames } from '../../store/reducers/game';
@@ -35,14 +33,14 @@ function Home() {
 		<div className="body">
 			<div className="game-list">
 				{gamesToShow.map((game) => (
-					<Link key={game.id} to={`/game/${game.id}`} state={{ summary: game.summary }}>
-						<GameCard game={game} />
-					</Link>
+					<GameCard key={game.id} game={game} />
 				))}
 			</div>
 			{visibleGames < gameData.length && (
 				<div className="load-more">
-					<button onClick={handleShowMore}>Afficher plus</button>
+					<button className="load-more--button" onClick={handleShowMore}>
+						Afficher plus
+					</button>
 				</div>
 			)}
 		</div>
