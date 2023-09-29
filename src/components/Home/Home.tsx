@@ -30,14 +30,14 @@ function Home() {
 	};
 
 	return (
-		<div className="body">
-			<div className="filter-menu">
+		<>
+			<div className="home">
 				<Filter />
-			</div>
-			<div className="game-list">
-				{gamesToShow.map((game) => (
-					<GameCard key={game.id} game={game} />
-				))}
+				<div className="game-list">
+					{gamesToShow.map((game) => (
+						<GameCard key={game.id} game={game} />
+					))}
+				</div>
 			</div>
 			{visibleGames < gameData.length && (
 				<div className="load-more">
@@ -46,7 +46,7 @@ function Home() {
 					</button>
 				</div>
 			)}
-		</div>
+		</>
 	);
 }
 

@@ -1,41 +1,68 @@
 import './Filter.scss';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import filterIcon from '../../../assets/icons/filter.svg';
 
 function Filter() {
 	const [isFilterOpen, setIsFilterOpen] = useState(false);
 
+	const mediumBreakpoint = 1000;
+
 	const toggleFilter = () => {
 		setIsFilterOpen(!isFilterOpen);
 	};
 
+	// Get the current width of the window to display the clickable filter button only on mobile
+	const getCurrentDimensions = () => {
+		return {
+			width: window.innerWidth,
+		};
+	};
+
+	// State to update the current width of the window when it is resized
+	const [currentWidth, setCurrentWidth] = useState(getCurrentDimensions().width);
+
+	useEffect(() => {
+		// Update the current width of the window when it is resized
+		const updateDimensions = () => {
+			setCurrentWidth(getCurrentDimensions().width);
+		};
+		// Add an event listener to the window to update the current width when it is resized
+		window.addEventListener('resize', updateDimensions);
+		return () => window.removeEventListener('resize', updateDimensions);
+	}, [currentWidth]);
+
 	return (
 		<div className="filter-menu">
-			<button
-				className="filter-button"
-				onClick={toggleFilter}
-				aria-label="Ouvrir/Fermer le filtre"
-			>
-				<img src={filterIcon} alt="Filtrer" className="filter-icon" />
-			</button>
-			{isFilterOpen && (
-				<div className="filter-section">
-					<h3 className="filter-title">Consoles</h3>
-					<p className="filter-value italic">Choix multiples</p>
+			{currentWidth < mediumBreakpoint && (
+				<button
+					className="filter-menu--button"
+					onClick={toggleFilter}
+					aria-label="Ouvrir/Fermer le filtre"
+				>
+					<img src={filterIcon} alt="Filtrer" className="filter-menu--icon" />
+				</button>
+			)}
+			{currentWidth >= mediumBreakpoint && (
+				<img src={filterIcon} alt="Filtrer" className="filter-menu--icon" />
+			)}
+			{(isFilterOpen || currentWidth >= mediumBreakpoint) && (
+				<div className="filter-menu--section">
+					<h3 className="filter-menu--title">Consoles</h3>
+					<p className="filter-menu--value italic">Choix multiples</p>
 				</div>
 			)}
-			{isFilterOpen && (
-				<div className="filter-section">
-					<h3 className="filter-title">Genres</h3>
-					<p className="filter-value italic">Choix multiples</p>
+			{(isFilterOpen || currentWidth >= mediumBreakpoint) && (
+				<div className="filter-menu--section">
+					<h3 className="filter-menu--title">Genres</h3>
+					<p className="filter-menu--value italic">Choix multiples</p>
 				</div>
 			)}
-			{isFilterOpen && (
-				<div className="filter-section">
-					<h3 className="filter-title">Date de sortie</h3>
-					<p className="filter-value italic">Champs nombre</p>
+			{(isFilterOpen || currentWidth >= mediumBreakpoint) && (
+				<div className="filter-menu--section">
+					<h3 className="filter-menu--title">Date de sortie</h3>
+					<p className="filter-menu--value italic">Champs nombre</p>
 				</div>
 			)}
 		</div>

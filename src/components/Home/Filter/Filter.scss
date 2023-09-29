@@ -1,41 +1,50 @@
+@use '../../../styles/variables' as v;
+
 .filter-menu {
-    background-color: #090d19;
-    border-top-right-radius: 8px;
-    border-radius: 8px;
-    //border-bottom-right-radius: 8px;
-    padding: 5px;
-    color: #fbe377;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  width: 100%;
+	background-color: #090d19;
+	border-top-right-radius: 8px;
+	border-radius: 8px;
+	//border-bottom-right-radius: 8px;
+	padding: 5px;
+	color: #fbe377;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+	&--button {
+		background-color: #090d19;
+		border: none;
+	}
+
+	&--icon {
+		width: 24px;
+		height: 24px;
+		margin-bottom: 5px;
+		cursor: pointer;
+	}
+
+	&--section {
+		margin-bottom: 5px;
+	}
+
+	&--title {
+		color: #fbe377;
+		font-weight: bold;
+	}
+
+  &--value {
+    color: #e2e2e4;
   }
 
-.filter-button {
-    background-color: #090d19;
-    border: none;
+  @media (min-width: v.$medium) {
+    width: 25%;
+    height: 100%;
+    cursor: auto;
+  }
 }
-  
-  .filter-icon {
-    width: 24px;
-    height: 24px;
-    margin-bottom: 5px;
-    cursor: pointer;
-  }
-  
-  .filter-section {
-    margin-bottom: 5px;
-  }
-  
-  .filter-title {
-    color: #fbe377;
-    font-weight: bold;
-  }
-  
-  .filter-value {
-    color: #e2e2e4;
-  }
-  
-  .italic {
-    font-style: italic;
-    color: #e2e2e4;
-  }
+
+.italic {
+	font-style: italic;
+	color: #e2e2e4;
+}
