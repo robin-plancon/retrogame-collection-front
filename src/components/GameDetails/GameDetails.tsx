@@ -3,9 +3,8 @@ import './GameDetails.scss';
 import { Link } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 
+import placeholder from '../../assets/placeholder_image.png';
 import { useAppSelector } from '../../hooks/redux';
-
-// import gameData from '../../data';
 
 function GameDetails() {
 	const { id } = useParams<string>();
@@ -31,19 +30,24 @@ function GameDetails() {
 	const genres = game.genres?.map((genre) => genre.name).join(', ') || 'non renseigné';
 
 	return (
-		<Link to="/">
-			<div className="game-details">
-				<img src={game.cover?.url} alt={game.name} />
-				<div className="game-details-info"></div>
-				<h2>{game.name}</h2>
-				<div className="label">Console:</div>{' '}
-				<p className="game-card--value">{platforms}</p>
-				<div className="label">Genre:</div>
-				<p className="game-card--value">{genres}</p>
-				<div className="label">Date de sortie:</div>{' '}
-				<div className="game-value">{formattedDate}</div>
-				<div className="label">Description:</div>{' '}
-				<div className="game-description">{game.summary}</div>
+		<Link to="/" className="game-details">
+			<img
+				src={game.cover?.url || placeholder}
+				alt={game.name}
+				className="game-details--image"
+			/>
+			<div className="game-details--info">
+				<h2 className="game-details--name">{game.name}</h2>
+				<p className="game-details--label">Console:</p>
+				<p className="game-details--value">{platforms}</p>
+				<p className="game-details--label">Genre:</p>
+				<p className="game-details--value">{genres}</p>
+				<p className="game-details--label">Date de sortie:</p>
+				<p className="game-details--value">{formattedDate}</p>
+				<p className="game-details--label">Description:</p>
+				<p className="game-details--description">
+					{game.summary || 'résumé non disponible'}
+				</p>
 			</div>
 		</Link>
 	);

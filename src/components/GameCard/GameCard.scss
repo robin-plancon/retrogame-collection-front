@@ -46,7 +46,7 @@
 }
 
 .game-card {
-	width: 90%;
+	width: 95%;
 	background-color: #0a0e17;
 	border-radius: 8px;
 	border: 2px solid v.$tertiary-color;
@@ -87,20 +87,10 @@
 	}
 
 	&--value {
-		padding: 0.5rem 0;
+		// padding: v.$halfGutter;
 	}
-}
 
-// Media queries for desktop
-//@media (min-width: v.$medium) {
-
-//    .game-card {
-//        display: grid;
-//        grid-template-columns: repeat(2, 1fr);
-//  }
-//  }
-@media (min-width: v.$small) {
-	.game-card {
+	@media (min-width: v.$small) {
 		display: flex;
 		flex-direction: row; /* Align text and picture horizontally */
 		gap: v.$halfGutter; /* Space between the pic and the text */
@@ -114,24 +104,33 @@
 		}
 
 		&--info {
-      padding-left: v.$gutter;
-      padding: 0.5rem 0;
-      flex-grow: 1;
+			padding-left: v.$gutter;
+			padding: 0.5rem 0;
+			flex-grow: 1;
 			display: flex;
 			flex-direction: column;
-      flex-wrap: wrap;
-      align-items: flex-start;
-      justify-content: space-around;
+			flex-wrap: wrap;
+			align-items: flex-start;
+			justify-content: space-around;
 			gap: 0.5rem;
 		}
 
 		&--name {
-      align-self: center;
+			align-self: center;
 			font-weight: bold;
 		}
 
-    &--value {
-      padding: 0.5rem 0;
-    }
+		&--value {
+			padding: 0.5rem 0;
+		}
 	}
 }
+
+// Media queries for desktop
+//@media (min-width: v.$medium) {
+
+//    .game-card {
+//        display: grid;
+//        grid-template-columns: repeat(2, 1fr);
+//  }
+//  }
