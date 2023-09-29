@@ -78,12 +78,12 @@ function Signup() {
 					{...register('nickname', {
 						required: 'Ce champ est requis',
 						minLength: {
-							value: 3,
-							message: 'Le pseudo doit contenir au moins 3 caractères',
+							value: 2,
+							message: 'Le pseudo doit contenir au moins 2 caractères',
 						},
 						maxLength: {
-							value: 20,
-							message: 'Le pseudo doit contenir au maximum 20 caractères',
+							value: 14,
+							message: 'Le pseudo doit contenir au maximum 14 caractères',
 						},
 						pattern: {
 							value: /^[a-zA-Z][a-zA-Z0-9_-]{2,14}$/,
@@ -104,14 +104,6 @@ function Signup() {
 					className="signup-input"
 					{...register('email', {
 						required: 'Ce champ est requis',
-						minLength: {
-							value: 2,
-							message: 'Le pseudo doit contenir au moins 2 caractères',
-						},
-						maxLength: {
-							value: 14,
-							message: 'Le pseudo doit contenir au maximum 14 caractères',
-						},
 						pattern: {
 							value: /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/,
 							message: 'Adresse email invalide',

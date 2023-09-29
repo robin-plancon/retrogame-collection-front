@@ -24,7 +24,7 @@ const initialState: UserState = {
 // signup thunk call the api and return the data of signup
 export const signup = createAsyncThunk('user/signup', async (formData: FormProps) => {
 	try {
-		const data = await fetch('http://localhost:3000/signup', {
+		const data = await fetch(`${import.meta.env.VITE_API_URL_DEV}/signup`, {
 			method: 'POST',
 			body: JSON.stringify(formData),
 			headers: {
@@ -41,7 +41,7 @@ export const signup = createAsyncThunk('user/signup', async (formData: FormProps
 
 export const signin = createAsyncThunk('user/signin', async (formData: FormProps) => {
 	try {
-		const data = await fetch('http://localhost:3000/login', {
+		const data = await fetch(`${import.meta.env.VITE_API_URL_DEV}/login`, {
 			method: 'POST',
 			body: JSON.stringify(formData),
 			headers: {
