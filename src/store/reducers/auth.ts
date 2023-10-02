@@ -50,7 +50,6 @@ export const signup = createAsyncThunk('auth/signup', async (formData: FormProps
 export const signin = createAsyncThunk('auth/signin', async (formData: FormProps) => {
 	try {
 		const { data } = await axiosInstance.post('/login', formData);
-
 		return data;
 	} catch (err) {
 		console.log(err);
@@ -99,13 +98,12 @@ const authReducer = createReducer(initialState, (builder) => {
 				state.message = action.payload.message;
 				return;
 			}
-
 			// if the action is fulfilled we set the isLoading to false
 			state.isLoading = false;
 			state.status = 'ok';
-			state.user = action.payload.result.user;
-			state.token = action.payload.result.token;
-			saveState(action.payload.result.user, action.payload.result.token);
+			state.user = action.payload.user;
+			state.token = action.payload.token;
+			saveState(action.payload.user, action.payload.token);
 
 			// we get the from property from the location state to redirect the user to the previous page
 			const { from } = history.location.state || { from: { pathname: '/' } };
