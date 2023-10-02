@@ -33,19 +33,21 @@ function Home() {
 		<>
 			<div className="home">
 				<Filter />
-				<div className="game-list">
-					{gamesToShow.map((game) => (
-						<GameCard key={game.id} game={game} />
-					))}
+				<div className="game-container">
+					<div className="game-list">
+						{gamesToShow.map((game) => (
+							<GameCard key={game.id} game={game} />
+						))}
+					</div>
+					{visibleGames < gameData.length && (
+						<div className="load-more">
+							<button className="load-more--button" onClick={handleShowMore}>
+								Afficher plus
+							</button>
+						</div>
+					)}
 				</div>
 			</div>
-			{visibleGames < gameData.length && (
-				<div className="load-more">
-					<button className="load-more--button" onClick={handleShowMore}>
-						Afficher plus
-					</button>
-				</div>
-			)}
 		</>
 	);
 }

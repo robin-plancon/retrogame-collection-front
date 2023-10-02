@@ -15,16 +15,20 @@
 	}
 }
 
+.game-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	margin-bottom: v.$gutter;
+}
+
 .game-list {
-	flex-grow: 1;
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
-	gap: 0.5rem; /* Space between the cards */
-
-	@media (min-width: v.$medium) {
-		width: 60%;
-	}
+	gap: v.$halfGutter; /* Space between the cards */
 }
 
 .load-more {
