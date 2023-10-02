@@ -1,9 +1,17 @@
 import { createAction, createAsyncThunk, createReducer } from '@reduxjs/toolkit';
 
-interface UserState {
+import { axiosInstance } from '../../utils/axios';
+import { history } from '../../utils/history';
+import { loadState, saveState } from '../../utils/localStorage';
+
+interface AuthState {
 	isLoading: boolean;
-	nickname: string | null;
-	// token: string | null;
+	user: {
+		id?: string;
+		nickname: string;
+		email: string;
+	} | null;
+	token: string | null;
 	status?: 'ok' | 'error';
 	message?: string;
 }
@@ -15,22 +23,21 @@ type FormProps = {
 	confirmation?: string;
 };
 
-const initialState: UserState = {
+// persistState is an object that contains the user and the token in the localStorage
+const persistState = loadState();
+
+// initialState is an object that has the same structure as the state
+const initialState: AuthState = {
 	isLoading: false,
-	nickname: null,
-	// token: null,
+	user: null,
+	token: null,
+	...persistState,
 };
 
 // signup thunk call the api and return the data of signup
-export const signup = createAsyncThunk('user/signup', async (formData: FormProps) => {
+export const signup = createAsyncThunk('auth/signup', async (formData: FormProps) => {
 	try {
-		const data = await fetch(`${import.meta.env.VITE_API_URL_DEV}/signup`, {
-			method: 'POST',
-			body: JSON.stringify(formData),
-			headers: {
-				'Content-Type': 'application/json',
-			},
-		}).then((res) => res.json());
+		const { data } = await axiosInstance.post('/signup', formData);
 
 		return data;
 	} catch (err) {
@@ -39,15 +46,10 @@ export const signup = createAsyncThunk('user/signup', async (formData: FormProps
 	}
 });
 
-export const signin = createAsyncThunk('user/signin', async (formData: FormProps) => {
+// signin thunk call the api and return the data of signin
+export const signin = createAsyncThunk('auth/signin', async (formData: FormProps) => {
 	try {
-		const data = await fetch(`${import.meta.env.VITE_API_URL_DEV}/login`, {
-			method: 'POST',
-			body: JSON.stringify(formData),
-			headers: {
-				'Content-Type': 'application/json',
-			},
-		}).then((res) => res.json());
+		const { data } = await axiosInstance.post('/login', formData);
 
 		return data;
 	} catch (err) {
@@ -56,12 +58,14 @@ export const signin = createAsyncThunk('user/signin', async (formData: FormProps
 	}
 });
 
-export const resetStatus = createAction('user/reset_status');
-export const signout = createAction('user/signout');
+// resetStatus action will reset the status and the message
+export const resetStatus = createAction('auth/reset_status');
+// signout action will remove the user and the token from the localStorage
+export const signout = createAction('auth/signout');
 
-// createReducer is a function that take an initial state and an object of builder
+// authReducer is a function that take an initial state and an object of builder
 // builder is an object that has a method for each action type
-const userReducer = createReducer(initialState, (builder) => {
+const authReducer = createReducer(initialState, (builder) => {
 	builder
 		.addCase(signup.pending, (state) => {
 			// if the action is pending we set the isLoading to true
@@ -89,17 +93,24 @@ const userReducer = createReducer(initialState, (builder) => {
 		})
 		.addCase(signin.fulfilled, (state, action) => {
 			// if message is not null we set the status to error and we set the message
-			if (action.payload.message) {
+			if (action.payload.status === 'error') {
 				state.isLoading = false;
 				state.status = 'error';
 				state.message = action.payload.message;
 				return;
 			}
+
 			// if the action is fulfilled we set the isLoading to false
 			state.isLoading = false;
 			state.status = 'ok';
-			state.nickname = action.payload.nickname;
-			// state.token = action.payload.token;
+			state.user = action.payload.result.user;
+			state.token = action.payload.result.token;
+			saveState(action.payload.result.user, action.payload.result.token);
+
+			// we get the from property from the location state to redirect the user to the previous page
+			const { from } = history.location.state || { from: { pathname: '/' } };
+			// we redirect the user to the home page
+			history.navigate(from?.pathname || '/');
 		})
 		.addCase(signin.rejected, (state) => {
 			// if the action is rejected we set the isLoading to false
@@ -107,8 +118,9 @@ const userReducer = createReducer(initialState, (builder) => {
 			state.status = 'error';
 		})
 		.addCase(signout, (state) => {
-			state.nickname = null;
-			// state.token = null;
+			state.user = null;
+			localStorage.removeItem('user');
+			localStorage.removeItem('token');
 		})
 		.addCase(resetStatus, (state) => {
 			delete state.status;
@@ -116,4 +128,4 @@ const userReducer = createReducer(initialState, (builder) => {
 		});
 });
 
-export default userReducer;
+export default authReducer;

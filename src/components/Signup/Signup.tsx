@@ -2,10 +2,10 @@ import './Signup.scss';
 
 import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
 
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import { resetStatus, signup } from '../../store/reducers/user';
+import { resetStatus, signup } from '../../store/reducers/auth';
+import { history } from '../../utils/history';
 
 type FormProps = {
 	nickname?: string;
@@ -17,13 +17,19 @@ type FormProps = {
 function Signup() {
 	// dispatch is a function that allows us to send an action to the store
 	const dispacth = useAppDispatch();
-	// navigate is a function that allows us to navigate to a specific route
-	const navigate = useNavigate();
+
+	// redirect to the home page if the user is logged in
+	const user = useAppSelector((state) => state.auth.user);
+	useEffect(() => {
+		if (user) {
+			history.navigate('/');
+		}
+	}, [user]);
 
 	// states from the store
-	const isLoading = useAppSelector((state) => state.user.isLoading);
-	const status = useAppSelector((state) => state.user.status);
-	const message = useAppSelector((state) => state.user.message);
+	const isLoading = useAppSelector((state) => state.auth.isLoading);
+	const status = useAppSelector((state) => state.auth.status);
+	const message = useAppSelector((state) => state.auth.message);
 	// register is a function that allows us to register a field in the form
 	// handleSubmit is a function that allows us to handle the form submission
 	// watch is a function that allows us to watch the value of a field
@@ -58,9 +64,9 @@ function Signup() {
 		if (status === 'ok') {
 			// redirect to the home page and reset the status
 			dispacth(resetStatus());
-			navigate('/signin');
+			history.navigate('/signin');
 		}
-	}, [status, dispacth, navigate]);
+	}, [status, dispacth]);
 
 	return (
 		<div className="signup">
