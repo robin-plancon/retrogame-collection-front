@@ -15,14 +15,14 @@ function Home() {
 
 	const gamesToShow = gameData.slice(0, visibleGames);
 
-	const dispacth = useAppDispatch();
+	const dispatch = useAppDispatch();
 
 	useEffect(() => {
 		if (isFirst) {
 			setIsFirst(false);
 			return;
 		}
-		dispacth(getGames());
+		dispatch(getGames());
 	}, [isFirst]);
 
 	const handleShowMore = () => {
