@@ -4,9 +4,10 @@ import { axiosInstance } from '../../utils/axios';
 import { history } from '../../utils/history';
 import { loadState, saveState } from '../../utils/localStorage';
 
-interface UserState {
+interface AuthState {
 	isLoading: boolean;
 	user: {
+		id?: string;
 		nickname: string;
 		email: string;
 	} | null;
@@ -26,7 +27,7 @@ type FormProps = {
 const persistState = loadState();
 
 // initialState is an object that has the same structure as the state
-const initialState: UserState = {
+const initialState: AuthState = {
 	isLoading: false,
 	user: null,
 	token: null,
@@ -34,7 +35,7 @@ const initialState: UserState = {
 };
 
 // signup thunk call the api and return the data of signup
-export const signup = createAsyncThunk('user/signup', async (formData: FormProps) => {
+export const signup = createAsyncThunk('auth/signup', async (formData: FormProps) => {
 	try {
 		const { data } = await axiosInstance.post('/signup', formData);
 
@@ -46,7 +47,7 @@ export const signup = createAsyncThunk('user/signup', async (formData: FormProps
 });
 
 // signin thunk call the api and return the data of signin
-export const signin = createAsyncThunk('user/signin', async (formData: FormProps) => {
+export const signin = createAsyncThunk('auth/signin', async (formData: FormProps) => {
 	try {
 		const { data } = await axiosInstance.post('/login', formData);
 
@@ -57,8 +58,10 @@ export const signin = createAsyncThunk('user/signin', async (formData: FormProps
 	}
 });
 
-export const resetStatus = createAction('user/reset_status');
-export const signout = createAction('user/signout');
+// resetStatus action will reset the status and the message
+export const resetStatus = createAction('auth/reset_status');
+// signout action will remove the user and the token from the localStorage
+export const signout = createAction('auth/signout');
 
 // authReducer is a function that take an initial state and an object of builder
 // builder is an object that has a method for each action type
