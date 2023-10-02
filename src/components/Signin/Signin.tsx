@@ -2,10 +2,10 @@ import './Signin.scss';
 
 import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
 
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import { resetStatus, signin } from '../../store/reducers/user';
+import { signin } from '../../store/reducers/auth';
+import { history } from '../../utils/history';
 
 type FormProps = {
 	nickname?: string;
@@ -15,13 +15,19 @@ type FormProps = {
 function Signin() {
 	// dispatch is a function that allows us to send an action to the store
 	const dispacth = useAppDispatch();
-	// navigate is a function that allows us to navigate to a specific route
-	const navigate = useNavigate();
+
+	// redirect to the home page if the user is logged in
+	const user = useAppSelector((state) => state.auth.user);
+	useEffect(() => {
+		if (user) {
+			history.navigate('/');
+		}
+	}, [user]);
 
 	// states from the store
-	const isLoading = useAppSelector((state) => state.user.isLoading);
-	const status = useAppSelector((state) => state.user.status);
-	const message = useAppSelector((state) => state.user.message);
+	const isLoading = useAppSelector((state) => state.auth.isLoading);
+	const status = useAppSelector((state) => state.auth.status);
+	const message = useAppSelector((state) => state.auth.message);
 
 	const {
 		register,
@@ -41,14 +47,6 @@ function Signin() {
 		// dispatch signin action with data from the form
 		dispacth(signin(sendData));
 	};
-
-	useEffect(() => {
-		if (status === 'ok') {
-			// redirect to the home page and reset the status
-			dispacth(resetStatus());
-			navigate('/');
-		}
-	}, [status, dispacth, navigate]);
 
 	return (
 		<div className="signin">
