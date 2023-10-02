@@ -1,12 +1,13 @@
 import './App.scss';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 
-import { useAppSelector } from '../hooks/redux';
+import { useAppDispatch, useAppSelector } from '../hooks/redux';
 import store from '../store';
+import { getCollection } from '../store/reducers/collection';
 import { history } from '../utils/history';
-import { saveState } from '../utils/localStorage';
+import { saveState } from '../utils/sessionStorage';
 import About from './About/About';
 import GameDetails from './GameDetails/GameDetails';
 import Home from './Home/Home';
@@ -24,6 +25,14 @@ function App() {
 	history.location = useLocation();
 
 	const authUser = useAppSelector((state) => state.auth.user);
+
+	const dispatch = useAppDispatch();
+
+	useEffect(() => {
+		if (authUser) {
+			dispatch(getCollection());
+		}
+	}, [authUser]);
 
 	return (
 		<div className="App">
