@@ -28,12 +28,11 @@ export const getCollection = createAsyncThunk('collection/getCollection', async 
 		const token = auth.token;
 		// add the token to the axios header
 		axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-		// allow axios to send cookies
 		axiosInstance.defaults.withCredentials = true;
+		// allow axios to send cookies
 		const { data } = await axiosInstance.get(`/user/${user.id}/collection`);
 		axiosInstance.defaults.headers.common['Authorization'] = '';
 		axiosInstance.defaults.withCredentials = false;
-
 		if (data.status === 'error') {
 			return data.message;
 		}
@@ -83,7 +82,6 @@ export const removeGameFromCollection = createAsyncThunk(
 			axiosInstance.defaults.withCredentials = true;
 			const { data } = await axiosInstance.delete(`/user/collection/${game.id}`);
 			axiosInstance.defaults.headers.common['Authorization'] = '';
-			axiosInstance.defaults.withCredentials = false;
 			return { result: data, game: game };
 		} catch (err) {
 			console.log(err);

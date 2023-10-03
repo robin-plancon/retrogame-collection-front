@@ -38,7 +38,6 @@ const initialState: AuthState = {
 export const signup = createAsyncThunk('auth/signup', async (formData: FormProps) => {
 	try {
 		const { data } = await axiosInstance.post('/signup', formData);
-
 		return data;
 	} catch (err) {
 		console.log(err);
@@ -49,6 +48,7 @@ export const signup = createAsyncThunk('auth/signup', async (formData: FormProps
 // signin thunk call the api and return the data of signin
 export const signin = createAsyncThunk('auth/signin', async (formData: FormProps) => {
 	try {
+		axiosInstance.defaults.withCredentials = true;
 		const { data } = await axiosInstance.post('/login', formData);
 		return data;
 	} catch (err) {
