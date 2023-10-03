@@ -1,18 +1,32 @@
 import './GameDetails.scss';
 
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 
 import placeholder from '../../assets/placeholder_image.png';
-import { useAppSelector } from '../../hooks/redux';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { getGameBySlug } from '../../store/reducers/game';
 
 function GameDetails() {
 	const { slug } = useParams<string>();
 
 	const gameData = useAppSelector((state) => state.games.games);
 
+	const dispatch = useAppDispatch();
+
 	// Search for the game matching the ID in the game data
 	const game = gameData.find((game) => game.slug === slug);
+
+	useEffect(() => {
+		if (!game && slug) {
+			dispatch(getGameBySlug(slug));
+		}
+	}, [game]);
+
+	if (!game && slug) {
+		return <div>Loading...</div>;
+	}
 
 	// Check if the game does exist
 	if (!game) {
@@ -28,9 +42,6 @@ function GameDetails() {
 
 	const platforms = game.platforms?.map((platform) => platform.name).join(', ');
 	const genres = game.genres?.map((genre) => genre.name).join(', ') || 'non renseigné';
-
-	console.log('id', game.id);
-	console.log('slug', game.slug);
 
 	return (
 		<Link to="/" className="game-details">

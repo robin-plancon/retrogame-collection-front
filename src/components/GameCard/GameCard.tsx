@@ -11,19 +11,6 @@ import {
 	removeGameFromCollection,
 } from '../../store/reducers/collection';
 
-/*function GameCard({ game }) {
-  return (
-    <div className="game-card">
-      <img src={game.imageUrl} alt={game.title} />
-      <h2>{game.title}</h2>
-      <p>Console: {game.console}</p>
-      <p>Genre: {game.genre}</p>
-      <p>Date de sortie: {game.releaseDate}</p>
-    </div>
-  );
-}
-*/
-
 // The component renders a card and displays game information
 function GameCard({ game }: { game: Game }) {
 	const date = new Date(game.first_release_date * 1000);
@@ -37,8 +24,6 @@ function GameCard({ game }: { game: Game }) {
 	const genres = game.genres?.map((genre) => genre.name).join(', ') || 'non renseigné';
 	const isAuth = useAppSelector((state) => state.auth);
 	const collection = useAppSelector((state) => state.collection.games);
-	// console.log(isAuth.token, isAuth.user);
-	// console.log(collection);
 
 	const dispatch = useAppDispatch();
 
