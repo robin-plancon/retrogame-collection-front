@@ -1,15 +1,22 @@
 import './Header.scss';
 
+import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 
 import Logo from '../../../assets/logo.png';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { signout } from '../../../store/reducers/auth';
+import { getGamesByName } from '../../../store/reducers/game';
 import { history } from '../../../utils/history';
 
 function Header() {
+	const [searchTerm, setSearchTerm] = useState('');
 	const user = useAppSelector((state) => state.auth.user);
 	const dispatch = useAppDispatch();
+
+	const handleSearch = () => {
+		dispatch(getGamesByName(searchTerm));
+	};
 
 	const handleSignout = () => {
 		dispatch(signout());
@@ -40,6 +47,15 @@ function Header() {
 						Déconnexion
 					</button>
 				)}
+			</div>
+			<div className="search-bar">
+				<input
+					type="text"
+					placeholder="Rechercher..."
+					value={searchTerm}
+					onChange={(e) => setSearchTerm(e.target.value)}
+				/>
+				<button onClick={handleSearch}>Rechercher</button>
 			</div>
 		</div>
 	);
