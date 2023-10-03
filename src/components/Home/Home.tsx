@@ -2,9 +2,10 @@ import './Home.scss';
 
 import React, { useEffect, useState } from 'react';
 
+import { Game } from '../../@types/game';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { RootState } from '../../store/index';
-//import { getGames, getGamesByName } from '../../store/reducers/game';
+import { getGames, getGamesByName } from '../../store/reducers/game';
 import GameCard from '../GameCard/GameCard';
 import Filter from './Filter/Filter';
 
@@ -12,23 +13,34 @@ function Home() {
 	const { isLoading, games, status } = useAppSelector((state: RootState) => state.games);
 	const [visibleGames, setVisibleGames] = useState(4); // Number of cards to display initially
 	const [isFirst, setIsFirst] = useState(true); // To avoid displaying the "Afficher plus" button on the first render
+	const [searchResults] = useState<Game[]>([]);
+	const [searchTerm] = useState<string>('');
 
 	const gameData = useAppSelector((state) => state.games.games);
 
 	//const gamesToShow = gameData.slice(0, visibleGames);
 
-	const dispacth = useAppDispatch();
+	const dispatch = useAppDispatch();
 
 	useEffect(() => {
 		if (isFirst) {
 			setIsFirst(false);
 			return;
 		}
-		dispacth(getGames());
-	}, [isFirst]);
+
+		if (searchTerm) {
+			dispatch(getGamesByName(searchTerm));
+		} else {
+			dispatch(getGames());
+		}
+	}, [isFirst, dispatch, searchTerm]);
 
 	const handleShowMore = () => {
-		setVisibleGames(visibleGames + 4); // + 4 more games
+		if (searchResults.length > 0) {
+			setVisibleGames(visibleGames + 4);
+		} else {
+			setVisibleGames(visibleGames + 4); // + 4 more games
+		}
 	};
 
 	return (
@@ -41,10 +53,12 @@ function Home() {
 							<p>Chargement...</p>
 						) : status === 'error' ? (
 							<p>Erreur lors du chargement des jeux.</p>
-						) : games.length === 0 ? (
+						) : searchResults.length === 0 && games.length === 0 ? (
 							<p>Aucun jeu trouvé.</p>
 						) : (
-							games.map((game) => <GameCard key={game.id} game={game} />)
+							(searchResults.length > 0 ? searchResults : games).map((game) => (
+								<GameCard key={game.id} game={game} />
+							))
 						)}
 					</div>
 					{visibleGames < gameData.length && (

@@ -39,7 +39,7 @@ export const getGamesByName = createAsyncThunk(
 	async (searchTerm: string) => {
 		try {
 			const data = await fetch(
-				`${import.meta.env.VITE_API_URL_DEV}/games/search?game=${searchTerm}`,
+				`${import.meta.env.VITE_API_URL_DEV}/search?game=${searchTerm}`,
 				{
 					method: 'GET',
 					headers: {
