@@ -34,6 +34,32 @@ export const getGames = createAsyncThunk('game/getGame', async () => {
 	}
 });
 
+export const getGamesByName = createAsyncThunk(
+	'game/getGamesByName',
+	async (searchTerm: string) => {
+		try {
+			const data = await fetch(
+				`${import.meta.env.VITE_API_URL_DEV}/search?game=${searchTerm}`,
+				{
+					method: 'GET',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+				},
+			).then((res) => res.json());
+
+			if (data.status === 'error') {
+				return data.message;
+			}
+
+			return data.result;
+		} catch (err) {
+			console.error(err);
+			throw err;
+		}
+	},
+);
+
 const gameReducer = createReducer(initialState, (builder) => {
 	builder
 		.addCase(getGames.pending, (state) => {
@@ -51,6 +77,24 @@ const gameReducer = createReducer(initialState, (builder) => {
 			state.status = 'ok';
 		})
 		.addCase(getGames.rejected, (state) => {
+			state.isLoading = false;
+			state.status = 'error';
+		})
+		.addCase(getGamesByName.pending, (state) => {
+			state.isLoading = true;
+		})
+		.addCase(getGamesByName.fulfilled, (state, action) => {
+			if (action.payload.message) {
+				state.isLoading = false;
+				state.status = 'error';
+				state.message = action.payload.message;
+				return;
+			}
+			state.games = action.payload;
+			state.isLoading = false;
+			state.status = 'ok';
+		})
+		.addCase(getGamesByName.rejected, (state) => {
 			state.isLoading = false;
 			state.status = 'error';
 		});
