@@ -24,11 +24,10 @@
     display: flex;
     align-items: center;
     background-color: #111725; 
-    padding: 8px; 
-    border-radius: 10px;
+    padding: 0.5rem; 
+    border-radius: 1rem;
     width: auto; 
-    max-width: 800px;
-    margin-right: 205px; 
+    margin-left: 17rem; 
   }
 
   .search-input {
@@ -38,12 +37,6 @@
     background-color: transparent; 
     color: white; 
     font-size: 16px;
-  }
-
-  .search-button {
-    background-color: #111725; 
-    border: none;
-    padding: 0;
   }
   
   .search-icon {

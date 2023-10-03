@@ -39,6 +39,32 @@ export const getGameBySlug = createAsyncThunk(
 	},
 );
 
+export const getGamesByName = createAsyncThunk(
+	'game/getGamesByName',
+	async (searchTerm: string) => {
+		try {
+			const data = await fetch(
+				`${import.meta.env.VITE_API_URL_DEV}/search?game=${searchTerm}`,
+				{
+					method: 'GET',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+				},
+			).then((res) => res.json());
+
+			if (data.status === 'error') {
+				return data.message;
+			}
+
+			return data.result;
+		} catch (err) {
+			console.error(err);
+			throw err;
+		}
+	},
+);
+
 const gameReducer = createReducer(initialState, (builder) => {
 	builder
 		.addCase(getGames.pending, (state) => {
