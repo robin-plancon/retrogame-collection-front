@@ -119,6 +119,8 @@ const authReducer = createReducer(initialState, (builder) => {
 			state.user = null;
 			localStorage.removeItem('user');
 			localStorage.removeItem('token');
+			axiosInstance.defaults.headers.common['Authorization'] = '';
+			axiosInstance.defaults.withCredentials = false;
 		})
 		.addCase(resetStatus, (state) => {
 			delete state.status;

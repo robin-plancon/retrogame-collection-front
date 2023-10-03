@@ -32,7 +32,11 @@ function GameCard({ game }: { game: Game }) {
 	const genres = game.genres?.map((genre) => genre.name).join(', ') || 'non renseigné';
 
 	return (
-		<Link to={`/game/${game.id}`} state={{ summary: game.summary }} className="game-card">
+		<Link
+			to={`/game/${game.slug}`}
+			state={{ summary: game.summary }}
+			className="game-card"
+		>
 			<img
 				src={game.cover?.url || placeholder}
 				alt={game.name}

@@ -7,12 +7,12 @@ import placeholder from '../../assets/placeholder_image.png';
 import { useAppSelector } from '../../hooks/redux';
 
 function GameDetails() {
-	const { id } = useParams<string>();
+	const { slug } = useParams<string>();
 
 	const gameData = useAppSelector((state) => state.games.games);
 
 	// Search for the game matching the ID in the game data
-	const game = gameData.find((game) => game.id === parseInt(id || ''));
+	const game = gameData.find((game) => game.slug === slug);
 
 	// Check if the game does exist
 	if (!game) {
@@ -28,6 +28,9 @@ function GameDetails() {
 
 	const platforms = game.platforms?.map((platform) => platform.name).join(', ');
 	const genres = game.genres?.map((genre) => genre.name).join(', ') || 'non renseigné';
+
+	console.log('id', game.id);
+	console.log('slug', game.slug);
 
 	return (
 		<Link to="/" className="game-details">
