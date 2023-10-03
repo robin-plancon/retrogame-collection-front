@@ -1,6 +1,6 @@
 import './Header.scss';
 
-import React, { useState } from 'react';
+import React, { KeyboardEvent, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 
 import searchIcon from '../../../assets/icons/search.svg';
@@ -20,7 +20,7 @@ function Header() {
 		dispatch(getGamesByName(searchTerm));
 	};
 
-	const handleKeyPress = (e) => {
+	const handleKeyPress = (e: KeyboardEvent) => {
 		if (e.key === 'Enter') {
 			handleSearch();
 		}

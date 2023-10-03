@@ -43,21 +43,12 @@ export const getGamesByName = createAsyncThunk(
 	'game/getGamesByName',
 	async (searchTerm: string) => {
 		try {
-			const data = await fetch(
-				`${import.meta.env.VITE_API_URL_DEV}/search?game=${searchTerm}`,
-				{
-					method: 'GET',
-					headers: {
-						'Content-Type': 'application/json',
-					},
+			const { data } = await axiosInstance.get('/search', {
+				params: {
+					game: searchTerm,
 				},
-			).then((res) => res.json());
-
-			if (data.status === 'error') {
-				return data.message;
-			}
-
-			return data.result;
+			});
+			return data;
 		} catch (err) {
 			console.error(err);
 			throw err;
@@ -95,12 +86,31 @@ const gameReducer = createReducer(initialState, (builder) => {
 				state.message = action.payload.message;
 				return;
 			}
-			console.log(action.payload.result);
+			// console.log(action.payload.result);
 			state.games = [action.payload.result];
 			state.isLoading = false;
 			state.status = 'ok';
 		})
 		.addCase(getGameBySlug.rejected, (state) => {
+			state.isLoading = false;
+			state.status = 'error';
+		})
+		.addCase(getGamesByName.pending, (state) => {
+			state.isLoading = true;
+		})
+		.addCase(getGamesByName.fulfilled, (state, action) => {
+			if (action.payload.status === 'Error') {
+				state.isLoading = false;
+				state.status = 'error';
+				state.message = action.payload.message;
+				return;
+			}
+			// console.log(action.payload.result);
+			state.games = action.payload.result;
+			state.isLoading = false;
+			state.status = 'ok';
+		})
+		.addCase(getGamesByName.rejected, (state) => {
 			state.isLoading = false;
 			state.status = 'error';
 		});

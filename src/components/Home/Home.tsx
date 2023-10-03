@@ -6,7 +6,7 @@ import { Game } from '../../@types/game';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { RootState } from '../../store/index';
 import { getCollection } from '../../store/reducers/collection';
-import { getGames, getGamesByName } from '../../store/reducers/game';
+import { getGamesByName } from '../../store/reducers/game';
 import GameCard from '../GameCard/GameCard';
 import Filter from './Filter/Filter';
 
@@ -19,7 +19,7 @@ function Home() {
 
 	const gameData = useAppSelector((state) => state.games.games);
 
-	const gamesToShow = gameData.slice(0, visibleGames);
+	// const gamesToShow = gameData.slice(0, visibleGames);
 	const isAuth = useAppSelector((state) => state.auth);
 
 	const dispatch = useAppDispatch();
@@ -30,15 +30,16 @@ function Home() {
 			return;
 		}
 		if (isAuth.token && isAuth.user) {
-			dispacth(getCollection());
+			dispatch(getCollection());
 		}
 
 		if (searchTerm) {
 			dispatch(getGamesByName(searchTerm));
-		} else {
-			dispatch(getGames());
 		}
-	}, [isFirst, dispacth, isAuth.token, isAuth.user, dispatch, searchTerm]);
+		// } else {
+		// 	dispatch(getGames());
+		// }
+	}, [isFirst, dispatch, isAuth.token, isAuth.user, searchTerm]);
 
 	const handleShowMore = () => {
 		if (searchResults.length > 0) {
