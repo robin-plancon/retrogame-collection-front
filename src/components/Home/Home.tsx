@@ -56,9 +56,10 @@ function Home() {
 						) : searchResults.length === 0 && games.length === 0 ? (
 							<p>Aucun jeu trouvé.</p>
 						) : (
-							(searchResults.length > 0 ? searchResults : games).map((game) => (
-								<GameCard key={game.id} game={game} />
-							))
+							(searchResults.length > 0
+								? searchResults
+								: games.slice(0, visibleGames)
+							).map((game) => <GameCard key={game.id} game={game} />)
 						)}
 					</div>
 					{visibleGames < gameData.length && (
