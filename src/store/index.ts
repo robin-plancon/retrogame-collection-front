@@ -1,12 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit';
 
 import authReducer from './reducers/auth';
+import collectionReducer from './reducers/collection';
 import gameReducer from './reducers/game';
 
 const store = configureStore({
 	reducer: {
 		auth: authReducer,
 		games: gameReducer,
+		collection: collectionReducer,
 	},
 });
 

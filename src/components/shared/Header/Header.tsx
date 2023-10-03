@@ -1,12 +1,13 @@
 import './Header.scss';
 
-import React, { useState } from 'react';
+import React, { KeyboardEvent, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 
 import searchIcon from '../../../assets/icons/search.svg';
 import Logo from '../../../assets/logo.png';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { signout } from '../../../store/reducers/auth';
+import { resetCollection } from '../../../store/reducers/collection';
 import { getGamesByName } from '../../../store/reducers/game';
 import { history } from '../../../utils/history';
 
@@ -19,13 +20,14 @@ function Header() {
 		dispatch(getGamesByName(searchTerm));
 	};
 
-	const handleKeyPress = (e) => {
+	const handleKeyPress = (e: KeyboardEvent) => {
 		if (e.key === 'Enter') {
 			handleSearch();
 		}
 	};
 
 	const handleSignout = () => {
+		dispatch(resetCollection());
 		dispatch(signout());
 	};
 

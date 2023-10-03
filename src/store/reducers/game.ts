@@ -1,6 +1,7 @@
 import { createAsyncThunk, createReducer } from '@reduxjs/toolkit';
 
 import { Game } from '../../@types/game';
+import { axiosInstance } from '../../utils/axios';
 
 interface GameState {
 	isLoading: boolean;
@@ -16,43 +17,38 @@ const initialState: GameState = {
 
 export const getGames = createAsyncThunk('game/getGame', async () => {
 	try {
-		const data = await fetch(`${import.meta.env.VITE_API_URL_DEV}/games`, {
-			method: 'GET',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-		}).then((res) => res.json());
+		const { data } = await axiosInstance.get('/games');
 
-		if (data.status === 'error') {
-			return data.message;
-		}
-
-		return data.result;
+		return data;
 	} catch (err) {
 		console.log(err);
 		throw err;
 	}
 });
 
+export const getGameBySlug = createAsyncThunk(
+	'game/getGameBySlug',
+	async (slug: string) => {
+		try {
+			const { data } = await axiosInstance.get(`/game/${slug}`);
+			return data;
+		} catch (err) {
+			console.log(err);
+			throw err;
+		}
+	},
+);
+
 export const getGamesByName = createAsyncThunk(
 	'game/getGamesByName',
 	async (searchTerm: string) => {
 		try {
-			const data = await fetch(
-				`${import.meta.env.VITE_API_URL_DEV}/search?game=${searchTerm}`,
-				{
-					method: 'GET',
-					headers: {
-						'Content-Type': 'application/json',
-					},
+			const { data } = await axiosInstance.get('/search', {
+				params: {
+					game: searchTerm,
 				},
-			).then((res) => res.json());
-
-			if (data.status === 'error') {
-				return data.message;
-			}
-
-			return data.result;
+			});
+			return data;
 		} catch (err) {
 			console.error(err);
 			throw err;
@@ -66,13 +62,13 @@ const gameReducer = createReducer(initialState, (builder) => {
 			state.isLoading = true;
 		})
 		.addCase(getGames.fulfilled, (state, action) => {
-			if (action.payload.message) {
+			if (action.payload.status === 'Error') {
 				state.isLoading = false;
 				state.status = 'error';
 				state.message = action.payload.message;
 				return;
 			}
-			state.games = action.payload;
+			state.games = action.payload.result;
 			state.isLoading = false;
 			state.status = 'ok';
 		})
@@ -80,17 +76,37 @@ const gameReducer = createReducer(initialState, (builder) => {
 			state.isLoading = false;
 			state.status = 'error';
 		})
-		.addCase(getGamesByName.pending, (state) => {
+		.addCase(getGameBySlug.pending, (state) => {
 			state.isLoading = true;
 		})
-		.addCase(getGamesByName.fulfilled, (state, action) => {
-			if (action.payload.message) {
+		.addCase(getGameBySlug.fulfilled, (state, action) => {
+			if (action.payload.status === 'Error') {
 				state.isLoading = false;
 				state.status = 'error';
 				state.message = action.payload.message;
 				return;
 			}
-			state.games = action.payload;
+			// console.log(action.payload.result);
+			state.games = [action.payload.result];
+			state.isLoading = false;
+			state.status = 'ok';
+		})
+		.addCase(getGameBySlug.rejected, (state) => {
+			state.isLoading = false;
+			state.status = 'error';
+		})
+		.addCase(getGamesByName.pending, (state) => {
+			state.isLoading = true;
+		})
+		.addCase(getGamesByName.fulfilled, (state, action) => {
+			if (action.payload.status === 'Error') {
+				state.isLoading = false;
+				state.status = 'error';
+				state.message = action.payload.message;
+				return;
+			}
+			// console.log(action.payload.result);
+			state.games = action.payload.result;
 			state.isLoading = false;
 			state.status = 'ok';
 		})
