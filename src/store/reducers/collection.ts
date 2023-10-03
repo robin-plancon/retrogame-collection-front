@@ -1,4 +1,4 @@
-import { createAsyncThunk, createReducer } from '@reduxjs/toolkit';
+import { createAction, createAsyncThunk, createReducer } from '@reduxjs/toolkit';
 
 import { Game } from '../../@types/game';
 import { axiosInstance } from '../../utils/axios';
@@ -31,6 +31,8 @@ export const getCollection = createAsyncThunk('collection/getCollection', async 
 		// allow axios to send cookies
 		axiosInstance.defaults.withCredentials = true;
 		const { data } = await axiosInstance.get(`/user/${user.id}/collection`);
+		axiosInstance.defaults.headers.common['Authorization'] = '';
+		axiosInstance.defaults.withCredentials = false;
 
 		if (data.status === 'error') {
 			return data.message;
@@ -46,7 +48,7 @@ export const getCollection = createAsyncThunk('collection/getCollection', async 
 
 export const addGameToCollection = createAsyncThunk(
 	'collection/addGameToCollection',
-	async ({ gameId, gameSlug }: { gameId: string; gameSlug: string }) => {
+	async (game: Game) => {
 		try {
 			const auth = loadState();
 			if (!auth || !auth.user || !auth.token) {
@@ -55,11 +57,12 @@ export const addGameToCollection = createAsyncThunk(
 			const token = auth.token;
 			axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 			axiosInstance.defaults.withCredentials = true;
-			const { data } = await axiosInstance.post(`/user/collection/${gameId}`, {
-				slug: gameSlug,
+			const { data } = await axiosInstance.post(`/user/collection/${game.id}`, {
+				slug: game.slug,
 			});
-			console.log(data);
-			return data;
+			axiosInstance.defaults.headers.common['Authorization'] = '';
+			axiosInstance.defaults.withCredentials = false;
+			return { result: data, game: game };
 		} catch (err) {
 			console.log(err);
 			throw err;
@@ -69,7 +72,7 @@ export const addGameToCollection = createAsyncThunk(
 
 export const removeGameFromCollection = createAsyncThunk(
 	'collection/removeGameFromCollection',
-	async ({ gameId }: { gameId: string }) => {
+	async (game: Game) => {
 		try {
 			const auth = loadState();
 			if (!auth || !auth.user || !auth.token) {
@@ -78,10 +81,10 @@ export const removeGameFromCollection = createAsyncThunk(
 			const token = auth.token;
 			axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 			axiosInstance.defaults.withCredentials = true;
-			const { data } = await axiosInstance.delete(`/user/collection/${gameId}`);
+			const { data } = await axiosInstance.delete(`/user/collection/${game.id}`);
 			axiosInstance.defaults.headers.common['Authorization'] = '';
 			axiosInstance.defaults.withCredentials = false;
-			return data;
+			return { result: data, game: game };
 		} catch (err) {
 			console.log(err);
 			throw err;
@@ -89,19 +92,21 @@ export const removeGameFromCollection = createAsyncThunk(
 	},
 );
 
+export const resetCollection = createAction('collection/resetCollection');
+
 const collectionReducer = createReducer(initialState, (builder) => {
 	builder
 		.addCase(getCollection.pending, (state) => {
 			state.isLoading = true;
 		})
 		.addCase(getCollection.fulfilled, (state, action) => {
-			if (action.payload.message) {
+			if (action.payload.status === 'Error') {
 				state.isLoading = false;
 				state.status = 'error';
 				state.message = action.payload.message;
 				return;
 			}
-			state.games = action.payload;
+			state.games = action.payload.result;
 			state.isLoading = false;
 			state.status = 'ok';
 		})
@@ -113,12 +118,13 @@ const collectionReducer = createReducer(initialState, (builder) => {
 			state.isLoading = true;
 		})
 		.addCase(addGameToCollection.fulfilled, (state, action) => {
-			if (action.payload.message) {
+			if (action.payload?.result.status === 'Error' || !action.payload?.game) {
 				state.isLoading = false;
 				state.status = 'error';
-				state.message = action.payload.message;
+				state.message = action.payload?.result.message;
 				return;
 			}
+			state.games.push(action.payload.game);
 			state.isLoading = false;
 			state.status = 'ok';
 		})
@@ -130,18 +136,25 @@ const collectionReducer = createReducer(initialState, (builder) => {
 			state.isLoading = true;
 		})
 		.addCase(removeGameFromCollection.fulfilled, (state, action) => {
-			if (action.payload.message) {
+			if (action.payload?.result.status === 'Error' || !action.payload?.game) {
 				state.isLoading = false;
 				state.status = 'error';
-				state.message = action.payload.message;
+				state.message = action.payload?.result.message;
 				return;
 			}
+			state.games = state.games.filter((game) => game.id !== action.payload?.game.id);
 			state.isLoading = false;
 			state.status = 'ok';
 		})
 		.addCase(removeGameFromCollection.rejected, (state) => {
 			state.isLoading = false;
 			state.status = 'error';
+		})
+		.addCase(resetCollection, (state) => {
+			state.isLoading = false;
+			state.games = [];
+			delete state.status;
+			delete state.message;
 		});
 });
 

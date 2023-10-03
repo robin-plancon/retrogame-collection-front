@@ -71,7 +71,7 @@ const authReducer = createReducer(initialState, (builder) => {
 			state.isLoading = true;
 		})
 		.addCase(signup.fulfilled, (state, action) => {
-			if (action.payload.message) {
+			if (action.payload.error === 'Error') {
 				state.isLoading = false;
 				state.status = 'error';
 				state.message = action.payload.message;
@@ -92,7 +92,7 @@ const authReducer = createReducer(initialState, (builder) => {
 		})
 		.addCase(signin.fulfilled, (state, action) => {
 			// if message is not null we set the status to error and we set the message
-			if (action.payload.status === 'error') {
+			if (action.payload.status === 'Error') {
 				state.isLoading = false;
 				state.status = 'error';
 				state.message = action.payload.message;
@@ -117,6 +117,7 @@ const authReducer = createReducer(initialState, (builder) => {
 		})
 		.addCase(signout, (state) => {
 			state.user = null;
+			state.token = null;
 			localStorage.removeItem('user');
 			localStorage.removeItem('token');
 			axiosInstance.defaults.headers.common['Authorization'] = '';

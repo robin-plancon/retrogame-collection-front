@@ -5,6 +5,7 @@ import { NavLink } from 'react-router-dom';
 import Logo from '../../../assets/logo.png';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { signout } from '../../../store/reducers/auth';
+import { resetCollection } from '../../../store/reducers/collection';
 import { history } from '../../../utils/history';
 
 function Header() {
@@ -12,6 +13,7 @@ function Header() {
 	const dispatch = useAppDispatch();
 
 	const handleSignout = () => {
+		dispatch(resetCollection());
 		dispatch(signout());
 	};
 

@@ -40,7 +40,7 @@ const gameReducer = createReducer(initialState, (builder) => {
 			state.isLoading = true;
 		})
 		.addCase(getGames.fulfilled, (state, action) => {
-			if (action.payload.message) {
+			if (action.payload.error === 'Error') {
 				state.isLoading = false;
 				state.status = 'error';
 				state.message = action.payload.message;

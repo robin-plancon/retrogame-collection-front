@@ -3,6 +3,7 @@ import './Home.scss';
 import React, { useEffect, useState } from 'react';
 
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { getCollection } from '../../store/reducers/collection';
 import { getGames } from '../../store/reducers/game';
 import GameCard from '../GameCard/GameCard';
 import Filter from './Filter/Filter';
@@ -14,6 +15,7 @@ function Home() {
 	const gameData = useAppSelector((state) => state.games.games);
 
 	const gamesToShow = gameData.slice(0, visibleGames);
+	const isAuth = useAppSelector((state) => state.auth);
 
 	const dispacth = useAppDispatch();
 
@@ -22,8 +24,11 @@ function Home() {
 			setIsFirst(false);
 			return;
 		}
+		if (isAuth.token && isAuth.user) {
+			dispacth(getCollection());
+		}
 		dispacth(getGames());
-	}, [isFirst]);
+	}, [isFirst, dispacth, isAuth.token, isAuth.user]);
 
 	const handleShowMore = () => {
 		setVisibleGames(visibleGames + 4); // + 4 more games
