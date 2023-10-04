@@ -8,7 +8,7 @@ import Logo from '../../../assets/logo.png';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { signout } from '../../../store/reducers/auth';
 import { resetCollection } from '../../../store/reducers/collection';
-import { getGamesByName } from '../../../store/reducers/game';
+import { resetSearch, searchGamesByName } from '../../../store/reducers/game';
 import { history } from '../../../utils/history';
 
 function Header() {
@@ -17,7 +17,12 @@ function Header() {
 	const dispatch = useAppDispatch();
 
 	const handleSearch = () => {
-		dispatch(getGamesByName(searchTerm));
+		if (history.location.pathname === '/') {
+			dispatch(searchGamesByName(searchTerm));
+		}
+		if (history.location.pathname === '/collection') {
+			dispatch(searchGamesByName(searchTerm));
+		}
 	};
 
 	const handleKeyPress = (e: KeyboardEvent) => {
@@ -31,9 +36,20 @@ function Header() {
 		dispatch(signout());
 	};
 
+	const handleClick = () => {
+		if (history.location.pathname === '/') {
+			dispatch(resetSearch());
+			setSearchTerm('');
+		}
+		if (history.location.pathname === '/collection') {
+			dispatch(resetSearch());
+			setSearchTerm('');
+		}
+	};
+
 	return (
 		<div className="header">
-			<NavLink to="/" aria-label="Home">
+			<NavLink to="/" aria-label="Home" onClick={handleClick}>
 				<img className="header-logo" src={Logo} alt="Logo" />
 			</NavLink>
 			<div className="search-bar">

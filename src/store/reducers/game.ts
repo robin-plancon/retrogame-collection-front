@@ -1,4 +1,4 @@
-import { createAsyncThunk, createReducer } from '@reduxjs/toolkit';
+import { createAction, createAsyncThunk, createReducer } from '@reduxjs/toolkit';
 
 import { Game } from '../../@types/game';
 import { axiosInstance } from '../../utils/axios';
@@ -6,6 +6,7 @@ import { axiosInstance } from '../../utils/axios';
 interface GameState {
 	isLoading: boolean;
 	games: Array<Game>;
+	searchGames: Array<Game> | null;
 	status?: 'ok' | 'error';
 	message?: string;
 }
@@ -13,6 +14,7 @@ interface GameState {
 const initialState: GameState = {
 	isLoading: false,
 	games: [],
+	searchGames: null,
 };
 
 export const getGames = createAsyncThunk('game/getGame', async () => {
@@ -39,8 +41,8 @@ export const getGameBySlug = createAsyncThunk(
 	},
 );
 
-export const getGamesByName = createAsyncThunk(
-	'game/getGamesByName',
+export const searchGamesByName = createAsyncThunk(
+	'game/searchGamesByName',
 	async (searchTerm: string) => {
 		try {
 			const { data } = await axiosInstance.get('/search', {
@@ -56,6 +58,8 @@ export const getGamesByName = createAsyncThunk(
 	},
 );
 
+export const resetSearch = createAction('game/resetSearch');
+
 const gameReducer = createReducer(initialState, (builder) => {
 	builder
 		.addCase(getGames.pending, (state) => {
@@ -68,7 +72,11 @@ const gameReducer = createReducer(initialState, (builder) => {
 				state.message = action.payload.message;
 				return;
 			}
-			state.games = action.payload.result;
+			if (state.games.length > 0) {
+				state.games = [...state.games, ...action.payload.result];
+			} else {
+				state.games = action.payload.result;
+			}
 			state.isLoading = false;
 			state.status = 'ok';
 		})
@@ -86,8 +94,7 @@ const gameReducer = createReducer(initialState, (builder) => {
 				state.message = action.payload.message;
 				return;
 			}
-			// console.log(action.payload.result);
-			state.games = [action.payload.result];
+			state.games = [action.payload.result, ...state.games];
 			state.isLoading = false;
 			state.status = 'ok';
 		})
@@ -95,10 +102,10 @@ const gameReducer = createReducer(initialState, (builder) => {
 			state.isLoading = false;
 			state.status = 'error';
 		})
-		.addCase(getGamesByName.pending, (state) => {
+		.addCase(searchGamesByName.pending, (state) => {
 			state.isLoading = true;
 		})
-		.addCase(getGamesByName.fulfilled, (state, action) => {
+		.addCase(searchGamesByName.fulfilled, (state, action) => {
 			if (action.payload.status === 'Error') {
 				state.isLoading = false;
 				state.status = 'error';
@@ -106,13 +113,16 @@ const gameReducer = createReducer(initialState, (builder) => {
 				return;
 			}
 			// console.log(action.payload.result);
-			state.games = action.payload.result;
+			state.searchGames = action.payload.result;
 			state.isLoading = false;
 			state.status = 'ok';
 		})
-		.addCase(getGamesByName.rejected, (state) => {
+		.addCase(searchGamesByName.rejected, (state) => {
 			state.isLoading = false;
 			state.status = 'error';
+		})
+		.addCase(resetSearch, (state) => {
+			state.searchGames = null;
 		});
 });
 

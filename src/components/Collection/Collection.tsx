@@ -24,10 +24,11 @@ function Collection() {
 			<div className="collection-container">
 				<h2 className="collection-title">Ma collection</h2>
 				<div className="collection-list">
-					{isLoading && !games.length && <p>Chargement...</p>}
+					{isLoading && games.length === 0 && <p>Chargement...</p>}
 					{!isLoading && status === 'error' && <p>Erreur lors du chargement des jeux.</p>}
 					{!isLoading && games.length === 0 && <p>Aucun jeu dans votre collection.</p>}
-					{games.length && games.map((game) => <GameCard key={game.id} game={game} />)}
+					{games.length > 0 &&
+						games.map((game) => <GameCard key={game.id} game={game} />)}
 				</div>
 			</div>
 		</div>

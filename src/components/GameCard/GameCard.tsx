@@ -10,6 +10,7 @@ import {
 	addGameToCollection,
 	removeGameFromCollection,
 } from '../../store/reducers/collection';
+import { history } from '../../utils/history';
 
 // The component renders a card and displays game information
 function GameCard({ game }: { game: Game }) {
@@ -41,7 +42,7 @@ function GameCard({ game }: { game: Game }) {
 		<div className="game-card">
 			<Link
 				to={`/game/${game.slug}`}
-				state={{ summary: game.summary }}
+				state={{ from: history.location }}
 				className="game-card--game"
 			>
 				<img

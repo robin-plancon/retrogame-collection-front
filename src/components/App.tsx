@@ -6,6 +6,7 @@ import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
 import store from '../store';
 import { getCollection } from '../store/reducers/collection';
+import { getGames } from '../store/reducers/game';
 import { history } from '../utils/history';
 import { saveState } from '../utils/sessionStorage';
 import About from './About/About';
@@ -18,16 +19,31 @@ import Signin from './Signin/Signin';
 import Signup from './Signup/Signup';
 
 function App() {
+	// To save the state in the sessionStorage
 	store.subscribe(() => {
 		saveState(store.getState().auth.user, store.getState().auth.token || '');
 	});
 
+	// To use history outside of a component
 	history.navigate = useNavigate();
 	history.location = useLocation();
 
+	// To avoid rerender when loading page
+	const [isFirst, setIsFirst] = React.useState(true);
+
+	// To get the user and token from the store
 	const { user, token } = useAppSelector((state) => state.auth);
 
+	// To dispatch actions
 	const dispatch = useAppDispatch();
+
+	useEffect(() => {
+		if (isFirst) {
+			setIsFirst(false);
+			return;
+		}
+		dispatch(getGames());
+	}, [isFirst]);
 
 	useEffect(() => {
 		if (user && token) {
