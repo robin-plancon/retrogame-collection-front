@@ -1,22 +1,28 @@
 import './Collection.scss';
 
-import { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { getCollection } from '../../store/reducers/collection';
+// import { history } from '../../utils/history';
 import GameCard from '../GameCard/GameCard';
 import Filter from '../shared/Filter/Filter';
 
 function Collection() {
 	const { isLoading, games, status } = useAppSelector((state) => state.collection);
-	const { user, token } = useAppSelector((state) => state.auth);
+
+	const [isFirst, setIsFirst] = useState(true); // To avoid displaying the "Afficher plus" button on the first render
 	const dispatch = useAppDispatch();
 
 	useEffect(() => {
-		if (user && token && !games.length) {
+		if (isFirst) {
+			setIsFirst(false);
+			return;
+		}
+		if (games.length === 0) {
 			dispatch(getCollection());
 		}
-	}, [dispatch]);
+	}, [isFirst]);
 
 	return (
 		<div className="collection">

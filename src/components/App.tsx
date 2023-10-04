@@ -25,15 +25,7 @@ function App() {
 	history.navigate = useNavigate();
 	history.location = useLocation();
 
-	const authUser = useAppSelector((state) => state.auth.user);
-
-	// const dispatch = useAppDispatch();
-
-	// useEffect(() => {
-	// 	if (authUser) {
-	// 		dispatch(getCollection());
-	// 	}
-	// }, [authUser]);
+	const { user, token } = useAppSelector((state) => state.auth);
 
 	return (
 		<div className="App">
@@ -43,9 +35,9 @@ function App() {
 					<Route path="/" element={<Home />} />
 					<Route path="/game/:slug" element={<GameDetails />} />
 					<Route path="/about" element={<About />} />
-					{!authUser && <Route path="/signup" element={<Signup />} />}
-					{!authUser && <Route path="/signin" element={<Signin />} />}
-					{authUser && <Route path="/collection" element={<Collection />} />}
+					{(!user || !token) && <Route path="/signup" element={<Signup />} />}
+					{(!user || !token) && <Route path="/signin" element={<Signin />} />}
+					{user && token && <Route path="/collection" element={<Collection />} />}
 					<Route path="*" element={<div>404</div>} />
 				</Routes>
 			</div>
