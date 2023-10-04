@@ -1,11 +1,11 @@
 import './App.scss';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 
-import { useAppSelector } from '../hooks/redux';
+import { useAppDispatch, useAppSelector } from '../hooks/redux';
 import store from '../store';
-// import { getCollection } from '../store/reducers/collection';
+import { getCollection } from '../store/reducers/collection';
 import { history } from '../utils/history';
 import { saveState } from '../utils/sessionStorage';
 import About from './About/About';
@@ -26,6 +26,14 @@ function App() {
 	history.location = useLocation();
 
 	const { user, token } = useAppSelector((state) => state.auth);
+
+	const dispatch = useAppDispatch();
+
+	useEffect(() => {
+		if (user && token) {
+			dispatch(getCollection());
+		}
+	}, [user, token]);
 
 	return (
 		<div className="App">

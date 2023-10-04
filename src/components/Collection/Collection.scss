@@ -16,6 +16,14 @@
 		margin-bottom: v.$gutter;
 	}
 
+	&-title {
+		color: #fbe377;
+		font-weight: bold;
+		font-family: BebbasNeue;
+		font-size: 2rem;
+		margin-bottom: v.$gutter;
+	}
+
 	&-list {
 		display: flex;
 		flex-wrap: wrap;

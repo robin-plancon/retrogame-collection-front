@@ -22,7 +22,7 @@ function GameCard({ game }: { game: Game }) {
 
 	const platforms = game.platforms?.map((platform) => platform.name).join(', ');
 	const genres = game.genres?.map((genre) => genre.name).join(', ') || 'non renseigné';
-	const isAuth = useAppSelector((state) => state.auth);
+	const { user, token } = useAppSelector((state) => state.auth);
 	const collection = useAppSelector((state) => state.collection.games);
 
 	const dispatch = useAppDispatch();
@@ -59,7 +59,7 @@ function GameCard({ game }: { game: Game }) {
 					<p className="game-card--value">{formattedDate}</p>
 				</div>
 			</Link>
-			{isAuth.user && isAuth.token && (
+			{user && token && (
 				<button className="game-card--button" onClick={handleClick}>
 					{collection.find((g) => g.id === game.id)
 						? 'Retirer de ma collection'
