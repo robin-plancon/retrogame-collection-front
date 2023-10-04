@@ -9,6 +9,7 @@ import store from '../store';
 import { history } from '../utils/history';
 import { saveState } from '../utils/sessionStorage';
 import About from './About/About';
+import Collection from './Collection/Collection';
 import GameDetails from './GameDetails/GameDetails';
 import Home from './Home/Home';
 import Footer from './shared/Footer/Footer';
@@ -44,6 +45,7 @@ function App() {
 					<Route path="/about" element={<About />} />
 					{!authUser && <Route path="/signup" element={<Signup />} />}
 					{!authUser && <Route path="/signin" element={<Signin />} />}
+					{authUser && <Route path="/collection" element={<Collection />} />}
 					<Route path="*" element={<div>404</div>} />
 				</Routes>
 			</div>

@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { getCollection } from '../../store/reducers/collection';
 import { getGames, getGamesByName } from '../../store/reducers/game';
 import GameCard from '../GameCard/GameCard';
-import Filter from './Filter/Filter';
+import Filter from '../shared/Filter/Filter';
 
 function Home() {
 	const { isLoading, games, status } = useAppSelector((state) => state.games);
