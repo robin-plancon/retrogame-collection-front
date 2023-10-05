@@ -1,6 +1,6 @@
 import './GameDetails.scss';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 
@@ -11,24 +11,32 @@ import {
 	removeGameFromCollection,
 } from '../../store/reducers/collection';
 import { getGameBySlug } from '../../store/reducers/game';
+import { history } from '../../utils/history';
 
 function GameDetails() {
 	const { slug } = useParams<string>();
 
-	const gameData = useAppSelector((state) => state.games.games);
+	const { games, isLoading } = useAppSelector((state) => state.games);
 	const isAuth = useAppSelector((state) => state.auth);
 	const collection = useAppSelector((state) => state.collection.games);
+	const [isFirst, setIsFirst] = useState(true); // To avoid displaying the "Afficher plus" button on the first render
 
 	const dispatch = useAppDispatch();
 
 	// Search for the game matching the ID in the game data
-	const game = gameData.find((game) => game.slug === slug);
+	const game = games.concat(collection).find((game) => game.slug === slug);
+
+	const { from } = history.location.state || { from: { pathname: '/' } };
 
 	useEffect(() => {
+		if (isFirst) {
+			setIsFirst(false);
+			return;
+		}
 		if (!game && slug) {
 			dispatch(getGameBySlug(slug));
 		}
-	}, [game]);
+	}, [isFirst]);
 
 	const handleClick = () => {
 		if (!game) {
@@ -43,13 +51,13 @@ function GameDetails() {
 		}
 	};
 
-	if (!game && slug) {
-		return <div>Loading...</div>;
+	if ((!game && slug) || isLoading) {
+		return <p className="game-details--message">Chargement...</p>;
 	}
 
 	// Check if the game does exist
 	if (!game) {
-		return <div>The game was not found</div>;
+		return <p className="game-details--message">Le jeu n&apos;a pas été trouvé.</p>;
 	}
 
 	const date = new Date(game.first_release_date * 1000);
@@ -64,7 +72,11 @@ function GameDetails() {
 
 	return (
 		<div className="game-details">
-			<Link to="/" className="game-details--game">
+			<Link
+				to={from?.pathname || '/'}
+				className="game-details--game"
+				state={{ from: history.location }}
+			>
 				<img
 					src={game.cover?.url || placeholder}
 					alt={game.name}

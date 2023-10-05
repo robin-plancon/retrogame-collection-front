@@ -3,44 +3,41 @@ import './Home.scss';
 import React, { useEffect, useState } from 'react';
 
 import { Game } from '../../@types/game';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import { getCollection } from '../../store/reducers/collection';
-import { getGames, getGamesByName } from '../../store/reducers/game';
+import { useAppSelector } from '../../hooks/redux';
 import GameCard from '../GameCard/GameCard';
-import Filter from './Filter/Filter';
+import Filter from '../shared/Filter/Filter';
 
 function Home() {
-	const { isLoading, games, status } = useAppSelector((state) => state.games);
+	const { isLoading, games, status, searchGames } = useAppSelector(
+		(state) => state.games,
+	);
 	const [visibleGames, setVisibleGames] = useState(4); // Number of cards to display initially
 	const [isFirst, setIsFirst] = useState(true); // To avoid displaying the "Afficher plus" button on the first render
-	const [searchResults] = useState<Game[]>([]);
-	const [searchTerm] = useState<string>('');
-
-	const gameData = useAppSelector((state) => state.games.games);
-
-	// const gamesToShow = gameData.slice(0, visibleGames);
-	const isAuth = useAppSelector((state) => state.auth);
-
-	const dispatch = useAppDispatch();
+	const [displayedGames, setDisplayedGames] = useState<Game[]>([]); // To avoid displaying the "Afficher plus" button on the first render
 
 	useEffect(() => {
 		if (isFirst) {
 			setIsFirst(false);
 			return;
 		}
-		if (isAuth.token && isAuth.user) {
-			dispatch(getCollection());
-		}
+	}, [isFirst]);
 
-		if (searchTerm) {
-			dispatch(getGamesByName(searchTerm));
+	useEffect(() => {
+		setDisplayedGames(games);
+	}, [games]); // Add games to the dependency array to avoid a warning
+
+	useEffect(() => {
+		if (searchGames) {
+			console.log(searchGames);
+			setDisplayedGames(searchGames);
 		} else {
-			dispatch(getGames());
+			setDisplayedGames(games);
 		}
-	}, [isFirst, dispatch, isAuth.token, isAuth.user, searchTerm]);
+		// setVisibleGames(4);
+	}, [searchGames]); // Add games to the dependency array to avoid a warning
 
 	const handleShowMore = () => {
-		if (searchResults.length > 0) {
+		if (displayedGames.length > 0) {
 			setVisibleGames(visibleGames + 4);
 		} else {
 			setVisibleGames(visibleGames + 4); // + 4 more games
@@ -57,16 +54,14 @@ function Home() {
 						{!isLoading && status === 'error' && (
 							<p>Erreur lors du chargement des jeux.</p>
 						)}
-						{!isLoading && searchResults.length === 0 && games.length === 0 && (
-							<p>Aucun jeu trouvé.</p>
-						)}
+						{!isLoading && displayedGames.length === 0 && <p>Aucun jeu trouvé.</p>}
+
 						{!isLoading &&
-							(searchResults.length > 0
-								? searchResults
-								: games.slice(0, visibleGames)
-							).map((game) => <GameCard key={game.id} game={game} />)}
+							displayedGames
+								.slice(0, visibleGames)
+								.map((game) => <GameCard key={game.id} game={game} />)}
 					</div>
-					{visibleGames < gameData.length && (
+					{visibleGames < displayedGames.length && (
 						<div className="load-more">
 							<button className="load-more--button" onClick={handleShowMore}>
 								Afficher plus
