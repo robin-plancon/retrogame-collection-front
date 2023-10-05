@@ -7,6 +7,7 @@ import { loadState } from '../../utils/sessionStorage';
 interface CollectionState {
 	isLoading: boolean;
 	games: Array<Game>;
+	searchResults?: Array<Game> | null;
 	status?: 'ok' | 'error';
 	message?: string;
 }
@@ -90,6 +91,15 @@ export const removeGameFromCollection = createAsyncThunk(
 	},
 );
 
+export const searchCollection = createAction(
+	'collection/searchCollection',
+	(query: string) => {
+		return {
+			payload: query,
+		};
+	},
+);
+export const resetCollectionSearch = createAction('collection/resetSearch');
 export const resetCollection = createAction('collection/resetCollection');
 
 const collectionReducer = createReducer(initialState, (builder) => {
@@ -148,9 +158,18 @@ const collectionReducer = createReducer(initialState, (builder) => {
 			state.isLoading = false;
 			state.status = 'error';
 		})
+		.addCase(searchCollection, (state, action) => {
+			state.searchResults = state.games.filter((game) => {
+				return game.name.toLowerCase().includes(action.payload.toLowerCase());
+			});
+		})
+		.addCase(resetCollectionSearch, (state) => {
+			state.searchResults = null;
+		})
 		.addCase(resetCollection, (state) => {
 			state.isLoading = false;
 			state.games = [];
+			state.searchResults = null;
 			delete state.status;
 			delete state.message;
 		});

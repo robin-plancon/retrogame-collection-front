@@ -8,7 +8,9 @@ import GameCard from '../GameCard/GameCard';
 import Filter from '../shared/Filter/Filter';
 
 function Collection() {
-	const { isLoading, games, status } = useAppSelector((state) => state.collection);
+	const { isLoading, games, status, searchResults } = useAppSelector(
+		(state) => state.collection,
+	);
 	const [isFirst, setIsFirst] = useState(true); // To avoid displaying the "Afficher plus" button on the first render
 
 	useEffect(() => {
@@ -27,7 +29,11 @@ function Collection() {
 					{isLoading && games.length === 0 && <p>Chargement...</p>}
 					{!isLoading && status === 'error' && <p>Erreur lors du chargement des jeux.</p>}
 					{!isLoading && games.length === 0 && <p>Aucun jeu dans votre collection.</p>}
-					{games.length > 0 &&
+					{searchResults &&
+						searchResults.length > 0 &&
+						searchResults.map((game) => <GameCard key={game.id} game={game} />)}
+					{!searchResults &&
+						games.length > 0 &&
 						games.map((game) => <GameCard key={game.id} game={game} />)}
 				</div>
 			</div>
