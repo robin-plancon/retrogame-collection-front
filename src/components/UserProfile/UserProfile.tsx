@@ -1,24 +1,41 @@
 import './UserProfile.scss';
 
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import closeIcon from '../../assets/icons/close.svg';
-import { detail as fetchUserDetails } from '../../store/reducers/user';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { update } from '../../store/reducers/auth';
 // import { history } from '../../utils/history';
 
 const UserProfile = () => {
+	const dispatch = useAppDispatch();
+
 	const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
 	const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+	const [currentPassword, setCurrentPassword] = useState('');
+	const [newPassword, setNewPassword] = useState('');
+	const [confirmPassword, setConfirmPassword] = useState('');
 
-	const dispatch = useDispatch();
-	const userDetails = useSelector((state) => state.user);
+	const userDetails = useAppSelector((state) => state.auth);
 
-	useEffect(() => {
-		// Loading the user informations when landing on the user profile
-		dispatch(fetchUserDetails());
-	}, [dispatch]);
+	const handlePasswordChange = () => {
+		console.log('handlePasswordChange');
+		if (userDetails.user && userDetails.token) {
+			// dispatch action to change password
+			dispatch(
+				update({
+					currentPassword: currentPassword,
+					newPassword: newPassword,
+					confirmation: confirmPassword,
+				}),
+			);
+		}
+	};
+
+	const handleDelete = () => {
+		console.log('handleDelete');
+	};
 
 	const openPasswordModal = () => {
 		setIsPasswordModalOpen(true);
@@ -63,10 +80,27 @@ const UserProfile = () => {
 								<img src={closeIcon} alt="Fermer la modale" />
 							</button>
 
-							<input type="password" placeholder="Mot de passe actuel" />
-							<input type="password" placeholder="Nouveau mot de passe" />
-							<input type="password" placeholder="Confirmer le mot de passe" />
-							<button className="modal-button">Confirmer</button>
+							<input
+								type="password"
+								placeholder="Mot de passe actuel"
+								value={currentPassword}
+								onChange={(e) => setCurrentPassword(e.target.value)}
+							/>
+							<input
+								type="password"
+								placeholder="Nouveau mot de passe"
+								value={newPassword}
+								onChange={(e) => setNewPassword(e.target.value)}
+							/>
+							<input
+								type="password"
+								placeholder="Confirmer le mot de passe"
+								value={confirmPassword}
+								onChange={(e) => setConfirmPassword(e.target.value)}
+							/>
+							<button className="modal-button" onClick={handlePasswordChange}>
+								Confirmer
+							</button>
 							<button className="modal-link" onClick={closePasswordModal}>
 								Annuler
 							</button>
@@ -80,7 +114,9 @@ const UserProfile = () => {
 					<div className="window">
 						<div className="window-content">
 							<h2>Êtes-vous sûr(e) de vouloir supprimer ce compte ?</h2>
-							<button className="window-button">Confirmer</button>
+							<button className="window-button" onClick={handleDelete}>
+								Confirmer
+							</button>
 							<button className="window-link" onClick={closeDeleteModal}>
 								Annuler
 							</button>
