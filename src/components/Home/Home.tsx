@@ -3,40 +3,41 @@ import './Home.scss';
 import React, { useEffect, useState } from 'react';
 
 import { Game } from '../../@types/game';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import { RootState } from '../../store/index';
-import { getGames, getGamesByName } from '../../store/reducers/game';
+import { useAppSelector } from '../../hooks/redux';
 import GameCard from '../GameCard/GameCard';
-import Filter from './Filter/Filter';
+import Filter from '../shared/Filter/Filter';
 
 function Home() {
-	const { isLoading, games, status } = useAppSelector((state: RootState) => state.games);
+	const { isLoading, games, status, searchGames } = useAppSelector(
+		(state) => state.games,
+	);
 	const [visibleGames, setVisibleGames] = useState(4); // Number of cards to display initially
 	const [isFirst, setIsFirst] = useState(true); // To avoid displaying the "Afficher plus" button on the first render
-	const [searchResults] = useState<Game[]>([]);
-	const [searchTerm] = useState<string>('');
-
-	const gameData = useAppSelector((state) => state.games.games);
-
-	//const gamesToShow = gameData.slice(0, visibleGames);
-
-	const dispatch = useAppDispatch();
+	const [displayedGames, setDisplayedGames] = useState<Game[]>([]); // To avoid displaying the "Afficher plus" button on the first render
 
 	useEffect(() => {
 		if (isFirst) {
 			setIsFirst(false);
 			return;
 		}
+	}, [isFirst]);
 
-		if (searchTerm) {
-			dispatch(getGamesByName(searchTerm));
+	useEffect(() => {
+		setDisplayedGames(games);
+	}, [games]); // Add games to the dependency array to avoid a warning
+
+	useEffect(() => {
+		if (searchGames) {
+			console.log(searchGames);
+			setDisplayedGames(searchGames);
 		} else {
-			dispatch(getGames());
+			setDisplayedGames(games);
 		}
-	}, [isFirst, dispatch, searchTerm]);
+		// setVisibleGames(4);
+	}, [searchGames]); // Add games to the dependency array to avoid a warning
 
 	const handleShowMore = () => {
-		if (searchResults.length > 0) {
+		if (displayedGames.length > 0) {
 			setVisibleGames(visibleGames + 4);
 		} else {
 			setVisibleGames(visibleGames + 4); // + 4 more games
@@ -49,20 +50,18 @@ function Home() {
 				<Filter />
 				<div className="game-container">
 					<div className="game-list">
-						{isLoading ? (
-							<p>Chargement...</p>
-						) : status === 'error' ? (
+						{isLoading && <p>Chargement...</p>}
+						{!isLoading && status === 'error' && (
 							<p>Erreur lors du chargement des jeux.</p>
-						) : searchResults.length === 0 && games.length === 0 ? (
-							<p>Aucun jeu trouvé.</p>
-						) : (
-							(searchResults.length > 0
-								? searchResults
-								: games.slice(0, visibleGames)
-							).map((game) => <GameCard key={game.id} game={game} />)
 						)}
+						{!isLoading && displayedGames.length === 0 && <p>Aucun jeu trouvé.</p>}
+
+						{!isLoading &&
+							displayedGames
+								.slice(0, visibleGames)
+								.map((game) => <GameCard key={game.id} game={game} />)}
 					</div>
-					{visibleGames < gameData.length && (
+					{visibleGames < displayedGames.length && (
 						<div className="load-more">
 							<button className="load-more--button" onClick={handleShowMore}>
 								Afficher plus

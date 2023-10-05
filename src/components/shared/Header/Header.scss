@@ -4,54 +4,46 @@
 .header {
   width: 100%;
   display: flex;
-  justify-content: start;
+  flex-wrap: wrap;
+  justify-content: space-between;
   align-items: center;
   gap: v.$halfGutter;
   margin: v.$halfGutter auto;
   padding: v.$halfGutter;
 
-  .header-left {
-    display: flex;
-    align-items: center;
-    gap: v.$halfGutter;
-  }
-
   &-logo {
     height: 4rem;
   }
 
-  .search-bar {
+  &-search-bar {
+    width: 100%;
     display: flex;
     align-items: center;
+    
     background-color: #111725; 
     padding: 0.5rem; 
     border-radius: 1rem;
-    border: 1px;
-    border-color: v.$secondary-color;
-    width: auto; 
-    margin-left: 17rem; 
   }
 
-  .search-input {
-    flex-grow: 1;
-    padding: 8px;
+  &-search-input {
+    width: 100%;
+    padding: v.$halfGutter;
     border: none;
     background-color: transparent; 
-    color: v.$secondary-color; 
-    font-size: 16px;
+    color: white; 
+    font-size: 1rem;
   }
   
-  .search-icon {
-    width: 16px;
-    height: 16px;
-    margin-right: 8px; /* space between the text and icon */
-    cursor: pointer;
+  &-search-icon {
+    width: 1rem;
+    height: 1rem;
+    margin-right: v.$halfGutter;
   }
 
   .header-buttons {
     display: flex;
+    flex-wrap: wrap;
     gap: v.$halfGutter;
-    margin-left: auto; /* Move all buttons to the right */
   }
 
   .header-button {
@@ -60,7 +52,7 @@
     border-radius: 0.5rem;
     color: v.$secondary-color;
     background-color: color.scale(v.$primary-color, $lightness: 5%);
-    font-size: 1.2rem;
+    font-size: 1rem;
   }
 
   .header-button:hover {
@@ -68,9 +60,18 @@
     background-color: v.$secondary-color;
   }
 
-  @media (min-width: v.$small) {
+  @media (min-width: v.$medium) {
     &-logo {
       height: 6rem;
+    }
+
+    &-search-bar {
+      width: 50%;
+    }
+
+    .header-buttons {
+      order: 1;
+      font-size: 1.2rem;
     }
   }
 }

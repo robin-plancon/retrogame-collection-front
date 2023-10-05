@@ -2,7 +2,7 @@ import { createAction, createAsyncThunk, createReducer } from '@reduxjs/toolkit'
 
 import { axiosInstance } from '../../utils/axios';
 //import { history } from '../../utils/history';
-import { loadState, saveState } from '../../utils/localStorage';
+import { loadState, saveState } from '../../utils/sessionStorage';
 
 interface userState {
 	isLoading: boolean;

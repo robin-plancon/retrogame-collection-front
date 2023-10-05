@@ -38,7 +38,7 @@
   }
 
   @media (min-width: v.$medium) {
-    width: 25%;
+		flex: 0 0 20rem;
     height: 100%;
     
 		&--icon {

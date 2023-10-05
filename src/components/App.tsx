@@ -1,13 +1,16 @@
 import './App.scss';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 
-import { useAppSelector } from '../hooks/redux';
+import { useAppDispatch, useAppSelector } from '../hooks/redux';
 import store from '../store';
+import { getCollection } from '../store/reducers/collection';
+import { getGames } from '../store/reducers/game';
 import { history } from '../utils/history';
-import { saveState } from '../utils/localStorage';
+import { saveState } from '../utils/sessionStorage';
 import About from './About/About';
+import Collection from './Collection/Collection';
 import GameDetails from './GameDetails/GameDetails';
 import Home from './Home/Home';
 import Footer from './shared/Footer/Footer';
@@ -17,14 +20,38 @@ import Signup from './Signup/Signup';
 import UserProfile from './UserProfile/UserProfile';
 
 function App() {
+	// To save the state in the sessionStorage
 	store.subscribe(() => {
 		saveState(store.getState().auth.user, store.getState().auth.token || '');
 	});
 
+	// To use history outside of a component
 	history.navigate = useNavigate();
 	history.location = useLocation();
 
-	const authUser = useAppSelector((state) => state.auth.user);
+	// To avoid rerender when loading page
+	const [isFirst, setIsFirst] = React.useState(true);
+
+	// To get the user and token from the store
+	const { user, token } = useAppSelector((state) => state.auth);
+
+	// To dispatch actions
+	const dispatch = useAppDispatch();
+
+	useEffect(() => {
+		if (isFirst) {
+			setIsFirst(false);
+			return;
+		}
+		dispatch(getGames());
+	}, [isFirst]);
+
+	useEffect(() => {
+		if (user && token && !isFirst) {
+			console.log('getCollection');
+			dispatch(getCollection());
+		}
+	}, [user, token, isFirst]);
 
 	return (
 		<div className="App">
@@ -32,10 +59,11 @@ function App() {
 			<div className="content">
 				<Routes>
 					<Route path="/" element={<Home />} />
-					<Route path="/game/:id" element={<GameDetails />} />
+					<Route path="/game/:slug" element={<GameDetails />} />
 					<Route path="/about" element={<About />} />
-					{!authUser && <Route path="/signup" element={<Signup />} />}
-					{!authUser && <Route path="/signin" element={<Signin />} />}
+					{(!user || !token) && <Route path="/signup" element={<Signup />} />}
+					{(!user || !token) && <Route path="/signin" element={<Signin />} />}
+					{user && token && <Route path="/collection" element={<Collection />} />}
 					<Route path="/user/profile" element={<UserProfile />} />
 					<Route path="*" element={<div>404</div>} />
 				</Routes>
