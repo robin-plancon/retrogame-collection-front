@@ -79,6 +79,11 @@ function Header() {
 					</NavLink>
 				)}
 				{user && (
+					<NavLink to="/collection" className="header-button">
+						Ma collection
+					</NavLink>
+				)}
+				{user && (
 					<button className="header-button" onClick={handleSignout}>
 						Déconnexion
 					</button>

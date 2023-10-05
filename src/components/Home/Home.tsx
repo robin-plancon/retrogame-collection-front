@@ -33,7 +33,7 @@ function Home() {
 		} else {
 			setDisplayedGames(games);
 		}
-		setVisibleGames(4);
+		// setVisibleGames(4);
 	}, [searchGames]); // Add games to the dependency array to avoid a warning
 
 	const handleShowMore = () => {

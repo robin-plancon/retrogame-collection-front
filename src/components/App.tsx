@@ -46,10 +46,11 @@ function App() {
 	}, [isFirst]);
 
 	useEffect(() => {
-		if (user && token) {
+		if (user && token && !isFirst) {
+			console.log('getCollection');
 			dispatch(getCollection());
 		}
-	}, [user, token]);
+	}, [user, token, isFirst]);
 
 	return (
 		<div className="App">
