@@ -14,6 +14,7 @@ import Footer from './shared/Footer/Footer';
 import Header from './shared/Header/Header';
 import Signin from './Signin/Signin';
 import Signup from './Signup/Signup';
+import UserProfile from './UserProfile/UserProfile';
 
 function App() {
 	store.subscribe(() => {
@@ -35,6 +36,7 @@ function App() {
 					<Route path="/about" element={<About />} />
 					{!authUser && <Route path="/signup" element={<Signup />} />}
 					{!authUser && <Route path="/signin" element={<Signin />} />}
+					<Route path="/user/profile" element={<UserProfile />} />
 					<Route path="*" element={<div>404</div>} />
 				</Routes>
 			</div>

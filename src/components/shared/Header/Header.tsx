@@ -29,22 +29,26 @@ function Header() {
 		dispatch(signout());
 	};
 
+	const isHomePage = location.pathname === '/';
+
 	return (
 		<div className="header">
 			<NavLink to="/" aria-label="Home">
 				<img className="header-logo" src={Logo} alt="Logo" />
 			</NavLink>
-			<div className="search-bar">
-				<input
-					type="text"
-					className="search-input"
-					placeholder="Rechercher..."
-					value={searchTerm}
-					onChange={(e) => setSearchTerm(e.target.value)}
-					onKeyPress={handleKeyPress}
-				/>
-				<img className="search-icon" src={searchIcon} alt="SearchIcon" />
-			</div>
+			{isHomePage && (
+				<div className="search-bar">
+					<input
+						type="text"
+						className="search-input"
+						placeholder="Rechercher..."
+						value={searchTerm}
+						onChange={(e) => setSearchTerm(e.target.value)}
+						onKeyPress={handleKeyPress}
+					/>
+					<img className="search-icon" src={searchIcon} alt="SearchIcon" />
+				</div>
+			)}
 			<div className="header-buttons">
 				{!user && (
 					<NavLink to="/signup" className="header-button">
