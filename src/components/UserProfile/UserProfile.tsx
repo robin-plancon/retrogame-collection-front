@@ -1,13 +1,24 @@
 import './UserProfile.scss';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import closeIcon from '../../assets/icons/close.svg';
+import { detail as fetchUserDetails } from '../../store/reducers/user';
+// import { history } from '../../utils/history';
 
 const UserProfile = () => {
 	const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
 	const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
+	const dispatch = useDispatch();
+	const userDetails = useSelector((state) => state.user);
+
+	useEffect(() => {
+		// Loading the user informations when landing on the user profile
+		dispatch(fetchUserDetails());
+	}, [dispatch]);
 
 	const openPasswordModal = () => {
 		setIsPasswordModalOpen(true);
@@ -31,11 +42,11 @@ const UserProfile = () => {
 				<h1 className="user-profile--title">Mes informations personnelles</h1>
 				<div className="user-profile--info">
 					<p className="user-profile--label">Pseudo</p>
-					<p className="user-profile--value">bernadette</p>
+					<p className="user-profile--value">{userDetails.user?.nickname}</p>
 				</div>
 				<div className="user-profile--info">
 					<p className="user-profile--label">Email</p>
-					<p className="user-profile--value">bernadette@mail.com</p>
+					<p className="user-profile--value">{userDetails.user?.email}</p>
 				</div>
 				<button className="user-profile--button" onClick={openPasswordModal}>
 					Changer le mot de passe
