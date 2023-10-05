@@ -7,8 +7,12 @@ import searchIcon from '../../../assets/icons/search.svg';
 import Logo from '../../../assets/logo.png';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { signout } from '../../../store/reducers/auth';
-import { resetCollection } from '../../../store/reducers/collection';
-import { resetSearch, searchGamesByName } from '../../../store/reducers/game';
+import {
+	resetCollection,
+	resetCollectionSearch,
+	searchCollection,
+} from '../../../store/reducers/collection';
+import { resetGamesSearch, searchGamesByName } from '../../../store/reducers/game';
 import { history } from '../../../utils/history';
 
 function Header() {
@@ -17,32 +21,51 @@ function Header() {
 	const dispatch = useAppDispatch();
 
 	const handleSearch = () => {
-		if (history.location.pathname === '/') {
+		// If the user is on the home page and the search bar is not empty
+		if (history.location.pathname === '/' && searchTerm.trim() !== '') {
+			// Search games by name in the API
 			dispatch(searchGamesByName(searchTerm));
 		}
-		if (history.location.pathname === '/collection') {
-			dispatch(searchGamesByName(searchTerm));
+		// If the user is on the collection page and the search bar is not empty
+		if (history.location.pathname === '/collection' && searchTerm.trim() !== '') {
+			// Search games by name in user's collection
+			dispatch(searchCollection(searchTerm));
+		}
+		if (searchTerm.trim() === '') {
+			// Reset the search state
+			dispatch(resetGamesSearch());
+			dispatch(resetCollectionSearch());
 		}
 	};
 
 	const handleKeyPress = (e: KeyboardEvent) => {
+		// If the user presses the Enter key
 		if (e.key === 'Enter') {
+			// Call the handleSearch function
 			handleSearch();
 		}
 	};
 
+	// To sign out the user
 	const handleSignout = () => {
+		// Reset the collection state
 		dispatch(resetCollection());
+		// Sign out the user
 		dispatch(signout());
 	};
 
+	// Click on the logo reset the search state and redirect to the home page
 	const handleClick = () => {
+		// If the user is on the home page
 		if (history.location.pathname === '/') {
-			dispatch(resetSearch());
+			// Reset the search state
+			dispatch(resetGamesSearch());
 			setSearchTerm('');
 		}
+		// If the user is on the collection page
 		if (history.location.pathname === '/collection') {
-			dispatch(resetSearch());
+			// Reset the search state
+			dispatch(resetCollectionSearch());
 			setSearchTerm('');
 		}
 	};

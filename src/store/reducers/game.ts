@@ -58,7 +58,7 @@ export const searchGamesByName = createAsyncThunk(
 	},
 );
 
-export const resetSearch = createAction('game/resetSearch');
+export const resetGamesSearch = createAction('game/resetSearch');
 
 const gameReducer = createReducer(initialState, (builder) => {
 	builder
@@ -121,7 +121,7 @@ const gameReducer = createReducer(initialState, (builder) => {
 			state.isLoading = false;
 			state.status = 'error';
 		})
-		.addCase(resetSearch, (state) => {
+		.addCase(resetGamesSearch, (state) => {
 			state.searchGames = null;
 		});
 });
