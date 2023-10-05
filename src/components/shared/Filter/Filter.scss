@@ -29,12 +29,39 @@
 	}
 
 	&--title {
+		text-align: center;
 		color: #fbe377;
+		margin: v.$halfGutter 0;
 		font-weight: bold;
+		font-size: 1.2rem;
+	}
+
+	// &--submenu {
+
+	// }
+
+	&--subtitle {
+		text-align: center;
+		color: v.$secondary-color;
+		font-size: 1rem;
+		font-weight: bold;
+		margin: v.$halfGutter 0;
+	}
+
+	&--values {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: flex-start;
 	}
 
   &--value {
+		background-color: v.$primary-color;
+		border: 1px solid v.$tertiary-color;
+		border-radius: .2rem;
+		text-align: left;
     color: #e2e2e4;
+		margin: .5rem;
+		padding: .5rem;
   }
 
   @media (min-width: v.$medium) {

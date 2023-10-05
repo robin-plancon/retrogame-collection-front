@@ -12,6 +12,8 @@ type FormProps = {
 	password?: string;
 };
 
+// TODO: Not redirecting to the home page if error
+
 function Signin() {
 	// dispatch is a function that allows us to send an action to the store
 	const dispacth = useAppDispatch();

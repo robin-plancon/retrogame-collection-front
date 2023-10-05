@@ -2,6 +2,7 @@ import './Filter.scss';
 
 import React, { useEffect, useState } from 'react';
 
+import platforms from '../../../../data/platforms.json';
 import filterIcon from '../../../assets/icons/filter.svg';
 
 function Filter() {
@@ -50,10 +51,23 @@ function Filter() {
 			{(isFilterOpen || currentWidth >= mediumBreakpoint) && (
 				<div className="filter-menu--section">
 					<h3 className="filter-menu--title">Consoles</h3>
-					<p className="filter-menu--value italic">Choix multiples</p>
+					{platforms.map((platforms) => (
+						<div className="filter-menu--submenu" key={platforms.platform_family}>
+							<h4 className="filter-menu--subtitle">{platforms.platform_family}</h4>
+							<div className="filter-menu--values">
+								{platforms.platforms
+									.sort((a, b) => (a.name > b.name ? 1 : -1))
+									.map((platform) => (
+										<button className="filter-menu--value" key={platform.id}>
+											{platform.name}
+										</button>
+									))}
+							</div>
+						</div>
+					))}
 				</div>
 			)}
-			{(isFilterOpen || currentWidth >= mediumBreakpoint) && (
+			{/* {(isFilterOpen || currentWidth >= mediumBreakpoint) && (
 				<div className="filter-menu--section">
 					<h3 className="filter-menu--title">Genres</h3>
 					<p className="filter-menu--value italic">Choix multiples</p>
@@ -64,7 +78,7 @@ function Filter() {
 					<h3 className="filter-menu--title">Date de sortie</h3>
 					<p className="filter-menu--value italic">Champs nombre</p>
 				</div>
-			)}
+			)} */}
 		</div>
 	);
 }
