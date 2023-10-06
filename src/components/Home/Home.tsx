@@ -29,7 +29,6 @@ function Home() {
 
 	useEffect(() => {
 		if (searchGames) {
-			console.log(searchGames);
 			setDisplayedGames(searchGames);
 		} else {
 			setDisplayedGames(games);

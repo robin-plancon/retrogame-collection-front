@@ -163,12 +163,15 @@ const collectionReducer = createReducer(initialState, (builder) => {
 			state.status = 'error';
 		})
 		.addCase(searchCollection, (state) => {
-			let searchResults: Array<Game> = [];
-			if (state.searchOptions?.searchTerm) {
+			let searchResults: Array<Game> = state.games;
+			if (state.games.length === 0 || !state.searchOptions) {
+				return;
+			}
+			if (state.searchOptions.searchTerm && state.searchOptions.searchTerm.length > 0) {
 				searchResults = state.games.filter((game) => {
 					return game.name
 						.toLowerCase()
-						.includes((state.searchOptions?.searchTerm || '').toLowerCase());
+						.includes(state.searchOptions!.searchTerm!.toLowerCase());
 				});
 			}
 			if (state.searchOptions?.platform) {
@@ -178,7 +181,6 @@ const collectionReducer = createReducer(initialState, (builder) => {
 					);
 				});
 			}
-			console.log(searchResults);
 			state.searchResults = searchResults;
 		})
 		.addCase(addSearchCollectionOptions, (state, action) => {
