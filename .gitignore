@@ -5,3 +5,7 @@ dist
 dist-ssr
 *.local
 node_modules/*
+hosting*
+.firebase
+.firebaserc
+firebase.json
