@@ -47,7 +47,6 @@ function App() {
 
 	useEffect(() => {
 		if (user && token && !isFirst) {
-			console.log('getCollection');
 			dispatch(getCollection());
 		}
 	}, [user, token, isFirst]);

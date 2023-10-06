@@ -57,6 +57,19 @@ export const signin = createAsyncThunk('auth/signin', async (formData: FormProps
 	}
 });
 
+export const resetPassword = createAsyncThunk(
+	'auth/resetPassword',
+	async (formData: { email: string }) => {
+		try {
+			const { data } = await axiosInstance.post('/reset-mail', formData);
+			return data;
+		} catch (err) {
+			console.log(err);
+			throw err;
+		}
+	},
+);
+
 // resetStatus action will reset the status and the message
 export const resetStatus = createAction('auth/reset_status');
 // signout action will remove the user and the token from the localStorage
@@ -111,6 +124,29 @@ const authReducer = createReducer(initialState, (builder) => {
 			history.navigate(from?.pathname || '/');
 		})
 		.addCase(signin.rejected, (state) => {
+			// if the action is rejected we set the isLoading to false
+			state.isLoading = false;
+			state.status = 'error';
+		})
+		.addCase(resetPassword.pending, (state) => {
+			// if the action is pending we set the isLoading to true
+			state.isLoading = true;
+		})
+		.addCase(resetPassword.fulfilled, (state, action) => {
+			console.log(action.payload);
+			// if message is not null we set the status to error and we set the message
+			if (action.payload.status === 'Error') {
+				state.isLoading = false;
+				state.status = 'error';
+				state.message = action.payload.message;
+				return;
+			}
+			// if the action is fulfilled we set the isLoading to false
+			state.message = 'Email envoyé avec succès.';
+			state.isLoading = false;
+			state.status = 'ok';
+		})
+		.addCase(resetPassword.rejected, (state) => {
 			// if the action is rejected we set the isLoading to false
 			state.isLoading = false;
 			state.status = 'error';

@@ -74,7 +74,6 @@ export const searchGames = createAsyncThunk<
 			searchOptions.searchTerm.length > 0 &&
 			searchOptions.platform
 		) {
-			console.log('searchTerm and platform');
 			const response = await axiosInstance.get('/search', {
 				params: {
 					game: searchOptions.searchTerm,
@@ -85,7 +84,6 @@ export const searchGames = createAsyncThunk<
 			return data;
 		}
 		if (searchOptions.searchTerm && searchOptions.searchTerm.length > 0) {
-			console.log('searchTerm');
 			const response = await axiosInstance.get('/search', {
 				params: {
 					game: searchOptions.searchTerm,
@@ -95,7 +93,6 @@ export const searchGames = createAsyncThunk<
 			return data;
 		}
 		if (searchOptions.platform) {
-			console.log('platform');
 			const response = await axiosInstance.get(
 				`/platform/${searchOptions.platform}/games`,
 			);
@@ -158,7 +155,6 @@ const gameReducer = createReducer(initialState, (builder) => {
 			state.isLoading = true;
 		})
 		.addCase(searchGames.fulfilled, (state, action) => {
-			console.log(action.payload);
 			if (action.payload.status === 'Error') {
 				state.isLoading = false;
 				state.status = 'error';
@@ -179,7 +175,6 @@ const gameReducer = createReducer(initialState, (builder) => {
 		})
 		.addCase(addSearchOptions, (state, action) => {
 			state.searchOptions = { ...state.searchOptions, ...action.payload };
-			console.log(state.searchOptions);
 		});
 });
 
