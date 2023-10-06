@@ -24,7 +24,7 @@ function Collection() {
 		return platforms.map((platform_family) =>
 			platform_family.platforms.map((platform) => {
 				if (platform.id === platformId) {
-					return <>{platform.name}</>;
+					return platform.name;
 				}
 				return null;
 			}),
