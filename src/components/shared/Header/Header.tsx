@@ -8,11 +8,16 @@ import Logo from '../../../assets/logo.png';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { signout } from '../../../store/reducers/auth';
 import {
+	addSearchCollectionOptions,
 	resetCollection,
 	resetCollectionSearch,
 	searchCollection,
 } from '../../../store/reducers/collection';
-import { resetGamesSearch, searchGamesByName } from '../../../store/reducers/game';
+import {
+	addSearchOptions,
+	resetGamesSearch,
+	searchGames,
+} from '../../../store/reducers/game';
 import { history } from '../../../utils/history';
 
 function Header() {
@@ -22,19 +27,16 @@ function Header() {
 
 	const handleSearch = () => {
 		// If the user is on the home page and the search bar is not empty
-		if (history.location.pathname === '/' && searchTerm.trim() !== '') {
+		if (history.location.pathname === '/') {
 			// Search games by name in the API
-			dispatch(searchGamesByName(searchTerm));
+			dispatch(addSearchOptions({ searchTerm: searchTerm }));
+			dispatch(searchGames());
 		}
 		// If the user is on the collection page and the search bar is not empty
-		if (history.location.pathname === '/collection' && searchTerm.trim() !== '') {
+		if (history.location.pathname === '/collection') {
 			// Search games by name in user's collection
-			dispatch(searchCollection(searchTerm));
-		}
-		if (searchTerm.trim() === '') {
-			// Reset the search state
-			dispatch(resetGamesSearch());
-			dispatch(resetCollectionSearch());
+			dispatch(addSearchCollectionOptions({ searchTerm: searchTerm }));
+			dispatch(searchCollection());
 		}
 	};
 
@@ -70,6 +72,10 @@ function Header() {
 		}
 	};
 
+	const handleCollectionClick = () => {
+		dispatch(resetCollectionSearch());
+	};
+
 	return (
 		<div className="header">
 			<NavLink to="/" aria-label="Home" onClick={handleClick}>
@@ -91,7 +97,11 @@ function Header() {
 					</NavLink>
 				)}
 				{user && (
-					<NavLink to="/collection" className="header-button">
+					<NavLink
+						to="/collection"
+						className="header-button"
+						onClick={handleCollectionClick}
+					>
 						Ma collection
 					</NavLink>
 				)}
