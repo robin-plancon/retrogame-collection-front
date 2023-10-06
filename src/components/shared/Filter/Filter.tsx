@@ -4,8 +4,12 @@ import React, { useEffect, useState } from 'react';
 
 import platforms from '../../../../data/platforms.json';
 import filterIcon from '../../../assets/icons/filter.svg';
+import { useAppDispatch } from '../../../hooks/redux';
+import { addSearchOptions, searchGames } from '../../../store/reducers/game';
 
 function Filter() {
+	const dispatch = useAppDispatch();
+
 	const [isFilterOpen, setIsFilterOpen] = useState(false);
 
 	const mediumBreakpoint = 1000;
@@ -14,6 +18,15 @@ function Filter() {
 		setIsFilterOpen(!isFilterOpen);
 	};
 
+	const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+		console.log('click');
+		dispatch(
+			addSearchOptions({ platform: parseInt((e.target as HTMLButtonElement).value) }),
+		);
+		dispatch(searchGames());
+	};
+
+	// * Change filter on resizing part
 	// Get the current width of the window to display the clickable filter button only on mobile
 	const getCurrentDimensions = () => {
 		return {
@@ -33,6 +46,7 @@ function Filter() {
 		window.addEventListener('resize', updateDimensions);
 		return () => window.removeEventListener('resize', updateDimensions);
 	}, [currentWidth]);
+	// * End of change filter on resizing part
 
 	return (
 		<div className="filter-menu">
@@ -58,7 +72,12 @@ function Filter() {
 								{platforms.platforms
 									.sort((a, b) => (a.name > b.name ? 1 : -1))
 									.map((platform) => (
-										<button className="filter-menu--value" key={platform.id}>
+										<button
+											className="filter-menu--value"
+											key={platform.id}
+											onClick={handleClick}
+											value={platform.id}
+										>
 											{platform.name}
 										</button>
 									))}

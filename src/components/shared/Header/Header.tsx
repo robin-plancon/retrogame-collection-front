@@ -12,7 +12,12 @@ import {
 	resetCollectionSearch,
 	searchCollection,
 } from '../../../store/reducers/collection';
-import { resetGamesSearch, searchGamesByName } from '../../../store/reducers/game';
+import {
+	addSearchOptions,
+	resetGamesSearch,
+	resetSearchOptions,
+	searchGames,
+} from '../../../store/reducers/game';
 import { history } from '../../../utils/history';
 
 function Header() {
@@ -22,19 +27,15 @@ function Header() {
 
 	const handleSearch = () => {
 		// If the user is on the home page and the search bar is not empty
-		if (history.location.pathname === '/' && searchTerm.trim() !== '') {
+		if (history.location.pathname === '/') {
 			// Search games by name in the API
-			dispatch(searchGamesByName(searchTerm));
+			dispatch(addSearchOptions({ searchTerm: searchTerm }));
+			dispatch(searchGames());
 		}
 		// If the user is on the collection page and the search bar is not empty
-		if (history.location.pathname === '/collection' && searchTerm.trim() !== '') {
+		if (history.location.pathname === '/collection') {
 			// Search games by name in user's collection
 			dispatch(searchCollection(searchTerm));
-		}
-		if (searchTerm.trim() === '') {
-			// Reset the search state
-			dispatch(resetGamesSearch());
-			dispatch(resetCollectionSearch());
 		}
 	};
 
@@ -60,12 +61,14 @@ function Header() {
 		if (history.location.pathname === '/') {
 			// Reset the search state
 			dispatch(resetGamesSearch());
+			dispatch(resetSearchOptions());
 			setSearchTerm('');
 		}
 		// If the user is on the collection page
 		if (history.location.pathname === '/collection') {
 			// Reset the search state
 			dispatch(resetCollectionSearch());
+			dispatch(resetSearchOptions());
 			setSearchTerm('');
 		}
 	};
