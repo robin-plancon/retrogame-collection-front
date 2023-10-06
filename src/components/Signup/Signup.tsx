@@ -39,7 +39,11 @@ function Signup() {
 		handleSubmit,
 		watch,
 		formState: { errors },
-	} = useForm();
+	} = useForm({
+		mode: 'onSubmit',
+		shouldUseNativeValidation: false,
+		reValidateMode: 'onSubmit',
+	});
 
 	// watch to get the value of the password field to compare it with the confirmation field
 	const watchPassword: string = watch('password');
@@ -72,7 +76,7 @@ function Signup() {
 		<div className="signup">
 			<h1 className="signup-title">Inscription</h1>
 			{isLoading && <p>Chargement...</p>}
-			{status === 'error' && <p>{message}</p>}
+			{status === 'error' && <p className="signin-error">{message}</p>}
 			<form className="signup-form" onSubmit={handleSubmit(onSubmit)}>
 				<label htmlFor="nickname" className="signup-label">
 					Pseudo
@@ -99,13 +103,13 @@ function Signup() {
 					})}
 				/>
 				{errors.nickname && (
-					<span className="signup-error">{errors.nickname.message as string}</span>
+					<p className="signup-error">{errors.nickname.message as string}</p>
 				)}
 				<label htmlFor="email" className="signup-label">
 					Email
 				</label>
 				<input
-					type="email"
+					type="text"
 					id="email"
 					className="signup-input"
 					{...register('email', {
@@ -116,9 +120,7 @@ function Signup() {
 						},
 					})}
 				/>
-				{errors.email && (
-					<span className="signup-error">{errors.email.message as string}</span>
-				)}
+				{errors.email && <p className="signup-error">{errors.email.message as string}</p>}
 				<label htmlFor="password" className="signup-label">
 					Mot de passe
 				</label>
@@ -144,7 +146,7 @@ function Signup() {
 					})}
 				/>
 				{errors.password && (
-					<span className="signup-error">{errors.password.message as string}</span>
+					<p className="signup-error">{errors.password.message as string}</p>
 				)}
 				<label htmlFor="confirmation" className="signup-label">
 					Confirmer le mot de passe
@@ -161,7 +163,7 @@ function Signup() {
 					})}
 				/>
 				{errors.confirmation && (
-					<span className="signup-error">{errors.confirmation.message as string}</span>
+					<p className="signup-error">{errors.confirmation.message as string}</p>
 				)}
 				<button type="submit" className="signup-button">
 					Créer un compte
