@@ -74,6 +74,7 @@ function Header() {
 
 	const handleCollectionClick = () => {
 		dispatch(resetCollectionSearch());
+		setSearchTerm('');
 	};
 
 	return (
