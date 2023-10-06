@@ -44,6 +44,17 @@ function Home() {
 		}
 	};
 
+	const platformName = (platformId: number) => {
+		return platforms.map((platform_family) =>
+			platform_family.platforms.map((platform) => {
+				if (platform.id === platformId) {
+					return <>{platform.name}</>;
+				}
+				return null;
+			}),
+		);
+	};
+
 	return (
 		<>
 			<div className="home">
@@ -67,28 +78,13 @@ function Home() {
 						searchOptions.searchTerm.length > 0 && (
 							<h2 className="game-container--title">
 								Résultats pour {searchOptions.searchTerm} sur{' '}
-								{platforms.map((platform_family) =>
-									platform_family.platforms.map((platform) => {
-										if (platform.id === searchOptions.platform) {
-											return <>{platform.name}</>;
-										}
-										return null;
-									}),
-								)}
+								{platformName(searchOptions.platform)}
 							</h2>
 						)}
 					{searchOptions?.platform &&
 						(!searchOptions?.searchTerm || searchOptions.searchTerm === '') && (
 							<h2 className="game-container--title">
-								Jeux sur{' '}
-								{platforms.map((platform_family) =>
-									platform_family.platforms.map((platform) => {
-										if (platform.id === searchOptions.platform) {
-											return <>{platform.name}</>;
-										}
-										return null;
-									}),
-								)}
+								Jeux sur {platformName(searchOptions.platform)}
 							</h2>
 						)}
 					<div className="game-list">
