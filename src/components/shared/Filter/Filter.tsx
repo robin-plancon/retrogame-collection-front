@@ -5,7 +5,12 @@ import React, { useEffect, useState } from 'react';
 import platforms from '../../../../data/platforms.json';
 import filterIcon from '../../../assets/icons/filter.svg';
 import { useAppDispatch } from '../../../hooks/redux';
+import {
+	addSearchCollectionOptions,
+	searchCollection,
+} from '../../../store/reducers/collection';
 import { addSearchOptions, searchGames } from '../../../store/reducers/game';
+import { history } from '../../../utils/history';
 
 function Filter() {
 	const dispatch = useAppDispatch();
@@ -19,11 +24,20 @@ function Filter() {
 	};
 
 	const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-		console.log('click');
-		dispatch(
-			addSearchOptions({ platform: parseInt((e.target as HTMLButtonElement).value) }),
-		);
-		dispatch(searchGames());
+		if (history.location.pathname === '/') {
+			dispatch(
+				addSearchOptions({ platform: parseInt((e.target as HTMLButtonElement).value) }),
+			);
+			dispatch(searchGames());
+		}
+		if (history.location.pathname === '/collection') {
+			dispatch(
+				addSearchCollectionOptions({
+					platform: parseInt((e.target as HTMLButtonElement).value),
+				}),
+			);
+			dispatch(searchCollection());
+		}
 	};
 
 	// * Change filter on resizing part

@@ -2,13 +2,14 @@ import './Home.scss';
 
 import React, { useEffect, useState } from 'react';
 
+import platforms from '../../../data/platforms.json';
 import { Game } from '../../@types/game';
 import { useAppSelector } from '../../hooks/redux';
 import GameCard from '../GameCard/GameCard';
 import Filter from '../shared/Filter/Filter';
 
 function Home() {
-	const { isLoading, games, status, searchGames } = useAppSelector(
+	const { isLoading, games, status, searchGames, searchOptions } = useAppSelector(
 		(state) => state.games,
 	);
 	const [visibleGames, setVisibleGames] = useState(4); // Number of cards to display initially
@@ -49,6 +50,48 @@ function Home() {
 			<div className="home">
 				<Filter />
 				<div className="game-container">
+					{!searchOptions?.platform &&
+						(!searchOptions?.searchTerm || searchOptions.searchTerm === '') && (
+							<h2 className="game-container--title">
+								Voici une liste de jeux aléatoires
+							</h2>
+						)}
+					{!searchOptions?.platform &&
+						searchOptions?.searchTerm &&
+						searchOptions?.searchTerm?.length > 0 && (
+							<h2 className="game-container--title">
+								Résultats pour {searchOptions.searchTerm}
+							</h2>
+						)}
+					{searchOptions?.platform &&
+						searchOptions.searchTerm &&
+						searchOptions.searchTerm.length > 0 && (
+							<h2 className="game-container--title">
+								Résultats pour {searchOptions.searchTerm} sur{' '}
+								{platforms.map((platform_family) =>
+									platform_family.platforms.map((platform) => {
+										if (platform.id === searchOptions.platform) {
+											return <>{platform.name}</>;
+										}
+										return null;
+									}),
+								)}
+							</h2>
+						)}
+					{searchOptions?.platform &&
+						(!searchOptions?.searchTerm || searchOptions.searchTerm === '') && (
+							<h2 className="game-container--title">
+								Jeux sur{' '}
+								{platforms.map((platform_family) =>
+									platform_family.platforms.map((platform) => {
+										if (platform.id === searchOptions.platform) {
+											return <>{platform.name}</>;
+										}
+										return null;
+									}),
+								)}
+							</h2>
+						)}
 					<div className="game-list">
 						{isLoading && <p>Chargement...</p>}
 						{!isLoading && status === 'error' && (

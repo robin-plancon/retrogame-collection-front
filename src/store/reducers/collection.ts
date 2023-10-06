@@ -8,8 +8,16 @@ interface CollectionState {
 	isLoading: boolean;
 	games: Array<Game>;
 	searchResults?: Array<Game> | null;
+	searchOptions?: SearchOptions;
 	status?: 'ok' | 'error';
 	message?: string;
+}
+
+interface SearchOptions {
+	pageSize?: number;
+	page?: number;
+	searchTerm?: string;
+	platform?: number;
 }
 
 const initialState: CollectionState = {
@@ -91,14 +99,10 @@ export const removeGameFromCollection = createAsyncThunk(
 	},
 );
 
-export const searchCollection = createAction(
-	'collection/searchCollection',
-	(query: string) => {
-		return {
-			payload: query,
-		};
-	},
+export const addSearchCollectionOptions = createAction<SearchOptions>(
+	'collection/addSearchOptions',
 );
+export const searchCollection = createAction('collection/searchCollection');
 export const resetCollectionSearch = createAction('collection/resetSearch');
 export const resetCollection = createAction('collection/resetCollection');
 
@@ -158,12 +162,30 @@ const collectionReducer = createReducer(initialState, (builder) => {
 			state.isLoading = false;
 			state.status = 'error';
 		})
-		.addCase(searchCollection, (state, action) => {
-			state.searchResults = state.games.filter((game) => {
-				return game.name.toLowerCase().includes(action.payload.toLowerCase());
-			});
+		.addCase(searchCollection, (state) => {
+			let searchResults: Array<Game> = [];
+			if (state.searchOptions?.searchTerm) {
+				searchResults = state.games.filter((game) => {
+					return game.name
+						.toLowerCase()
+						.includes((state.searchOptions?.searchTerm || '').toLowerCase());
+				});
+			}
+			if (state.searchOptions?.platform) {
+				searchResults = searchResults.filter((game) => {
+					return game.platforms.some(
+						(platform) => platform.id === state.searchOptions?.platform,
+					);
+				});
+			}
+			console.log(searchResults);
+			state.searchResults = searchResults;
+		})
+		.addCase(addSearchCollectionOptions, (state, action) => {
+			state.searchOptions = { ...state.searchOptions, ...action.payload };
 		})
 		.addCase(resetCollectionSearch, (state) => {
+			delete state.searchOptions;
 			state.searchResults = null;
 		})
 		.addCase(resetCollection, (state) => {

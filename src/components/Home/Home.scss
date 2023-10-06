@@ -22,6 +22,14 @@
 	justify-content: center;
 	width: 100%;
 	margin-bottom: v.$gutter;
+
+	&--title {
+		color: #fbe377;
+		font-weight: bold;
+		font-family: BebbasNeue;
+		font-size: 2rem;
+		margin-bottom: v.$gutter;
+	}
 }
 
 .game-list {

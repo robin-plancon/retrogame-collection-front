@@ -109,13 +109,7 @@ export const searchGames = createAsyncThunk<
 	}
 });
 
-export const addSearchOptions = createAction<{
-	pageSize?: number;
-	page?: number;
-	searchTerm?: string;
-	platform?: number;
-}>('game/addSearchOptions');
-export const resetSearchOptions = createAction('game/resetSearchOptions');
+export const addSearchOptions = createAction<SearchOptions>('game/addSearchOptions');
 export const resetGamesSearch = createAction('game/resetSearch');
 
 const gameReducer = createReducer(initialState, (builder) => {
@@ -180,14 +174,12 @@ const gameReducer = createReducer(initialState, (builder) => {
 			state.status = 'error';
 		})
 		.addCase(resetGamesSearch, (state) => {
+			delete state.searchOptions;
 			state.searchGames = null;
 		})
 		.addCase(addSearchOptions, (state, action) => {
 			state.searchOptions = { ...state.searchOptions, ...action.payload };
 			console.log(state.searchOptions);
-		})
-		.addCase(resetSearchOptions, (state) => {
-			state.searchOptions = undefined;
 		});
 });
 

@@ -8,6 +8,7 @@ import Logo from '../../../assets/logo.png';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { signout } from '../../../store/reducers/auth';
 import {
+	addSearchCollectionOptions,
 	resetCollection,
 	resetCollectionSearch,
 	searchCollection,
@@ -15,7 +16,6 @@ import {
 import {
 	addSearchOptions,
 	resetGamesSearch,
-	resetSearchOptions,
 	searchGames,
 } from '../../../store/reducers/game';
 import { history } from '../../../utils/history';
@@ -35,7 +35,8 @@ function Header() {
 		// If the user is on the collection page and the search bar is not empty
 		if (history.location.pathname === '/collection') {
 			// Search games by name in user's collection
-			dispatch(searchCollection(searchTerm));
+			dispatch(addSearchCollectionOptions({ searchTerm: searchTerm }));
+			dispatch(searchCollection());
 		}
 	};
 
@@ -61,16 +62,18 @@ function Header() {
 		if (history.location.pathname === '/') {
 			// Reset the search state
 			dispatch(resetGamesSearch());
-			dispatch(resetSearchOptions());
 			setSearchTerm('');
 		}
 		// If the user is on the collection page
 		if (history.location.pathname === '/collection') {
 			// Reset the search state
 			dispatch(resetCollectionSearch());
-			dispatch(resetSearchOptions());
 			setSearchTerm('');
 		}
+	};
+
+	const handleCollectionClick = () => {
+		dispatch(resetCollectionSearch());
 	};
 
 	return (
@@ -94,7 +97,11 @@ function Header() {
 					</NavLink>
 				)}
 				{user && (
-					<NavLink to="/collection" className="header-button">
+					<NavLink
+						to="/collection"
+						className="header-button"
+						onClick={handleCollectionClick}
+					>
 						Ma collection
 					</NavLink>
 				)}
