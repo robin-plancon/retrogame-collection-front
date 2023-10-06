@@ -2,10 +2,10 @@ import './Signin.scss';
 
 import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
 
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import { resetStatus, signin } from '../../store/reducers/user';
+import { signin } from '../../store/reducers/auth';
+import { history } from '../../utils/history';
 
 type FormProps = {
 	nickname?: string;
@@ -15,19 +15,28 @@ type FormProps = {
 function Signin() {
 	// dispatch is a function that allows us to send an action to the store
 	const dispacth = useAppDispatch();
-	// navigate is a function that allows us to navigate to a specific route
-	const navigate = useNavigate();
+
+	// redirect to the home page if the user is logged in
+	const { user, token } = useAppSelector((state) => state.auth);
+	useEffect(() => {
+		if (user && token) {
+			history.navigate('/');
+		}
+	}, [user]);
 
 	// states from the store
-	const isLoading = useAppSelector((state) => state.user.isLoading);
-	const status = useAppSelector((state) => state.user.status);
-	const message = useAppSelector((state) => state.user.message);
+	const isLoading = useAppSelector((state) => state.auth.isLoading);
+	const status = useAppSelector((state) => state.auth.status);
+	const message = useAppSelector((state) => state.auth.message);
 
 	const {
 		register,
 		handleSubmit,
 		formState: { errors },
-	} = useForm();
+	} = useForm({
+		shouldUseNativeValidation: false,
+		reValidateMode: 'onSubmit',
+	});
 
 	const onSubmit: SubmitHandler<FormProps> = (data, event) => {
 		if (event) {
@@ -42,19 +51,11 @@ function Signin() {
 		dispacth(signin(sendData));
 	};
 
-	useEffect(() => {
-		if (status === 'ok') {
-			// redirect to the home page and reset the status
-			dispacth(resetStatus());
-			navigate('/');
-		}
-	}, [status, dispacth, navigate]);
-
 	return (
 		<div className="signin">
 			<h1 className="signin-title">Connexion</h1>
-			{isLoading && <p>Chargement...</p>}
-			{status === 'error' && <p>{message}</p>}
+			{isLoading && <p className="signin-error">Chargement...</p>}
+			{status === 'error' && <p className="signin-error">{message}</p>}
 			<form className="signin-form" onSubmit={handleSubmit(onSubmit)}>
 				<label htmlFor="pseudo" className="signin-label">
 					Pseudo
@@ -81,7 +82,7 @@ function Signin() {
 					})}
 				/>
 				{errors.nickname && (
-					<span className="signin-error">{errors.nickname.message as string}</span>
+					<p className="signin-error">{errors.nickname.message as string}</p>
 				)}
 				<label htmlFor="password" className="signin-label">
 					Mot de passe
@@ -108,7 +109,7 @@ function Signin() {
 					})}
 				/>
 				{errors.password && (
-					<span className="signin-error">{errors.password.message as string}</span>
+					<p className="signin-error">{errors.password.message as string}</p>
 				)}
 				<button type="submit" className="signin-button">
 					Se connecter

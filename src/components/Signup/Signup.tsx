@@ -2,10 +2,10 @@ import './Signup.scss';
 
 import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
 
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import { resetStatus, signup } from '../../store/reducers/user';
+import { resetStatus, signup } from '../../store/reducers/auth';
+import { history } from '../../utils/history';
 
 type FormProps = {
 	nickname?: string;
@@ -17,13 +17,19 @@ type FormProps = {
 function Signup() {
 	// dispatch is a function that allows us to send an action to the store
 	const dispacth = useAppDispatch();
-	// navigate is a function that allows us to navigate to a specific route
-	const navigate = useNavigate();
+
+	// redirect to the home page if the user is logged in
+	const user = useAppSelector((state) => state.auth.user);
+	useEffect(() => {
+		if (user) {
+			history.navigate('/');
+		}
+	}, [user]);
 
 	// states from the store
-	const isLoading = useAppSelector((state) => state.user.isLoading);
-	const status = useAppSelector((state) => state.user.status);
-	const message = useAppSelector((state) => state.user.message);
+	const isLoading = useAppSelector((state) => state.auth.isLoading);
+	const status = useAppSelector((state) => state.auth.status);
+	const message = useAppSelector((state) => state.auth.message);
 	// register is a function that allows us to register a field in the form
 	// handleSubmit is a function that allows us to handle the form submission
 	// watch is a function that allows us to watch the value of a field
@@ -33,7 +39,11 @@ function Signup() {
 		handleSubmit,
 		watch,
 		formState: { errors },
-	} = useForm();
+	} = useForm({
+		mode: 'onSubmit',
+		shouldUseNativeValidation: false,
+		reValidateMode: 'onSubmit',
+	});
 
 	// watch to get the value of the password field to compare it with the confirmation field
 	const watchPassword: string = watch('password');
@@ -58,15 +68,15 @@ function Signup() {
 		if (status === 'ok') {
 			// redirect to the home page and reset the status
 			dispacth(resetStatus());
-			navigate('/signin');
+			history.navigate('/signin');
 		}
-	}, [status, dispacth, navigate]);
+	}, [status, dispacth]);
 
 	return (
 		<div className="signup">
 			<h1 className="signup-title">Inscription</h1>
 			{isLoading && <p>Chargement...</p>}
-			{status === 'error' && <p>{message}</p>}
+			{status === 'error' && <p className="signin-error">{message}</p>}
 			<form className="signup-form" onSubmit={handleSubmit(onSubmit)}>
 				<label htmlFor="nickname" className="signup-label">
 					Pseudo
@@ -93,13 +103,13 @@ function Signup() {
 					})}
 				/>
 				{errors.nickname && (
-					<span className="signup-error">{errors.nickname.message as string}</span>
+					<p className="signup-error">{errors.nickname.message as string}</p>
 				)}
 				<label htmlFor="email" className="signup-label">
 					Email
 				</label>
 				<input
-					type="email"
+					type="text"
 					id="email"
 					className="signup-input"
 					{...register('email', {
@@ -110,9 +120,7 @@ function Signup() {
 						},
 					})}
 				/>
-				{errors.email && (
-					<span className="signup-error">{errors.email.message as string}</span>
-				)}
+				{errors.email && <p className="signup-error">{errors.email.message as string}</p>}
 				<label htmlFor="password" className="signup-label">
 					Mot de passe
 				</label>
@@ -138,7 +146,7 @@ function Signup() {
 					})}
 				/>
 				{errors.password && (
-					<span className="signup-error">{errors.password.message as string}</span>
+					<p className="signup-error">{errors.password.message as string}</p>
 				)}
 				<label htmlFor="confirmation" className="signup-label">
 					Confirmer le mot de passe
@@ -155,7 +163,7 @@ function Signup() {
 					})}
 				/>
 				{errors.confirmation && (
-					<span className="signup-error">{errors.confirmation.message as string}</span>
+					<p className="signup-error">{errors.confirmation.message as string}</p>
 				)}
 				<button type="submit" className="signup-button">
 					Créer un compte

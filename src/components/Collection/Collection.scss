@@ -1,0 +1,39 @@
+@use '../../styles/variables' as v;
+
+.collection {
+	flex-grow: 1;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-between;
+
+	&-container {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		width: 100%;
+		margin-bottom: v.$gutter;
+	}
+
+	&-title {
+		color: #fbe377;
+		font-weight: bold;
+		font-family: BebbasNeue;
+		font-size: 2rem;
+		margin-bottom: v.$gutter;
+	}
+
+	&-list {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: v.$halfGutter; /* Space between the cards */
+	}
+
+	@media (min-width: v.$medium) {
+		flex-direction: row;
+		align-items: flex-start;
+		justify-content: space-between;
+	}
+}

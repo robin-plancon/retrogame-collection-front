@@ -1,100 +1,89 @@
-@keyframes neon-border1 {
-    0% {
-      box-shadow: 0 0 10px #fa3294;
-    }
-    25% {
-      box-shadow: 0 0 15px #fa3294;
-    }
-    50% {
-      box-shadow: 0 0 20px #fa3294;
-    }
-    75% {
-      box-shadow: 0 0 15px #fa3294;
-    }
-    100% {
-      box-shadow: 0 0 10px #fa3294;
-    }
-  }
-  
-  @keyframes neon-border2 {
-    0% {
-      box-shadow: 0 0 10px #fa3294;
-    }
-    25% {
-      box-shadow: 0 0 15px #fa3294;
-    }
-    50% {
-      box-shadow: 0 0 20px #fa3294;
-    }
-    75% {
-      box-shadow: 0 0 15px #fa3294;
-    }
-    100% {
-      box-shadow: 0 0 10px #fa3294;
-    }
-  }
-  
-  @keyframes neon-circular {
-    0% {
-      transform: rotate(0deg) translateX(1px);
-    }
-    100% {
-      transform: rotate(360deg) translateX(1px);
-    }
-  }
+@use '../../styles/variables' as v;
 
-.game-details {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    background-color: #0a0e17;
-    border-radius: 8px;
-    border: 2px solid #fa3294;
-    padding: 1rem;
-    color: #a4a5a7;
-    max-width: 100%;
-    max-width: 480px;
-    margin: 0 auto;
-  
-  
-  animation: neon-border1 1.5s infinite alternate,
-  neon-border2 2s infinite alternate,
-  neon-border3 2.5s infinite alternate;
+@keyframes neon-border1 {
+	
 }
 
-  .game-card-details {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .game-card-details img {
-    max-width: 100%;
-  }
-  
-  .game-details-info {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 1rem;
-  }
-  
-  .label {
-    font-weight: bold;
-  }
-  
-  .game-value {
-    margin-top: 0.5rem;
-  }
+@keyframes neon-border2 {
+	0% {
+		box-shadow: 0 0 10px #fa3294;
+	}
+	25% {
+		box-shadow: 0 0 15px #fa3294;
+	}
+	50% {
+		box-shadow: 0 0 20px #fa3294;
+	}
+	75% {
+		box-shadow: 0 0 15px #fa3294;
+	}
+	100% {
+		box-shadow: 0 0 10px #fa3294;
+	}
+}
 
-  .game-description {
-    max-width: 80%;
+@keyframes neon-circular {
+	0% {
+		transform: rotate(0deg) translateX(1px);
+	}
+	100% {
+		transform: rotate(360deg) translateX(1px);
+	}
+}
+
+.game-details {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	background-color: #0a0e17;
+	border-radius: 8px;
+	border: 2px solid v.$tertiary-color;
+	padding: v.$halfGutter;
+	color: #a4a5a7;
+	width: 95%;
+	margin: 0 auto;
+
+	animation: neon-border1 1.5s infinite alternate, neon-border2 2s infinite alternate,
+		neon-border3 2.5s infinite alternate;
+
+	&--info {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: v.$halfGutter;
+		margin-top: v.$halfGutter;
+	}
+
+	&--name {
+		font-weight: bold;
+		color: #bfbdc1;
+		font-size: 1.5rem;
+	}
+
+	&--image {
+		max-width: 6rem;
+		border-radius: 8px;
+	}
+
+	&--label {
+		font-weight: bold;
+	}
+
+	&--value {
+    // padding: v.$halfGutter;
+	}
+
+	&--description {
+		max-width: 90%;
+		text-align: justify;
+	}
+
+	&--message {
+		align-self: center;
+	}
+
+  @media (min-width: v.$small) {
+    width: 50%;
   }
-  
-  h2 {
-    font-weight: bold;
-    color: #bfbdc1;
-    font-size: 24px;
-    margin-top: 0.5rem;
-  }
+}
