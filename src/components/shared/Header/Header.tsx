@@ -52,6 +52,7 @@ function Header() {
 		dispatch(resetCollection());
 		// Sign out the user
 		dispatch(signout());
+		window.location.href = '/';
 	};
 
 	// Click on the logo reset the search state and redirect to the home page
@@ -69,6 +70,11 @@ function Header() {
 			setSearchTerm('');
 		}
 	};
+
+	const shouldDisplaySearchBar =
+		history.location.pathname === '/' || history.location.pathname === '/collection';
+	const isUserProfilePage = history.location.pathname === '/user/profile';
+	const isCollectionPage = history.location.pathname === '/collection';
 
 	return (
 		<div className="header">
@@ -91,9 +97,14 @@ function Header() {
 						Connexion
 					</NavLink>
 				)}
-				{user && (
+				{user && !isCollectionPage && (
 					<NavLink to="/collection" className="header-button">
 						Ma collection
+					</NavLink>
+				)}
+				{user && !isUserProfilePage && (
+					<NavLink to="/user/profile" className="header-button">
+						Mon profil
 					</NavLink>
 				)}
 				{user && (
@@ -102,17 +113,19 @@ function Header() {
 					</button>
 				)}
 			</div>
-			<div className="header-search-bar">
-				<input
-					type="text"
-					className="header-search-input"
-					placeholder="Rechercher..."
-					value={searchTerm}
-					onChange={(e) => setSearchTerm(e.target.value)}
-					onKeyPress={handleKeyPress}
-				/>
-				<img className="header-search-icon" src={searchIcon} alt="SearchIcon" />
-			</div>
+			{shouldDisplaySearchBar && (
+				<div className="header-search-bar">
+					<input
+						type="text"
+						className="header-search-input"
+						placeholder="Rechercher..."
+						value={searchTerm}
+						onChange={(e) => setSearchTerm(e.target.value)}
+						onKeyPress={handleKeyPress}
+					/>
+					<img className="header-search-icon" src={searchIcon} alt="SearchIcon" />
+				</div>
+			)}
 		</div>
 	);
 }
