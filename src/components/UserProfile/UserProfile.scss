@@ -239,3 +239,19 @@
   font-weight: bold;
   color: #0fd7b0;
 }
+
+.window input {
+  background-color: #2a2a2c;
+  color: gray;
+  border: none;
+  padding: 10px;
+  margin: 10px 0;
+  width: 100%;
+}
+
+.error-text-password {
+  text-align: center;
+  color: gray;
+  font-size: 10px;
+  margin-top: 5px;
+}

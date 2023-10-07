@@ -10,6 +10,7 @@ interface AuthState {
 		id?: string;
 		nickname: string;
 		email: string;
+		password: string;
 	} | null;
 	token: string | null;
 	status?: 'ok' | 'error';
