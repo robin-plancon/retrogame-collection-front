@@ -17,8 +17,6 @@ const UserProfile = () => {
 	const [confirmPassword, setConfirmPassword] = useState('');
 	const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
 	const [errorText, setErrorText] = useState('');
-	const [deleteError, setDeleteError] = useState('');
-
 	const userDetails = useAppSelector((state) => state.auth);
 
 	const handlePasswordChange = () => {
@@ -46,9 +44,8 @@ const UserProfile = () => {
 					if (!error) {
 						setIsSuccessModalOpen(true);
 						dispatch(signout());
-						setTimeout(() => {
-							window.location.href = '/';
-						}, 3000);
+
+						window.location.href = '/';
 					} else {
 						console.error(message);
 					}
@@ -60,24 +57,18 @@ const UserProfile = () => {
 	const handleDelete = () => {
 		console.log('handleDelete');
 		if (userDetails.user && userDetails.token) {
-			if (currentPassword !== userDetails.user.password) {
-				setDeleteError('Mot de passe incorrect');
-			} else {
-				// Dispatch action to delete the account
-				dispatch(remove()).then((resultAction) => {
-					const { error, message } = resultAction.payload;
-					if (!error) {
-						console.log('Account deleted successfully');
-						setIsSuccessModalOpen(true);
-						dispatch(signout());
-						setTimeout(() => {
-							window.location.href = '/';
-						}, 3000);
-					} else {
-						console.error(message);
-					}
-				});
-			}
+			// Dispatch action to delete the account
+			dispatch(remove()).then((resultAction) => {
+				const { error, message } = resultAction.payload;
+				if (!error) {
+					console.log('Account deleted successfully');
+					setIsSuccessModalOpen(true);
+					dispatch(signout());
+					window.location.href = '/';
+				} else {
+					console.error(message);
+				}
+			});
 		}
 	};
 
@@ -99,8 +90,6 @@ const UserProfile = () => {
 	};
 
 	const closeDeleteModal = () => {
-		setCurrentPassword('');
-		setDeleteError('');
 		setIsDeleteModalOpen(false);
 	};
 
@@ -175,18 +164,7 @@ const UserProfile = () => {
 				{isDeleteModalOpen && (
 					<div className="window">
 						<div className="window-content">
-							<h2>Veuillez saisir votre mot de passe pour supprimer le compte</h2>
-							<input
-								type="password"
-								placeholder="Mot de passe actuel"
-								value={currentPassword}
-								onChange={(e) => setCurrentPassword(e.target.value)}
-							/>
-							{deleteError && (
-								<div className="error-text-password">
-									<p>{deleteError}</p>
-								</div>
-							)}
+							<h2>Êtes-vous sûr(e) de vouloir supprimer ce compte ?</h2>
 							<button className="window-button" onClick={handleDelete}>
 								Confirmer
 							</button>
