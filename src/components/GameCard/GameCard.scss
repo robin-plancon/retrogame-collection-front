@@ -46,6 +46,8 @@
 }
 
 .game-card {
+	display: flex;
+	flex-direction: column;
 	width: 95%;
 	background-color: #0a0e17;
 	border-radius: 8px;
@@ -63,6 +65,13 @@
 	/* Neon animation */
 	animation: neon-border1 1.5s infinite alternate, neon-border2 2s infinite alternate,
 		neon-border3 2.5s infinite alternate;
+
+	&--game {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+	}
 
 	&--image {
 		max-width: 6rem;
@@ -90,12 +99,31 @@
 		// padding: v.$halfGutter;
 	}
 
+	&--button {
+		margin: v.$halfGutter 0;
+		padding: v.$halfGutter;
+		color: v.$secondary-color;
+		background-color: v.$primary-color;
+		border: 1px solid v.$secondary-color;
+		border-radius: 0.5rem;
+		font-size: 1rem;;
+
+		&:hover {
+			color: v.$primary-color;
+			background-color: v.$secondary-color;
+		}
+	}
+
 	@media (min-width: v.$small) {
-		display: flex;
-		flex-direction: row; /* Align text and picture horizontally */
-		gap: v.$halfGutter; /* Space between the pic and the text */
-		align-items: center; /* Align the content in the center of the card */
-		justify-content: center;
+		justify-content: space-between;
+
+		&--game {
+			width: 100%;
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			text-align: center;
+		}
 
 		&--image {
 			padding: 0 v.$halfGutter;

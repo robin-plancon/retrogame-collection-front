@@ -76,6 +76,11 @@
 
 	&--description {
 		max-width: 90%;
+		text-align: justify;
+	}
+
+	&--message {
+		align-self: center;
 	}
 
   @media (min-width: v.$small) {
