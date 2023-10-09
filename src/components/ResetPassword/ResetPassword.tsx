@@ -4,8 +4,9 @@ import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useLocation } from 'react-router-dom';
 
-import { useAppDispatch } from '../../hooks/redux';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { checkResetToken, resetPasswordWithToken } from '../../store/reducers/auth';
+import { history } from '../../utils/history';
 
 type FormProps = {
 	password?: string;
@@ -17,6 +18,8 @@ function ResetPassword() {
 	const dispatch = useAppDispatch();
 	const { search } = useLocation();
 	const token = new URLSearchParams(search).get('token');
+
+	const { message, status } = useAppSelector((state) => state.auth);
 
 	const [isFirst, setIsFirst] = useState(true);
 	const [isTokenValid, setIsTokenValid] = useState(false);
@@ -42,7 +45,11 @@ function ResetPassword() {
 		};
 		console.log(sendData);
 		// dispatch signin action with data from the form
-		dispatch(resetPasswordWithToken(sendData));
+		dispatch(resetPasswordWithToken(sendData)).then((res) => {
+			if (res.payload.status === 'Success') {
+				history.navigate('/signin');
+			}
+		});
 	};
 
 	useEffect(() => {
@@ -64,6 +71,9 @@ function ResetPassword() {
 			{isTokenValid && (
 				<div className="reset">
 					<h1 className="reset-title">Réinitialisation du mot de passe</h1>
+					{status === 'error' && message != '' && (
+						<p className="reset-error">{message}</p>
+					)}
 					<form className="reset-form" onSubmit={handleSubmit(onSubmit)}>
 						<label htmlFor="password" className="reset-label">
 							Mot de passe
@@ -118,8 +128,8 @@ function ResetPassword() {
 				</div>
 			)}
 			{!isTokenValid && token && (
-				<div>
-					<h1>Invalid token</h1>
+				<div className="reset">
+					<h1 className="reset-title">Le token n&apos;est pas valide.</h1>
 				</div>
 			)}
 		</>

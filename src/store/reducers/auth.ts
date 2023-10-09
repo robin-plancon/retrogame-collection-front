@@ -189,7 +189,6 @@ const authReducer = createReducer(initialState, (builder) => {
 				state.message = action.payload.message;
 				return;
 			}
-			console.log(action.payload);
 			// if the action is fulfilled we set the isLoading to false
 			state.isLoading = false;
 			state.status = 'ok';
