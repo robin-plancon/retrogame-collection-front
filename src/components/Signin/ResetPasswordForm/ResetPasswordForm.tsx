@@ -70,7 +70,7 @@ function ResetPasswordForm({
 						required: 'Ce champ est requis',
 						pattern: {
 							value: /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/,
-							message: 'Adresse emai l invalide',
+							message: 'Adresse email invalide',
 						},
 					})}
 				/>
