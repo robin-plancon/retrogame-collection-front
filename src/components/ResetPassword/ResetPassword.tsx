@@ -1,3 +1,5 @@
+import './ResetPassword.scss';
+
 import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useLocation } from 'react-router-dom';
@@ -60,8 +62,8 @@ function ResetPassword() {
 	return (
 		<>
 			{isTokenValid && (
-				<div>
-					<h1>Reset Password</h1>
+				<div className="reset">
+					<h1 className="reset-title">Réinitialisation du mot de passe</h1>
 					<form className="reset-form" onSubmit={handleSubmit(onSubmit)}>
 						<label htmlFor="password" className="reset-label">
 							Mot de passe
@@ -90,7 +92,9 @@ function ResetPassword() {
 						{errors.password && (
 							<p className="reset-error">{errors.password.message as string}</p>
 						)}
-						<label htmlFor="confirmation">Confirmer le mot de passe</label>
+						<label htmlFor="confirmation" className="reset-label">
+							Confirmer le mot de passe
+						</label>
 						<input
 							type="password"
 							id="confirmation"
