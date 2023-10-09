@@ -1,10 +1,19 @@
 import './Filter.scss';
 
 import React, { useEffect, useState } from 'react';
-
+import platforms from '../../../../data/platforms.json';
 import filterIcon from '../../../assets/icons/filter.svg';
+import { useAppDispatch } from '../../../hooks/redux';
+import {
+	addSearchCollectionOptions,
+	searchCollection,
+} from '../../../store/reducers/collection';
+import { addSearchOptions, searchGames } from '../../../store/reducers/game';
+import { history } from '../../../utils/history';
 
 function Filter() {
+	const dispatch = useAppDispatch();
+  
 	const [isFilterOpen, setIsFilterOpen] = useState(false);
 
 	const mediumBreakpoint = 1000;
@@ -13,6 +22,24 @@ function Filter() {
 		setIsFilterOpen(!isFilterOpen);
 	};
 
+	const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+		if (history.location.pathname === '/') {
+			dispatch(
+				addSearchOptions({ platform: parseInt((e.target as HTMLButtonElement).value) }),
+			);
+			dispatch(searchGames());
+		}
+		if (history.location.pathname === '/collection') {
+			dispatch(
+				addSearchCollectionOptions({
+					platform: parseInt((e.target as HTMLButtonElement).value),
+				}),
+			);
+			dispatch(searchCollection());
+		}
+	};
+
+	// * Change filter on resizing part
 	// Get the current width of the window to display the clickable filter button only on mobile
 	const getCurrentDimensions = () => {
 		return {
@@ -32,6 +59,7 @@ function Filter() {
 		window.addEventListener('resize', updateDimensions);
 		return () => window.removeEventListener('resize', updateDimensions);
 	}, [currentWidth]);
+	// * End of change filter on resizing part
 
 	return (
 		<div className="filter-menu">
@@ -50,10 +78,28 @@ function Filter() {
 			{(isFilterOpen || currentWidth >= mediumBreakpoint) && (
 				<div className="filter-menu--section">
 					<h3 className="filter-menu--title">Consoles</h3>
-					<p className="filter-menu--value italic">Choix multiples</p>
+					{platforms.map((platforms) => (
+						<div className="filter-menu--submenu" key={platforms.platform_family}>
+							<h4 className="filter-menu--subtitle">{platforms.platform_family}</h4>
+							<div className="filter-menu--values">
+								{platforms.platforms
+									.sort((a, b) => (a.name > b.name ? 1 : -1))
+									.map((platform) => (
+										<button
+											className="filter-menu--value"
+											key={platform.id}
+											onClick={handleClick}
+											value={platform.id}
+										>
+											{platform.name}
+										</button>
+									))}
+							</div>
+						</div>
+					))}
 				</div>
 			)}
-			{(isFilterOpen || currentWidth >= mediumBreakpoint) && (
+			{/* {(isFilterOpen || currentWidth >= mediumBreakpoint) && (
 				<div className="filter-menu--section">
 					<h3 className="filter-menu--title">Genres</h3>
 					<p className="filter-menu--value italic">Choix multiples</p>
@@ -64,7 +110,7 @@ function Filter() {
 					<h3 className="filter-menu--title">Date de sortie</h3>
 					<p className="filter-menu--value italic">Champs nombre</p>
 				</div>
-			)}
+			)} */}
 		</div>
 	);
 }

@@ -8,11 +8,17 @@ import Logo from '../../../assets/logo.png';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { signout } from '../../../store/reducers/auth';
 import {
+	addSearchCollectionOptions,
 	resetCollection,
 	resetCollectionSearch,
 	searchCollection,
 } from '../../../store/reducers/collection';
 import { resetGamesSearch, searchGamesByName } from '../../../store/reducers/game';
+import {
+	addSearchOptions,
+	resetGamesSearch,
+	searchGames,
+} from '../../../store/reducers/game';
 import { history } from '../../../utils/history';
 
 function Header() {
@@ -35,6 +41,16 @@ function Header() {
 			// Reset the search state
 			dispatch(resetGamesSearch());
 			dispatch(resetCollectionSearch());
+		if (history.location.pathname === '/') {
+			// Search games by name in the API
+			dispatch(addSearchOptions({ searchTerm: searchTerm }));
+			dispatch(searchGames());
+		}
+		// If the user is on the collection page and the search bar is not empty
+		if (history.location.pathname === '/collection') {
+			// Search games by name in user's collection
+			dispatch(addSearchCollectionOptions({ searchTerm: searchTerm }));
+			dispatch(searchCollection());
 		}
 	};
 
@@ -75,7 +91,27 @@ function Header() {
 		history.location.pathname === '/' || history.location.pathname === '/collection';
 	const isUserProfilePage = history.location.pathname === '/user/profile';
 	const isCollectionPage = history.location.pathname === '/collection';
+	// Click on the logo reset the search state and redirect to the home page
+	const handleClick = () => {
+		// If the user is on the home page
+		if (history.location.pathname === '/') {
+			// Reset the search state
+			dispatch(resetGamesSearch());
+			setSearchTerm('');
+		}
+		// If the user is on the collection page
+		if (history.location.pathname === '/collection') {
+			// Reset the search state
+			dispatch(resetCollectionSearch());
+			setSearchTerm('');
+		}
+	};
 
+	const handleCollectionClick = () => {
+		dispatch(resetCollectionSearch());
+		setSearchTerm('');
+	};
+    
 	return (
 		<div className="header">
 			<NavLink to="/" aria-label="Home" onClick={handleClick}>
@@ -108,6 +144,15 @@ function Header() {
 					</NavLink>
 				)}
 				{user && (
+					<NavLink
+						to="/collection"
+						className="header-button"
+						onClick={handleCollectionClick}
+					>
+						Ma collection
+					</NavLink>
+				)}
+				{user && (
 					<button className="header-button" onClick={handleSignout}>
 						Déconnexion
 					</button>
@@ -126,6 +171,17 @@ function Header() {
 					<img className="header-search-icon" src={searchIcon} alt="SearchIcon" />
 				</div>
 			)}
+			<div className="header-search-bar">
+				<input
+					type="text"
+					className="header-search-input"
+					placeholder="Rechercher..."
+					value={searchTerm}
+					onChange={(e) => setSearchTerm(e.target.value)}
+					onKeyPress={handleKeyPress}
+				/>
+				<img className="header-search-icon" src={searchIcon} alt="SearchIcon" />
+			</div>
 		</div>
 	);
 }

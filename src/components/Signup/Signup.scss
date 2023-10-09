@@ -45,6 +45,12 @@
 		background-color: v.$input-color;
 	}
 
+	&-error {
+		margin: v.$halfGutter 0;
+		font-size: 1.2rem;
+		color: v.$tertiary-color;
+	}
+
 	&-button {
 		width: 100%;
 		margin: v.$gutter 0;

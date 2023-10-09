@@ -17,9 +17,9 @@ function Signin() {
 	const dispacth = useAppDispatch();
 
 	// redirect to the home page if the user is logged in
-	const user = useAppSelector((state) => state.auth.user);
+	const { user, token } = useAppSelector((state) => state.auth);
 	useEffect(() => {
-		if (user) {
+		if (user && token) {
 			history.navigate('/');
 		}
 	}, [user]);
@@ -33,7 +33,10 @@ function Signin() {
 		register,
 		handleSubmit,
 		formState: { errors },
-	} = useForm();
+	} = useForm({
+		shouldUseNativeValidation: false,
+		reValidateMode: 'onSubmit',
+	});
 
 	const onSubmit: SubmitHandler<FormProps> = (data, event) => {
 		if (event) {
@@ -51,8 +54,8 @@ function Signin() {
 	return (
 		<div className="signin">
 			<h1 className="signin-title">Connexion</h1>
-			{isLoading && <p>Chargement...</p>}
-			{status === 'error' && <p>{message}</p>}
+			{isLoading && <p className="signin-error">Chargement...</p>}
+			{status === 'error' && <p className="signin-error">{message}</p>}
 			<form className="signin-form" onSubmit={handleSubmit(onSubmit)}>
 				<label htmlFor="pseudo" className="signin-label">
 					Pseudo
@@ -79,7 +82,7 @@ function Signin() {
 					})}
 				/>
 				{errors.nickname && (
-					<span className="signin-error">{errors.nickname.message as string}</span>
+					<p className="signin-error">{errors.nickname.message as string}</p>
 				)}
 				<label htmlFor="password" className="signin-label">
 					Mot de passe
@@ -106,7 +109,7 @@ function Signin() {
 					})}
 				/>
 				{errors.password && (
-					<span className="signin-error">{errors.password.message as string}</span>
+					<p className="signin-error">{errors.password.message as string}</p>
 				)}
 				<button type="submit" className="signin-button">
 					Se connecter
