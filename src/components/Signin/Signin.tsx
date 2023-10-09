@@ -1,11 +1,12 @@
 import './Signin.scss';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { signin } from '../../store/reducers/auth';
 import { history } from '../../utils/history';
+import ResetPasswordForm from './ResetPasswordForm/ResetPasswordForm';
 
 type FormProps = {
 	nickname?: string;
@@ -28,6 +29,9 @@ function Signin() {
 	const isLoading = useAppSelector((state) => state.auth.isLoading);
 	const status = useAppSelector((state) => state.auth.status);
 	const message = useAppSelector((state) => state.auth.message);
+
+	// useState to display the password reset form
+	const [isPasswordReset, setIsPasswordReset] = useState(false);
 
 	const {
 		register,
@@ -115,6 +119,13 @@ function Signin() {
 					Se connecter
 				</button>
 			</form>
+			<button
+				className="reset-password-button"
+				onClick={() => setIsPasswordReset(!isPasswordReset)}
+			>
+				Mot de passe oublié ?
+			</button>
+			{isPasswordReset && <ResetPasswordForm setIsPasswordReset={setIsPasswordReset} />}
 		</div>
 	);
 }
