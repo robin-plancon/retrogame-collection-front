@@ -5,7 +5,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { useLocation } from 'react-router-dom';
 
 import { useAppDispatch } from '../../hooks/redux';
-import { checkResetToken } from '../../store/reducers/auth';
+import { checkResetToken, resetPasswordWithToken } from '../../store/reducers/auth';
 
 type FormProps = {
 	password?: string;
@@ -36,13 +36,13 @@ function ResetPassword() {
 		}
 		const { password, confirmation } = data;
 		const sendData = {
-			password: password,
-			confirmation: confirmation,
-			token: token,
+			newPassword: password as string,
+			confirmation: confirmation as string,
+			token: token as string,
 		};
 		console.log(sendData);
 		// dispatch signin action with data from the form
-		// dispacth(signin(sendData));
+		dispatch(resetPasswordWithToken(sendData));
 	};
 
 	useEffect(() => {

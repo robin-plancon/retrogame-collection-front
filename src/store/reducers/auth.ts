@@ -72,7 +72,7 @@ export const resetPasswordMail = createAsyncThunk(
 
 export const resetPasswordWithToken = createAsyncThunk(
 	'auth/resetPasswordWithToken',
-	async (formData: { token: string; password: string; confirmation: string }) => {
+	async (formData: { token: string; newPassword: string; confirmation: string }) => {
 		try {
 			const { data } = await axiosInstance.post('/reset-form', formData);
 			return data;
@@ -189,6 +189,7 @@ const authReducer = createReducer(initialState, (builder) => {
 				state.message = action.payload.message;
 				return;
 			}
+			console.log(action.payload);
 			// if the action is fulfilled we set the isLoading to false
 			state.isLoading = false;
 			state.status = 'ok';
