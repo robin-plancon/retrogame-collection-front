@@ -13,6 +13,7 @@ import {
 	resetCollectionSearch,
 	searchCollection,
 } from '../../../store/reducers/collection';
+import { resetGamesSearch, searchGamesByName } from '../../../store/reducers/game';
 import {
 	addSearchOptions,
 	resetGamesSearch,
@@ -27,6 +28,19 @@ function Header() {
 
 	const handleSearch = () => {
 		// If the user is on the home page and the search bar is not empty
+		if (history.location.pathname === '/' && searchTerm.trim() !== '') {
+			// Search games by name in the API
+			dispatch(searchGamesByName(searchTerm));
+		}
+		// If the user is on the collection page and the search bar is not empty
+		if (history.location.pathname === '/collection' && searchTerm.trim() !== '') {
+			// Search games by name in user's collection
+			dispatch(searchCollection(searchTerm));
+		}
+		if (searchTerm.trim() === '') {
+			// Reset the search state
+			dispatch(resetGamesSearch());
+			dispatch(resetCollectionSearch());
 		if (history.location.pathname === '/') {
 			// Search games by name in the API
 			dispatch(addSearchOptions({ searchTerm: searchTerm }));
@@ -54,8 +68,29 @@ function Header() {
 		dispatch(resetCollection());
 		// Sign out the user
 		dispatch(signout());
+		window.location.href = '/';
 	};
 
+	// Click on the logo reset the search state and redirect to the home page
+	const handleClick = () => {
+		// If the user is on the home page
+		if (history.location.pathname === '/') {
+			// Reset the search state
+			dispatch(resetGamesSearch());
+			setSearchTerm('');
+		}
+		// If the user is on the collection page
+		if (history.location.pathname === '/collection') {
+			// Reset the search state
+			dispatch(resetCollectionSearch());
+			setSearchTerm('');
+		}
+	};
+
+	const shouldDisplaySearchBar =
+		history.location.pathname === '/' || history.location.pathname === '/collection';
+	const isUserProfilePage = history.location.pathname === '/user/profile';
+	const isCollectionPage = history.location.pathname === '/collection';
 	// Click on the logo reset the search state and redirect to the home page
 	const handleClick = () => {
 		// If the user is on the home page
@@ -76,12 +111,13 @@ function Header() {
 		dispatch(resetCollectionSearch());
 		setSearchTerm('');
 	};
-
+    
 	return (
 		<div className="header">
 			<NavLink to="/" aria-label="Home" onClick={handleClick}>
 				<img className="header-logo" src={Logo} alt="Logo" />
 			</NavLink>
+
 			<div className="header-buttons">
 				{!user && (
 					<NavLink to="/signup" className="header-button">
@@ -95,6 +131,16 @@ function Header() {
 						className="header-button"
 					>
 						Connexion
+					</NavLink>
+				)}
+				{user && !isCollectionPage && (
+					<NavLink to="/collection" className="header-button">
+						Ma collection
+					</NavLink>
+				)}
+				{user && !isUserProfilePage && (
+					<NavLink to="/user/profile" className="header-button">
+						Mon profil
 					</NavLink>
 				)}
 				{user && (
@@ -112,6 +158,19 @@ function Header() {
 					</button>
 				)}
 			</div>
+			{shouldDisplaySearchBar && (
+				<div className="header-search-bar">
+					<input
+						type="text"
+						className="header-search-input"
+						placeholder="Rechercher..."
+						value={searchTerm}
+						onChange={(e) => setSearchTerm(e.target.value)}
+						onKeyPress={handleKeyPress}
+					/>
+					<img className="header-search-icon" src={searchIcon} alt="SearchIcon" />
+				</div>
+			)}
 			<div className="header-search-bar">
 				<input
 					type="text"

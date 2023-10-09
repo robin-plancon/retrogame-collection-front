@@ -29,6 +29,12 @@
 	}
 
 	&--title {
+		color: #fbe377;
+		font-weight: bold;
+	}
+
+  &--value {
+    color: #e2e2e4;
 		text-align: center;
 		color: #fbe377;
 		margin: v.$halfGutter 0;

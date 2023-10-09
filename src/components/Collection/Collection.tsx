@@ -2,12 +2,14 @@ import './Collection.scss';
 
 import React, { useEffect, useState } from 'react';
 
-import platforms from '../../../data/platforms.json';
 import { useAppSelector } from '../../hooks/redux';
+// import { history } from '../../utils/history';
+import platforms from '../../../data/platforms.json';
 import GameCard from '../GameCard/GameCard';
 import Filter from '../shared/Filter/Filter';
 
 function Collection() {
+
 	const { isLoading, games, status, searchResults, searchOptions } = useAppSelector(
 		(state) => state.collection,
 	);
@@ -35,6 +37,7 @@ function Collection() {
 		<div className="collection">
 			<Filter />
 			<div className="collection-container">
+				<h2 className="collection-title">Ma collection</h2>
 				{!searchOptions?.platform &&
 					(!searchOptions?.searchTerm || searchOptions.searchTerm === '') && (
 						<h2 className="collection-title">Ma collection</h2>
