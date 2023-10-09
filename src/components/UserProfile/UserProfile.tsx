@@ -42,11 +42,13 @@ const UserProfile = () => {
 					}),
 				).then((resultAction) => {
 					const { error, message } = resultAction.payload;
+					console.log(resultAction.payload);
 					if (!error) {
-						setIsSuccessModalOpen(true);
-						dispatch(signout());
-
-						window.location.href = '/';
+						setTimeout(() => {
+							setIsSuccessModalOpen(true);
+							closePasswordModal();
+							// dispatch(signout());
+						}, 1000);
 					} else {
 						console.error(message);
 					}
@@ -61,11 +63,15 @@ const UserProfile = () => {
 			// Dispatch action to delete the account
 			dispatch(remove()).then((resultAction) => {
 				const { error, message } = resultAction.payload;
+				console.log('Result Action:', resultAction);
 				if (!error) {
 					console.log('Account deleted successfully');
-					setIsSuccessModalOpen(true);
-					dispatch(signout());
-					window.location.href = '/';
+					setIsDeleteModalOpen(true);
+					console.log('isSuccessModalOpen set to true');
+					setTimeout(() => {
+						dispatch(signout());
+						window.location.href = '/';
+					}, 2000);
 				} else {
 					console.error(message);
 				}
@@ -159,6 +165,13 @@ const UserProfile = () => {
 					<div className="modal success-modal">
 						<div className="modal-content">
 							<h2>Votre mot de passe a été modifié avec succès !</h2>
+							<button
+								onClick={() => setIsSuccessModalOpen(false)}
+								className="modal-closed"
+								aria-label="Fermer la modale"
+							>
+								<img src={closeIcon} alt="Fermer la modale" />
+							</button>
 						</div>
 					</div>
 				)}
