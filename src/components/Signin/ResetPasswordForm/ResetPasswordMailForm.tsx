@@ -1,11 +1,11 @@
-import './ResetPasswordForm.scss';
+import './ResetPasswordMailForm.scss';
 
 import React, { Dispatch, SetStateAction } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import closeIcon from '../../../assets/icons/close.svg';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
-import { resetPassword } from '../../../store/reducers/auth';
+import { resetPasswordMail } from '../../../store/reducers/auth';
 
 type FormProps = {
 	email?: string;
@@ -37,7 +37,7 @@ function ResetPasswordForm({
 		const sendData = {
 			email: email?.trim() || '', // provide a default value for email
 		};
-		dispatch(resetPassword(sendData));
+		dispatch(resetPasswordMail(sendData));
 		if (status === 'ok') {
 			setIsPasswordReset(false);
 		}

@@ -6,7 +6,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { signin } from '../../store/reducers/auth';
 import { history } from '../../utils/history';
-import ResetPasswordForm from './ResetPasswordForm/ResetPasswordForm';
+import ResetPasswordMailForm from './ResetPasswordForm/ResetPasswordMailForm';
 
 type FormProps = {
 	nickname?: string;
@@ -125,7 +125,9 @@ function Signin() {
 			>
 				Mot de passe oublié ?
 			</button>
-			{isPasswordReset && <ResetPasswordForm setIsPasswordReset={setIsPasswordReset} />}
+			{isPasswordReset && (
+				<ResetPasswordMailForm setIsPasswordReset={setIsPasswordReset} />
+			)}
 		</div>
 	);
 }
