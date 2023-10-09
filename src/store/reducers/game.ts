@@ -50,6 +50,23 @@ export const getGameBySlug = createAsyncThunk(
 	},
 );
 
+export const searchGamesByName = createAsyncThunk(
+	'game/searchGamesByName',
+	async (searchTerm: string) => {
+		try {
+			const { data } = await axiosInstance.get('/search', {
+				params: {
+					game: searchTerm,
+				},
+			});
+			return data;
+		} catch (err) {
+			console.error(err);
+			throw err;
+		}
+	},
+);
+
 export const searchGames = createAsyncThunk<
 	{
 		result: Array<Game>;

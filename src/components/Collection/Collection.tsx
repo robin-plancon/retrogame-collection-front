@@ -2,6 +2,7 @@ import './Collection.scss';
 
 import React, { useEffect, useState } from 'react';
 
+// import { history } from '../../utils/history';
 import platforms from '../../../data/platforms.json';
 import { useAppSelector } from '../../hooks/redux';
 import GameCard from '../GameCard/GameCard';
