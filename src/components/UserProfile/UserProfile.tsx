@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import closeIcon from '../../assets/icons/close.svg';
+import mushroom from '../../assets/icons/mushroom.svg';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { remove, signout, update } from '../../store/reducers/auth';
 
@@ -96,7 +97,10 @@ const UserProfile = () => {
 	return (
 		<Link to="/user/profile" className="user-profile">
 			<div className="user-profile--card">
-				<h1 className="user-profile--title">Mes informations personnelles</h1>
+				<div className="user-profile--header">
+					<img src={mushroom} alt="Mushroom" className="user-profile--icon" />
+					<h1 className="user-profile--title">Mes informations personnelles</h1>
+				</div>
 				<div className="user-profile--info">
 					<p className="user-profile--label">Pseudo</p>
 					<p className="user-profile--value">{userDetails.user?.nickname}</p>
