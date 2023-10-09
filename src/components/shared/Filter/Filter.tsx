@@ -1,6 +1,7 @@
 import './Filter.scss';
 
 import React, { useEffect, useState } from 'react';
+
 import platforms from '../../../../data/platforms.json';
 import filterIcon from '../../../assets/icons/filter.svg';
 import { useAppDispatch } from '../../../hooks/redux';
@@ -13,7 +14,7 @@ import { history } from '../../../utils/history';
 
 function Filter() {
 	const dispatch = useAppDispatch();
-  
+
 	const [isFilterOpen, setIsFilterOpen] = useState(false);
 
 	const mediumBreakpoint = 1000;

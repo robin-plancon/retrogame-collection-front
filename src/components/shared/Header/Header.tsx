@@ -64,7 +64,7 @@ function Header() {
 	const shouldDisplaySearchBar =
 		history.location.pathname === '/' || history.location.pathname === '/collection';
 	const isUserProfilePage = history.location.pathname === '/user/profile';
-	const isCollectionPage = history.location.pathname === '/collection';
+	// const isCollectionPage = history.location.pathname === '/collection';
 	// Click on the logo reset the search state and redirect to the home page
 	const handleClick = () => {
 		// If the user is on the home page
@@ -105,11 +105,6 @@ function Header() {
 						className="header-button"
 					>
 						Connexion
-					</NavLink>
-				)}
-				{user && !isCollectionPage && (
-					<NavLink to="/collection" className="header-button">
-						Ma collection
 					</NavLink>
 				)}
 				{user && !isUserProfilePage && (
