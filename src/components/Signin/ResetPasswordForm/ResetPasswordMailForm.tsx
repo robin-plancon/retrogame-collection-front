@@ -56,6 +56,7 @@ function ResetPasswordForm({
 			<form className="modal-content" onSubmit={handleSubmit(onSubmit)}>
 				<button
 					onClick={closePasswordResetModal}
+					id="close-password-reset-modal"
 					type="button"
 					className="modal-close"
 					aria-label="Fermer la modale"

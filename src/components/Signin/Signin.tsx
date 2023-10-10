@@ -63,7 +63,7 @@ function Signin() {
 				<p className="signin-error">{message}</p>
 			)}
 			<form className="signin-form" onSubmit={handleSubmit(onSubmit)}>
-				<label htmlFor="pseudo" className="signin-label">
+				<label htmlFor="nickname" className="signin-label">
 					Pseudo
 				</label>
 				<input
@@ -72,19 +72,6 @@ function Signin() {
 					className="signin-input"
 					{...register('nickname', {
 						required: 'Ce champ est requis',
-						minLength: {
-							value: 3,
-							message: 'Le pseudo doit contenir au moins 3 caractères',
-						},
-						maxLength: {
-							value: 20,
-							message: 'Le pseudo doit contenir au maximum 20 caractères',
-						},
-						pattern: {
-							value: /^[a-zA-Z][a-zA-Z0-9_-]{2,14}$/,
-							message:
-								'Le pseudo ne doit contenir que des lettres, des chiffres, des tirets et des underscores',
-						},
 					})}
 				/>
 				{errors.nickname && (
@@ -99,19 +86,6 @@ function Signin() {
 					className="signin-input"
 					{...register('password', {
 						required: 'Ce champ est requis',
-						minLength: {
-							value: 8,
-							message: 'Le mot de passe doit contenir au moins 8 caractères',
-						},
-						maxLength: {
-							value: 14,
-							message: 'Le mot de passe doit contenir au maximum 14 caractères',
-						},
-						pattern: {
-							value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).*$/i,
-							message:
-								'Le mot de passe doit contenir au moins une majuscule, une minuscule, un chiffre et un caractère spécial',
-						},
 					})}
 				/>
 				{errors.password && (
