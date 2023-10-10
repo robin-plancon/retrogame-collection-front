@@ -24,6 +24,9 @@ const initialState: GameState = {
 	isLoading: false,
 	games: [],
 	searchGames: null,
+	searchOptions: {
+		pageSize: 4,
+	},
 };
 
 export const getGames = createAsyncThunk('game/getGame', async () => {
@@ -187,7 +190,7 @@ const gameReducer = createReducer(initialState, (builder) => {
 			state.status = 'error';
 		})
 		.addCase(resetGamesSearch, (state) => {
-			delete state.searchOptions;
+			state.searchOptions = { ...initialState.searchOptions };
 			state.searchGames = null;
 		})
 		.addCase(addSearchOptions, (state, action) => {
