@@ -37,11 +37,13 @@ function ResetPasswordForm({
 		const sendData = {
 			email: email?.trim() || '', // provide a default value for email
 		};
-		dispatch(resetPasswordMail(sendData));
-		if (status === 'ok') {
-			setIsPasswordReset(false);
-			dispatch(resetStatus());
-		}
+		dispatch(resetPasswordMail(sendData)).then((res) => {
+			console.log(res.payload);
+			if (res.payload.status === 'Success') {
+				dispatch(resetStatus());
+				setIsPasswordReset(false);
+			}
+		});
 	};
 
 	const closePasswordResetModal = () => {
