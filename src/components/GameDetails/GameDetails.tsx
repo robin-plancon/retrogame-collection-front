@@ -71,7 +71,11 @@ function GameDetails() {
 	const genres = game.genres?.map((genre) => genre.name).join(', ') || 'non renseigné';
 
 	return (
-		<div className="game-details">
+		<div
+			className={`game-details ${
+				collection.find((g) => g.id === game.id) ? 'in-collection' : ''
+			}`}
+		>
 			<Link
 				to={from?.pathname || '/'}
 				className="game-details--game"
@@ -97,7 +101,12 @@ function GameDetails() {
 				</div>
 			</Link>
 			{isAuth.user && isAuth.token && (
-				<button className="game-card--button" onClick={handleClick}>
+				<button
+					className={`game-card--button ${
+						collection.find((g) => g.id === game.id) ? 'in-collection' : ''
+					}`}
+					onClick={handleClick}
+				>
 					{collection.find((g) => g.id === game.id)
 						? 'Retirer de ma collection'
 						: 'Ajouter à ma collection'}
