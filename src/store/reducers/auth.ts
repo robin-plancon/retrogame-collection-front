@@ -24,7 +24,7 @@ type SignupProps = {
 	confirmation?: string;
 };
 
-type signinProps = {
+type SigninProps = {
 	nickname?: string;
 	password?: string;
 };
@@ -58,7 +58,7 @@ export const signup = createAsyncThunk('auth/signup', async (formData: SignupPro
 });
 
 // signin thunk call the api and return the data of signin
-export const signin = createAsyncThunk('auth/signin', async (formData: signinProps) => {
+export const signin = createAsyncThunk('auth/signin', async (formData: SigninProps) => {
 	try {
 		axiosInstance.defaults.withCredentials = true;
 		const { data } = await axiosInstance.post('/login', formData);
@@ -101,11 +101,37 @@ export const remove = createAsyncThunk('auth/delete', async () => {
 	}
 });
 
-export const resetPassword = createAsyncThunk(
+export const resetPasswordMail = createAsyncThunk(
 	'auth/resetPassword',
 	async (formData: { email: string }) => {
 		try {
 			const { data } = await axiosInstance.post('/reset-mail', formData);
+			return data;
+		} catch (err) {
+			console.log(err);
+			throw err;
+		}
+	},
+);
+
+export const resetPasswordWithToken = createAsyncThunk(
+	'auth/resetPasswordWithToken',
+	async (formData: { token: string; password: string; confirmation: string }) => {
+		try {
+			const { data } = await axiosInstance.post('/reset-form', formData);
+			return data;
+		} catch (err) {
+			console.log(err);
+			throw err;
+		}
+	},
+);
+
+export const checkResetToken = createAsyncThunk(
+	'auth/checkResetToken',
+	async (token: string) => {
+		try {
+			const { data } = await axiosInstance.post(`/check-reset-token`, { token: token });
 			return data;
 		} catch (err) {
 			console.log(err);
@@ -172,12 +198,11 @@ const authReducer = createReducer(initialState, (builder) => {
 			state.isLoading = false;
 			state.status = 'error';
 		})
-		.addCase(resetPassword.pending, (state) => {
+		.addCase(resetPasswordMail.pending, (state) => {
 			// if the action is pending we set the isLoading to true
 			state.isLoading = true;
 		})
-		.addCase(resetPassword.fulfilled, (state, action) => {
-			console.log(action.payload);
+		.addCase(resetPasswordMail.fulfilled, (state, action) => {
 			// if message is not null we set the status to error and we set the message
 			if (action.payload.status === 'Error') {
 				state.isLoading = false;
@@ -190,7 +215,49 @@ const authReducer = createReducer(initialState, (builder) => {
 			state.isLoading = false;
 			state.status = 'ok';
 		})
-		.addCase(resetPassword.rejected, (state) => {
+		.addCase(resetPasswordMail.rejected, (state) => {
+			// if the action is rejected we set the isLoading to false
+			state.isLoading = false;
+			state.status = 'error';
+		})
+		.addCase(resetPasswordWithToken.pending, (state) => {
+			// if the action is pending we set the isLoading to true
+			state.isLoading = true;
+		})
+		.addCase(resetPasswordWithToken.fulfilled, (state, action) => {
+			// if message is not null we set the status to error and we set the message
+			if (action.payload.status === 'Error') {
+				state.isLoading = false;
+				state.status = 'error';
+				state.message = action.payload.message;
+				return;
+			}
+			// if the action is fulfilled we set the isLoading to false
+			state.isLoading = false;
+			state.status = 'ok';
+		})
+		.addCase(resetPasswordWithToken.rejected, (state) => {
+			// if the action is rejected we set the isLoading to false
+			state.isLoading = false;
+			state.status = 'error';
+		})
+		.addCase(checkResetToken.pending, (state) => {
+			// if the action is pending we set the isLoading to true
+			state.isLoading = true;
+		})
+		.addCase(checkResetToken.fulfilled, (state, action) => {
+			// if message is not null we set the status to error and we set the message
+			if (action.payload.status === 'Error') {
+				state.isLoading = false;
+				state.status = 'error';
+				state.message = action.payload.message;
+				return;
+			}
+			// if the action is fulfilled we set the isLoading to false
+			state.isLoading = false;
+			state.status = 'ok';
+		})
+		.addCase(checkResetToken.rejected, (state) => {
 			// if the action is rejected we set the isLoading to false
 			state.isLoading = false;
 			state.status = 'error';
@@ -202,29 +269,6 @@ const authReducer = createReducer(initialState, (builder) => {
 			localStorage.removeItem('token');
 			axiosInstance.defaults.headers.common['Authorization'] = '';
 			axiosInstance.defaults.withCredentials = false;
-		})
-		.addCase(update.pending, (state) => {
-			// if the action is pending we set isLoading to true
-			state.isLoading = true;
-		})
-		.addCase(update.fulfilled, (state, action) => {
-			if (action.payload.message) {
-				state.isLoading = false;
-				state.status = 'error';
-				state.message = action.payload.message;
-				return;
-			}
-			// if the action is fulfilled we set isLoading to false
-			state.isLoading = false;
-			state.status = 'ok';
-			state.user = action.payload.user;
-			state.token = action.payload.token;
-			saveState(action.payload.user, action.payload.token);
-		})
-		.addCase(update.rejected, (state) => {
-			// if the action is rejected we set isLoading to false
-			state.isLoading = false;
-			state.status = 'error';
 		})
 		.addCase(resetStatus, (state) => {
 			delete state.status;
