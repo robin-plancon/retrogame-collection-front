@@ -14,6 +14,7 @@ import About from './About/About';
 import Collection from './Collection/Collection';
 import GameDetails from './GameDetails/GameDetails';
 import Home from './Home/Home';
+import ResetPassword from './ResetPassword/ResetPassword';
 import Footer from './shared/Footer/Footer';
 import Header from './shared/Header/Header';
 import Signin from './Signin/Signin';
@@ -62,6 +63,7 @@ function App() {
 					<Route path="/" element={<Home />} />
 					<Route path="/game/:slug" element={<GameDetails />} />
 					<Route path="/about" element={<About />} />
+					<Route path="/reset-form" element={<ResetPassword />} />
 					{(!user || !token) && <Route path="/signup" element={<Signup />} />}
 					{(!user || !token) && <Route path="/signin" element={<Signin />} />}
 					{user && token && <Route path="/collection" element={<Collection />} />}
