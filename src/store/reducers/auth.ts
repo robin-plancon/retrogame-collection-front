@@ -296,9 +296,7 @@ const authReducer = createReducer(initialState, (builder) => {
 			state.status = 'error';
 		})
 		.addCase(checkAuth, (state) => {
-			console.log('checkAuth');
 			const auth = loadState();
-			console.log(auth);
 			if (!auth?.user && !auth?.token) {
 				state.user = null;
 				state.token = null;
