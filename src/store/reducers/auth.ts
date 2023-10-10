@@ -1,4 +1,5 @@
 import { createAction, createAsyncThunk, createReducer } from '@reduxjs/toolkit';
+import { isAxiosError } from 'axios';
 
 import { axiosInstance } from '../../utils/axios';
 import { history } from '../../utils/history';
@@ -53,6 +54,9 @@ export const signup = createAsyncThunk('auth/signup', async (formData: SignupPro
 		return data;
 	} catch (err) {
 		console.log(err);
+		if (isAxiosError(err)) {
+			return err.response?.data;
+		}
 		throw err;
 	}
 });
@@ -65,6 +69,9 @@ export const signin = createAsyncThunk('auth/signin', async (formData: SigninPro
 		return data;
 	} catch (err) {
 		console.log(err);
+		if (isAxiosError(err)) {
+			return err.response?.data;
+		}
 		throw err;
 	}
 });
@@ -81,6 +88,9 @@ export const update = createAsyncThunk('auth/update', async (formData: UpdatePro
 		return data;
 	} catch (err) {
 		console.log(err);
+		if (isAxiosError(err)) {
+			return err.response?.data;
+		}
 		throw err;
 	}
 });
@@ -122,6 +132,9 @@ export const resetPasswordWithToken = createAsyncThunk(
 			return data;
 		} catch (err) {
 			console.log(err);
+			if (isAxiosError(err)) {
+				return err.response?.data;
+			}
 			throw err;
 		}
 	},
@@ -156,7 +169,7 @@ const authReducer = createReducer(initialState, (builder) => {
 			state.isLoading = true;
 		})
 		.addCase(signup.fulfilled, (state, action) => {
-			if (action.payload.error === 'Error') {
+			if (action.payload.status === 'Error') {
 				state.isLoading = false;
 				state.status = 'error';
 				state.message = action.payload.message;
@@ -193,6 +206,10 @@ const authReducer = createReducer(initialState, (builder) => {
 			// we get the from property from the location state to redirect the user to the previous page
 			const { from } = history.location.state || { from: { pathname: '/' } };
 			// we redirect the user to the home page
+			if (from?.pathname === '/signin' || from?.pathname === '/signup') {
+				history.navigate('/');
+				return;
+			}
 			history.navigate(from?.pathname || '/');
 		})
 		.addCase(signin.rejected, (state) => {
