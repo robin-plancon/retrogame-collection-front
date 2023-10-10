@@ -5,7 +5,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 
 import closeIcon from '../../../assets/icons/close.svg';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
-import { resetPasswordMail } from '../../../store/reducers/auth';
+import { resetPasswordMail, resetStatus } from '../../../store/reducers/auth';
 
 type FormProps = {
 	email?: string;
@@ -40,11 +40,13 @@ function ResetPasswordForm({
 		dispatch(resetPasswordMail(sendData));
 		if (status === 'ok') {
 			setIsPasswordReset(false);
+			dispatch(resetStatus());
 		}
 	};
 
 	const closePasswordResetModal = () => {
 		setIsPasswordReset(false);
+		dispatch(resetStatus());
 	};
 
 	return (
@@ -59,6 +61,7 @@ function ResetPasswordForm({
 					<img src={closeIcon} alt="Fermer la modale" />
 				</button>
 				<h2 className="modal-title">Mot de passe oublié</h2>
+				{status === 'error' && <p className="modal-error">Email inconnu</p>}
 				<label htmlFor="email" className="modal-label">
 					Email
 				</label>
@@ -75,7 +78,6 @@ function ResetPasswordForm({
 					})}
 				/>
 				{errors.email && <p className="modal-error">{errors.email.message as string}</p>}
-				{status === 'error' && <p className="modal-error">Email invalide</p>}
 				<button type="submit" className="modal-button">
 					Envoyer
 				</button>

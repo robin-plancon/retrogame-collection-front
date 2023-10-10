@@ -59,7 +59,9 @@ function Signin() {
 		<div className="signin">
 			<h1 className="signin-title">Connexion</h1>
 			{isLoading && <p className="signin-error">Chargement...</p>}
-			{status === 'error' && <p className="signin-error">{message}</p>}
+			{status === 'error' && !isPasswordReset && (
+				<p className="signin-error">{message}</p>
+			)}
 			<form className="signin-form" onSubmit={handleSubmit(onSubmit)}>
 				<label htmlFor="pseudo" className="signin-label">
 					Pseudo

@@ -24,7 +24,7 @@ type SignupProps = {
 	confirmation?: string;
 };
 
-type signinProps = {
+type SigninProps = {
 	nickname?: string;
 	password?: string;
 };
@@ -58,7 +58,7 @@ export const signup = createAsyncThunk('auth/signup', async (formData: SignupPro
 });
 
 // signin thunk call the api and return the data of signin
-export const signin = createAsyncThunk('auth/signin', async (formData: signinProps) => {
+export const signin = createAsyncThunk('auth/signin', async (formData: SigninProps) => {
 	try {
 		axiosInstance.defaults.withCredentials = true;
 		const { data } = await axiosInstance.post('/login', formData);
@@ -203,7 +203,6 @@ const authReducer = createReducer(initialState, (builder) => {
 			state.isLoading = true;
 		})
 		.addCase(resetPasswordMail.fulfilled, (state, action) => {
-			console.log(action.payload);
 			// if message is not null we set the status to error and we set the message
 			if (action.payload.status === 'Error') {
 				state.isLoading = false;
@@ -254,7 +253,6 @@ const authReducer = createReducer(initialState, (builder) => {
 				state.message = action.payload.message;
 				return;
 			}
-			console.log(action.payload);
 			// if the action is fulfilled we set the isLoading to false
 			state.isLoading = false;
 			state.status = 'ok';
