@@ -2,7 +2,7 @@ import { createAction, createAsyncThunk, createReducer } from '@reduxjs/toolkit'
 
 import { Game } from '../../@types/game';
 import { axiosInstance } from '../../utils/axios';
-import { loadState } from '../../utils/sessionStorage';
+import { loadState } from '../../utils/localStorage';
 
 interface CollectionState {
 	isLoading: boolean;

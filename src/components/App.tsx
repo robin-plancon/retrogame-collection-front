@@ -5,10 +5,11 @@ import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
 import store from '../store';
+import { checkAuth } from '../store/reducers/auth';
 import { getCollection } from '../store/reducers/collection';
 import { getGames } from '../store/reducers/game';
 import { history } from '../utils/history';
-import { saveState } from '../utils/sessionStorage';
+import { saveState } from '../utils/localStorage';
 import About from './About/About';
 import Collection from './Collection/Collection';
 import GameDetails from './GameDetails/GameDetails';
@@ -43,6 +44,7 @@ function App() {
 			setIsFirst(false);
 			return;
 		}
+		dispatch(checkAuth());
 		dispatch(getGames());
 	}, [isFirst]);
 

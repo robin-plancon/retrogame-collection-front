@@ -2,7 +2,7 @@ import { createAction, createAsyncThunk, createReducer } from '@reduxjs/toolkit'
 
 import { axiosInstance } from '../../utils/axios';
 import { history } from '../../utils/history';
-import { loadState, saveState } from '../../utils/sessionStorage';
+import { loadState, saveState } from '../../utils/localStorage';
 
 interface AuthState {
 	isLoading: boolean;
@@ -118,6 +118,8 @@ export const resetPassword = createAsyncThunk(
 export const resetStatus = createAction('auth/reset_status');
 // signout action will remove the user and the token from the localStorage
 export const signout = createAction('auth/signout');
+// checkAuth action will check if the user is authenticated
+export const checkAuth = createAction('auth/checkAuth');
 
 // authReducer is a function that take an initial state and an object of builder
 // builder is an object that has a method for each action type
@@ -225,6 +227,18 @@ const authReducer = createReducer(initialState, (builder) => {
 			// if the action is rejected we set isLoading to false
 			state.isLoading = false;
 			state.status = 'error';
+		})
+		.addCase(checkAuth, (state) => {
+			console.log('checkAuth');
+			const auth = loadState();
+			console.log(auth);
+			if (!auth?.user && !auth?.token) {
+				state.user = null;
+				state.token = null;
+				return;
+			}
+			state.user = auth.user;
+			state.token = auth.token;
 		})
 		.addCase(resetStatus, (state) => {
 			delete state.status;
