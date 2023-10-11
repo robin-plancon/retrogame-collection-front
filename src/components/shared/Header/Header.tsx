@@ -23,23 +23,34 @@ import { history } from '../../../utils/history';
 function Header() {
 	const [searchTerm, setSearchTerm] = useState('');
 	const user = useAppSelector((state) => state.auth.user);
+	const { searchOptions } = useAppSelector((state) => state.games);
+	const { searchOptions: searchCollectionOptions } = useAppSelector(
+		(state) => state.collection,
+	);
 	const dispatch = useAppDispatch();
 
 	const handleSearch = () => {
 		if (searchTerm.trim() === '') {
 			// Reset the search state
-			dispatch(resetGamesSearch());
-			dispatch(resetCollectionSearch());
+			dispatch(addSearchOptions({ ...searchOptions, searchTerm: null }));
+			dispatch(
+				addSearchCollectionOptions({ ...searchCollectionOptions, searchTerm: null }),
+			);
 		}
 		if (history.location.pathname === '/') {
 			// Search games by name in the API
-			dispatch(addSearchOptions({ searchTerm: searchTerm }));
+			dispatch(addSearchOptions({ ...searchOptions, searchTerm: searchTerm }));
 			dispatch(searchGames());
 		}
 		// If the user is on the collection page and the search bar is not empty
 		if (history.location.pathname === '/collection') {
 			// Search games by name in user's collection
-			dispatch(addSearchCollectionOptions({ searchTerm: searchTerm }));
+			dispatch(
+				addSearchCollectionOptions({
+					...searchCollectionOptions,
+					searchTerm: searchTerm,
+				}),
+			);
 			dispatch(searchCollection());
 		}
 	};

@@ -20,7 +20,7 @@ interface GameState {
 interface SearchOptions {
 	pageSize: number;
 	page: number;
-	searchTerm?: string;
+	searchTerm: string | null;
 	platform?: number;
 }
 
@@ -29,6 +29,7 @@ const initialState: GameState = {
 	games: [],
 	searchGames: null,
 	searchOptions: {
+		searchTerm: null,
 		pageSize: 10,
 		page: 0,
 	},

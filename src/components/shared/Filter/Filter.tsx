@@ -39,6 +39,7 @@ function Filter() {
 		if (history.location.pathname === '/collection') {
 			dispatch(
 				addSearchCollectionOptions({
+					...searchOptions,
 					platform: parseInt((e.target as HTMLButtonElement).value),
 				}),
 			);

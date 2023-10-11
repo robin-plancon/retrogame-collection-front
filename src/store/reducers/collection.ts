@@ -8,21 +8,26 @@ interface CollectionState {
 	isLoading: boolean;
 	games: Array<Game>;
 	searchResults?: Array<Game> | null;
-	searchOptions?: SearchOptions;
+	searchOptions: SearchOptions;
 	status?: 'ok' | 'error';
 	message?: string;
 }
 
 interface SearchOptions {
-	pageSize?: number;
-	page?: number;
-	searchTerm?: string;
+	pageSize: number;
+	page: number;
+	searchTerm: string | null;
 	platform?: number;
 }
 
 const initialState: CollectionState = {
 	isLoading: false,
 	games: [],
+	searchOptions: {
+		searchTerm: null,
+		pageSize: 10,
+		page: 0,
+	},
 };
 
 export const getCollection = createAsyncThunk('collection/getCollection', async () => {
@@ -187,7 +192,7 @@ const collectionReducer = createReducer(initialState, (builder) => {
 			state.searchOptions = { ...state.searchOptions, ...action.payload };
 		})
 		.addCase(resetCollectionSearch, (state) => {
-			delete state.searchOptions;
+			state.searchOptions = initialState.searchOptions;
 			state.searchResults = null;
 		})
 		.addCase(resetCollection, (state) => {
