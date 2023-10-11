@@ -59,3 +59,28 @@
 		}
 	}
 }
+
+.pagination {
+	display: flex;
+	align-items: center;
+	gap: v.$halfGutter;
+
+	&-active {
+		color: v.$tertiary-color;
+		border: 1px solid v.$tertiary-color;
+		padding: 0.5rem 1rem;
+		border-radius: 1rem;
+	}
+
+	&-item:not(&-active) {
+		cursor: pointer;
+
+		&:hover {
+			color: v.$tertiary-color;
+		}
+	}
+
+	&-previous, &-next {
+		cursor: pointer;
+	}
+}

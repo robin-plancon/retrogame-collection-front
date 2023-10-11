@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 
 import platforms from '../../../../data/platforms.json';
 import filterIcon from '../../../assets/icons/filter.svg';
-import { useAppDispatch } from '../../../hooks/redux';
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import {
 	addSearchCollectionOptions,
 	searchCollection,
@@ -14,6 +14,8 @@ import { history } from '../../../utils/history';
 
 function Filter() {
 	const dispatch = useAppDispatch();
+
+	const { searchOptions } = useAppSelector((state) => state.games);
 
 	const [isFilterOpen, setIsFilterOpen] = useState(false);
 
@@ -26,7 +28,11 @@ function Filter() {
 	const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
 		if (history.location.pathname === '/') {
 			dispatch(
-				addSearchOptions({ platform: parseInt((e.target as HTMLButtonElement).value) }),
+				addSearchOptions({
+					...searchOptions,
+					page: 0,
+					platform: parseInt((e.target as HTMLButtonElement).value),
+				}),
 			);
 			dispatch(searchGames());
 		}
