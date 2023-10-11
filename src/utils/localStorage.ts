@@ -6,8 +6,8 @@ interface User {
 // loadState function will load the state from the sessionStorage
 export const loadState = () => {
 	try {
-		const user = sessionStorage.getItem('user');
-		const token = sessionStorage.getItem('token');
+		const user = localStorage.getItem('user');
+		const token = localStorage.getItem('token');
 		if (user === null || token === null) {
 			return undefined;
 		}
@@ -24,8 +24,8 @@ export const saveState = (user: User | null, token: string) => {
 	try {
 		const userResult = JSON.stringify(user);
 		const tokenResult = token;
-		sessionStorage.setItem('user', userResult);
-		sessionStorage.setItem('token', tokenResult);
+		localStorage.setItem('user', userResult);
+		localStorage.setItem('token', tokenResult);
 	} catch (err) {
 		console.log(err);
 	}

@@ -4,15 +4,17 @@ import React, { useEffect, useState } from 'react';
 
 import platforms from '../../../data/platforms.json';
 import { Game } from '../../@types/game';
-import { useAppSelector } from '../../hooks/redux';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { addSearchOptions } from '../../store/reducers/game';
 import GameCard from '../GameCard/GameCard';
 import Filter from '../shared/Filter/Filter';
 
 function Home() {
+	const dispatch = useAppDispatch();
 	const { isLoading, games, status, searchGames, searchOptions } = useAppSelector(
 		(state) => state.games,
 	);
-	const [visibleGames, setVisibleGames] = useState(4); // Number of cards to display initially
+	// const [visibleGames, setVisibleGames] = useState(4); // Number of cards to display initially
 	const [isFirst, setIsFirst] = useState(true); // To avoid displaying the "Afficher plus" button on the first render
 	const [displayedGames, setDisplayedGames] = useState<Game[]>([]); // To avoid displaying the "Afficher plus" button on the first render
 
@@ -37,11 +39,7 @@ function Home() {
 	}, [searchGames]); // Add games to the dependency array to avoid a warning
 
 	const handleShowMore = () => {
-		if (displayedGames.length > 0) {
-			setVisibleGames(visibleGames + 4);
-		} else {
-			setVisibleGames(visibleGames + 4); // + 4 more games
-		}
+		dispatch(addSearchOptions({ pageSize: (searchOptions?.pageSize ?? 0) + 4 }));
 	};
 
 	const platformName = (platformId: number) => {
@@ -96,10 +94,10 @@ function Home() {
 
 						{!isLoading &&
 							displayedGames
-								.slice(0, visibleGames)
+								.slice(0, searchOptions?.pageSize)
 								.map((game) => <GameCard key={game.id} game={game} />)}
 					</div>
-					{visibleGames < displayedGames.length && (
+					{searchOptions?.pageSize && searchOptions?.pageSize < displayedGames.length && (
 						<div className="load-more">
 							<button className="load-more--button" onClick={handleShowMore}>
 								Afficher plus

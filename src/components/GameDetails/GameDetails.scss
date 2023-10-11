@@ -60,6 +60,7 @@
 
   animation: neon-border1 1.5s infinite alternate, neon-border2 2s infinite alternate;
 
+
   &--info {
     display: flex;
     flex-direction: column;
@@ -68,15 +69,16 @@
     margin-top: v.$halfGutter;
   }
 
+	&--image {
+		max-width: 20rem;
+		border-radius: 8px;
+	}
+
+
   &--name {
     font-weight: bold;
     color: #bfbdc1;
     font-size: 1.5rem;
-  }
-
-  &--image {
-    max-width: 6rem;
-    border-radius: 8px;
   }
 
   &--label {
