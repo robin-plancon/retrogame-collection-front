@@ -7,9 +7,14 @@ import filterIcon from '../../../assets/icons/filter.svg';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import {
 	addSearchCollectionOptions,
+	resetCollectionSearch,
 	searchCollection,
 } from '../../../store/reducers/collection';
-import { addSearchOptions, searchGames } from '../../../store/reducers/game';
+import {
+	addSearchOptions,
+	resetGamesSearch,
+	searchGames,
+} from '../../../store/reducers/game';
 import { history } from '../../../utils/history';
 
 function Filter() {
@@ -69,6 +74,11 @@ function Filter() {
 	}, [currentWidth]);
 	// * End of change filter on resizing part
 
+	const handleReset = () => {
+		dispatch(resetGamesSearch());
+		dispatch(resetCollectionSearch());
+	};
+
 	return (
 		<div className="filter-menu">
 			{currentWidth < mediumBreakpoint && (
@@ -85,6 +95,9 @@ function Filter() {
 			)}
 			{(isFilterOpen || currentWidth >= mediumBreakpoint) && (
 				<div className="filter-menu--section">
+					<button className="filter-menu--reset" onClick={handleReset}>
+						réinitialiser les filtres
+					</button>
 					<h3 className="filter-menu--title">Consoles</h3>
 					{platforms.map((platforms) => (
 						<div className="filter-menu--submenu" key={platforms.platform_family}>

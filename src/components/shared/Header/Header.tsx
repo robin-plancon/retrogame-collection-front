@@ -1,6 +1,6 @@
 import './Header.scss';
 
-import React, { KeyboardEvent, useState } from 'react';
+import React, { KeyboardEvent, useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 
 import searchIcon from '../../../assets/icons/search.svg';
@@ -41,6 +41,7 @@ function Header() {
 			// Search games by name in the API
 			dispatch(addSearchOptions({ ...searchOptions, searchTerm: searchTerm }));
 			dispatch(searchGames());
+			return;
 		}
 		// If the user is on the collection page and the search bar is not empty
 		if (history.location.pathname === '/collection') {
@@ -52,6 +53,7 @@ function Header() {
 				}),
 			);
 			dispatch(searchCollection());
+			return;
 		}
 	};
 
@@ -67,9 +69,10 @@ function Header() {
 	const handleSignout = () => {
 		// Reset the collection state
 		dispatch(resetCollection());
+		dispatch(resetCollectionSearch());
 		// Sign out the user
 		dispatch(signout());
-		window.location.href = '/';
+		history.navigate('/');
 	};
 
 	const shouldDisplaySearchBar =
@@ -96,6 +99,18 @@ function Header() {
 		dispatch(resetCollectionSearch());
 		setSearchTerm('');
 	};
+
+	useEffect(() => {
+		if (history.location.pathname === '/' && !searchOptions.searchTerm) {
+			setSearchTerm('');
+		}
+		if (
+			history.location.pathname === '/collection' &&
+			!searchCollectionOptions.searchTerm
+		) {
+			setSearchTerm('');
+		}
+	}, [searchOptions, searchCollectionOptions]);
 
 	return (
 		<div className="header">
