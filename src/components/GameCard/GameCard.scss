@@ -1,158 +1,174 @@
 @use '../../styles/variables' as v;
 
-@keyframes neon-border1 {
-	0% {
-		box-shadow: 0 0 10px v.$tertiary-color;
-	}
-	25% {
-		box-shadow: 0 0 15px v.$tertiary-color;
-	}
-	50% {
-		box-shadow: 0 0 20px v.$tertiary-color;
-	}
-	75% {
-		box-shadow: 0 0 15px v.$tertiary-color;
-	}
-	100% {
-		box-shadow: 0 0 10px v.$tertiary-color;
-	}
+@keyframes neon-border-tertiary {
+  0% {
+    box-shadow: 0 0 10px v.$tertiary-color;
+  }
+  25% {
+    box-shadow: 0 0 15px v.$tertiary-color;
+  }
+  50% {
+    box-shadow: 0 0 20px v.$tertiary-color;
+  }
+  75% {
+    box-shadow: 0 0 15px v.$tertiary-color;
+  }
+  100% {
+    box-shadow: 0 0 10px v.$tertiary-color;
+  }
 }
 
-@keyframes neon-border2 {
-	0% {
-		box-shadow: 0 0 10px v.$tertiary-color;
-	}
-	25% {
-		box-shadow: 0 0 15px v.$tertiary-color;
-	}
-	50% {
-		box-shadow: 0 0 20px v.$tertiary-color;
-	}
-	75% {
-		box-shadow: 0 0 15px v.$tertiary-color;
-	}
-	100% {
-		box-shadow: 0 0 10px v.$tertiary-color;
-	}
-}
-
-@keyframes neon-circular {
-	0% {
-		transform: rotate(0deg) translateX(1px);
-	}
-	100% {
-		transform: rotate(360deg) translateX(1px);
-	}
+@keyframes neon-border-secondary {
+  0% {
+    box-shadow: 0 0 10px v.$secondary-color;
+  }
+  25% {
+    box-shadow: 0 0 15px v.$secondary-color;
+  }
+  50% {
+    box-shadow: 0 0 20px v.$secondary-color;
+  }
+  75% {
+    box-shadow: 0 0 15px v.$secondary-color;
+  }
+  100% {
+    box-shadow: 0 0 10px v.$secondary-color;
+  }
 }
 
 .game-card {
-	display: flex;
-	flex-direction: column;
-	width: 95%;
-	background-color: #0a0e17;
-	border-radius: 8px;
-	border: 2px solid v.$tertiary-color;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	text-align: center;
-	margin: 0.5rem;
-	padding: 0.5rem;
-	color: #a4a5a7;
-	max-width: 480px;
-	overflow-y: visible;
+  display: flex;
+  flex-direction: column;
+  width: 95%;
+  background-color: #0a0e17;
+  border-radius: 8px;
+  border: 2px solid v.$tertiary-color;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin: 0.5rem;
+  padding: 0.5rem;
+  color: #a4a5a7;
+  max-width: 480px;
+  overflow-y: visible;
 
-	/* Neon animation */
-	animation: neon-border1 1.5s infinite alternate, neon-border2 2s infinite alternate,
-		neon-border3 2.5s infinite alternate;
+  &.in-collection {
+    /* Styles when the game is in the user's collection */
+    border-color: v.$secondary-color;
+    animation: neon-border-secondary 1.5s infinite alternate;
+  }
 
-	&--game {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		text-align: center;
+  /* Neon animation for cards not in collection */
+  &:not(.in-collection) {
+    animation: neon-border-tertiary 1.5s infinite alternate;
+  }
+
+  &--game {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  &--image {
+    max-width: 6rem;
+    border-radius: 8px;
+  }
+
+  &--info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  &--name {
+    font-weight: bold;
+    color: #bfbdc1;
+    margin: 0.5rem 0;
+  }
+
+  &--label {
+    font-weight: bold;
+  }
+
+  &--value {
+    // padding: v.$halfGutter;
+  }
+
+  &--button {
+    margin: v.$halfGutter 0;
+    padding: v.$halfGutter;
+    color: v.$tertiary-color;
+    font-weight: bold;
+    background-color: v.$primary-color;
+    border: 1px solid v.$tertiary-color;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+
+    &:hover {
+      color: v.$primary-color;
+      background-color: v.$tertiary-color;
+    }
+  }
+
+  &--button.in-collection {
+	margin: v.$halfGutter 0;
+	padding: v.$halfGutter;
+	color: v.$secondary-color;
+	font-weight: bold;
+	background-color: v.$primary-color;
+	border: 1px solid v.$secondary-color;
+	border-radius: 0.5rem;
+	font-size: 1rem;
+  
+	&:hover {
+	  color: v.$primary-color;
+	  background-color: v.$secondary-color;
 	}
+  }
 
-	&--image {
-		max-width: 6rem;
-		border-radius: 8px;
-	}
+  @media (min-width: v.$small) {
+    justify-content: space-between;
 
-	&--info {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: 0.5rem;
-	}
+    &--game {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      text-align: center;
+    }
 
-	&--name {
-		font-weight: bold;
-		color: #bfbdc1;
-		margin: 0.5rem 0;
-	}
+    &--image {
+      padding: 0 v.$halfGutter;
+      max-width: 10rem;
+      border-radius: 8px;
+    }
 
-	&--label {
-		font-weight: bold;
-	}
+    &--info {
+      padding-left: v.$gutter;
+      padding: 0.5rem 0;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      justify-content: space-around;
+      gap: 0.5rem;
+    }
 
-	&--value {
-		// padding: v.$halfGutter;
-	}
+    &--name {
+      align-self: center;
+      font-weight: bold;
+    }
 
-	&--button {
-		margin: v.$halfGutter 0;
-		padding: v.$halfGutter;
-		color: v.$secondary-color;
-		background-color: v.$primary-color;
-		border: 1px solid v.$secondary-color;
-		border-radius: 0.5rem;
-		font-size: 1rem;;
-
-		&:hover {
-			color: v.$primary-color;
-			background-color: v.$secondary-color;
-		}
-	}
-
-	@media (min-width: v.$small) {
-		justify-content: space-between;
-
-		&--game {
-			width: 100%;
-			display: flex;
-			flex-direction: row;
-			align-items: center;
-			text-align: center;
-		}
-
-		&--image {
-			padding: 0 v.$halfGutter;
-			max-width: 10rem; /* Reduce the width of the image to 50% */
-			border-radius: 8px;
-		}
-
-		&--info {
-			padding-left: v.$gutter;
-			padding: 0.5rem 0;
-			flex-grow: 1;
-			display: flex;
-			flex-direction: column;
-			flex-wrap: wrap;
-			align-items: flex-start;
-			justify-content: space-around;
-			gap: 0.5rem;
-		}
-
-		&--name {
-			align-self: center;
-			font-weight: bold;
-		}
-
-		&--value {
-			padding: 0.5rem 0;
-		}
-	}
+    &--value {
+      padding: 0.5rem 0;
+    }
+  }
 }
+
 
 // Media queries for desktop
 //@media (min-width: v.$medium) {
