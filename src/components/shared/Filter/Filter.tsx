@@ -14,9 +14,7 @@ import { history } from '../../../utils/history';
 
 function Filter() {
 	const dispatch = useAppDispatch();
-
 	const [isFilterOpen, setIsFilterOpen] = useState(false);
-
 	const mediumBreakpoint = 1000;
 
 	const toggleFilter = () => {
@@ -40,7 +38,11 @@ function Filter() {
 		}
 	};
 
-	// * Change filter on resizing part
+	// État local pour suivre l'état d'ouverture des sous-menus par nom de plate-forme
+	const [platformSubMenuState, setPlatformSubMenuState] = useState<{
+		[key: string]: boolean;
+	}>({});
+
 	// Get the current width of the window to display the clickable filter button only on mobile
 	const getCurrentDimensions = () => {
 		return {
@@ -60,7 +62,14 @@ function Filter() {
 		window.addEventListener('resize', updateDimensions);
 		return () => window.removeEventListener('resize', updateDimensions);
 	}, [currentWidth]);
-	// * End of change filter on resizing part
+
+	// Fonction pour basculer l'état d'ouverture d'un sous-menu
+	const toggleSubMenu = (platformFamily: string) => {
+		setPlatformSubMenuState((prevState) => ({
+			...prevState,
+			[platformFamily]: !prevState[platformFamily],
+		}));
+	};
 
 	return (
 		<div className="filter-menu">
@@ -81,37 +90,43 @@ function Filter() {
 					<h3 className="filter-menu--title">Consoles</h3>
 					{platforms.map((platforms) => (
 						<div className="filter-menu--submenu" key={platforms.platform_family}>
-							<h4 className="filter-menu--subtitle">{platforms.platform_family}</h4>
+							<button
+								className="filter-menu--subtitle"
+								onClick={() => toggleSubMenu(platforms.platform_family)} // Handle the submenu on click
+							>
+								{platforms.platform_family}
+							</button>
 							<div className="filter-menu--values">
-								{platforms.platforms
-									.sort((a, b) => (a.name > b.name ? 1 : -1))
-									.map((platform) => (
-										<button
-											className="filter-menu--value"
-											key={platform.id}
-											onClick={handleClick}
-											value={platform.id}
-										>
-											{platform.name}
-										</button>
-									))}
+								{platformSubMenuState[platforms.platform_family] && // Display informations when the submenu is open
+									platforms.platforms
+										.sort((a, b) => (a.name > b.name ? 1 : -1))
+										.map((platform) => (
+											<button
+												className="filter-menu--value"
+												key={platform.id}
+												onClick={handleClick}
+												value={platform.id}
+											>
+												{platform.name}
+											</button>
+										))}
 							</div>
 						</div>
 					))}
 				</div>
 			)}
 			{/* {(isFilterOpen || currentWidth >= mediumBreakpoint) && (
-				<div className="filter-menu--section">
-					<h3 className="filter-menu--title">Genres</h3>
-					<p className="filter-menu--value italic">Choix multiples</p>
-				</div>
-			)}
-			{(isFilterOpen || currentWidth >= mediumBreakpoint) && (
-				<div className="filter-menu--section">
-					<h3 className="filter-menu--title">Date de sortie</h3>
-					<p className="filter-menu--value italic">Champs nombre</p>
-				</div>
-			)} */}
+        <div className="filter-menu--section">
+          <h3 className="filter-menu--title">Genres</h3>
+          <p className="filter-menu--value italic">Choix multiples</p>
+        </div>
+      )}
+      {(isFilterOpen || currentWidth >= mediumBreakpoint) && (
+        <div className="filter-menu--section">
+          <h3 className="filter-menu--title">Date de sortie</h3>
+          <p className="filter-menu--value italic">Champs nombre</p>
+        </div>
+      )} */}
 		</div>
 	);
 }
