@@ -1,92 +1,131 @@
 @use '../../styles/variables' as v;
 
 @keyframes neon-border1 {
-	
+  0% {
+    box-shadow: 0 0 10px v.$tertiary-color;
+  }
+  25% {
+    box-shadow: 0 0 15px v.$tertiary-color;
+  }
+  50% {
+    box-shadow: 0 0 20px v.$tertiary-color;
+  }
+  75% {
+    box-shadow: 0 0 15px v.$tertiary-color;
+  }
+  100% {
+    box-shadow: 0 0 10px v.$tertiary-color;
+  }
 }
 
 @keyframes neon-border2 {
-	0% {
-		box-shadow: 0 0 10px #fa3294;
-	}
-	25% {
-		box-shadow: 0 0 15px #fa3294;
-	}
-	50% {
-		box-shadow: 0 0 20px #fa3294;
-	}
-	75% {
-		box-shadow: 0 0 15px #fa3294;
-	}
-	100% {
-		box-shadow: 0 0 10px #fa3294;
-	}
+  0% {
+    box-shadow: 0 0 10px v.$tertiary-color;
+  }
+  25% {
+    box-shadow: 0 0 15px v.$tertiary-color;
+  }
+  50% {
+    box-shadow: 0 0 20px v.$tertiary-color;
+  }
+  75% {
+    box-shadow: 0 0 15px v.$tertiary-color;
+  }
+  100% {
+    box-shadow: 0 0 10px v.$tertiary-color;
+  }
 }
 
 @keyframes neon-circular {
-	0% {
-		transform: rotate(0deg) translateX(1px);
-	}
-	100% {
-		transform: rotate(360deg) translateX(1px);
-	}
+  0% {
+    transform: rotate(0deg) translateX(1px);
+  }
+  100% {
+    transform: rotate(360deg) translateX(1px);
+  }
 }
 
 .game-details {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	text-align: center;
-	background-color: #0a0e17;
-	border-radius: 8px;
-	border: 2px solid v.$tertiary-color;
-	padding: v.$halfGutter;
-	color: #a4a5a7;
-	width: 95%;
-	margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background-color: #0a0e17;
+  border-radius: 8px;
+  border: 2px solid v.$tertiary-color;
+  padding: v.$halfGutter;
+  color: #a4a5a7;
+  width: 95%;
+  margin: 0 auto;
 
-	animation: neon-border1 1.5s infinite alternate, neon-border2 2s infinite alternate,
-		neon-border3 2.5s infinite alternate;
+  animation: neon-border1 1.5s infinite alternate, neon-border2 2s infinite alternate;
 
-	&--info {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: v.$halfGutter;
-		margin-top: v.$halfGutter;
-	}
 
-	&--name {
-		font-weight: bold;
-		color: #bfbdc1;
-		font-size: 1.5rem;
-	}
+  &--info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: v.$halfGutter;
+    margin-top: v.$halfGutter;
+  }
 
 	&--image {
 		max-width: 20rem;
 		border-radius: 8px;
 	}
 
-	&--label {
-		font-weight: bold;
-	}
 
-	&--value {
+  &--name {
+    font-weight: bold;
+    color: #bfbdc1;
+    font-size: 1.5rem;
+  }
+
+  &--label {
+    font-weight: bold;
+  }
+
+  &--value {
     // padding: v.$halfGutter;
-	}
+  }
 
-	&--description {
-		max-width: 90%;
-		text-align: justify;
-	}
+  &--description {
+    max-width: 90%;
+    text-align: justify;
+  }
 
-	&--message {
-		align-self: center;
-	}
+  &--message {
+    align-self: center;
+  }
 
   @media (min-width: v.$small) {
     width: 50%;
   }
 }
+
+.game-card--button.in-collection {
+	margin: v.$halfGutter 0;
+	padding: v.$halfGutter;
+	color: v.$secondary-color;
+	font-weight: bold;
+	background-color: v.$primary-color;
+	border: 1px solid v.$secondary-color;
+	border-radius: 0.5rem;
+	font-size: 1rem;
+  
+	&:hover {
+	  color: v.$primary-color;
+	  background-color: v.$secondary-color;
+	}
+  }
+
+.game-details.in-collection {
+
+    /* Styles when the game is in the user's collection */
+    border-color: v.$secondary-color;
+    animation: neon-border-secondary 1.5s infinite alternate;
+  }
+
     
   
 
