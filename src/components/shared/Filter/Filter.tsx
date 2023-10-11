@@ -4,16 +4,24 @@ import React, { useEffect, useState } from 'react';
 
 import platforms from '../../../../data/platforms.json';
 import filterIcon from '../../../assets/icons/filter.svg';
-import { useAppDispatch } from '../../../hooks/redux';
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import {
 	addSearchCollectionOptions,
+	resetCollectionSearch,
 	searchCollection,
 } from '../../../store/reducers/collection';
-import { addSearchOptions, searchGames } from '../../../store/reducers/game';
+import {
+	addSearchOptions,
+	resetGamesSearch,
+	searchGames,
+} from '../../../store/reducers/game';
 import { history } from '../../../utils/history';
 
 function Filter() {
 	const dispatch = useAppDispatch();
+
+	const { searchOptions } = useAppSelector((state) => state.games);
+
 	const [isFilterOpen, setIsFilterOpen] = useState(false);
 	const mediumBreakpoint = 1000;
 
@@ -24,13 +32,18 @@ function Filter() {
 	const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
 		if (history.location.pathname === '/') {
 			dispatch(
-				addSearchOptions({ platform: parseInt((e.target as HTMLButtonElement).value) }),
+				addSearchOptions({
+					...searchOptions,
+					page: 0,
+					platform: parseInt((e.target as HTMLButtonElement).value),
+				}),
 			);
 			dispatch(searchGames());
 		}
 		if (history.location.pathname === '/collection') {
 			dispatch(
 				addSearchCollectionOptions({
+					...searchOptions,
 					platform: parseInt((e.target as HTMLButtonElement).value),
 				}),
 			);
@@ -71,6 +84,11 @@ function Filter() {
 		}));
 	};
 
+	const handleReset = () => {
+		dispatch(resetGamesSearch());
+		dispatch(resetCollectionSearch());
+	};
+
 	return (
 		<div className="filter-menu">
 			{currentWidth < mediumBreakpoint && (
@@ -87,6 +105,9 @@ function Filter() {
 			)}
 			{(isFilterOpen || currentWidth >= mediumBreakpoint) && (
 				<div className="filter-menu--section">
+					<button className="filter-menu--reset" onClick={handleReset}>
+						réinitialiser les filtres
+					</button>
 					<h3 className="filter-menu--title">Consoles</h3>
 					{platforms.map((platforms) => (
 						<div className="filter-menu--submenu" key={platforms.platform_family}>

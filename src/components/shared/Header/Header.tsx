@@ -1,6 +1,6 @@
 import './Header.scss';
 
-import React, { KeyboardEvent, useState } from 'react';
+import React, { KeyboardEvent, useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 
 import searchIcon from '../../../assets/icons/search.svg';
@@ -23,24 +23,37 @@ import { history } from '../../../utils/history';
 function Header() {
 	const [searchTerm, setSearchTerm] = useState('');
 	const user = useAppSelector((state) => state.auth.user);
+	const { searchOptions } = useAppSelector((state) => state.games);
+	const { searchOptions: searchCollectionOptions } = useAppSelector(
+		(state) => state.collection,
+	);
 	const dispatch = useAppDispatch();
 
 	const handleSearch = () => {
 		if (searchTerm.trim() === '') {
 			// Reset the search state
-			dispatch(resetGamesSearch());
-			dispatch(resetCollectionSearch());
+			dispatch(addSearchOptions({ ...searchOptions, searchTerm: null }));
+			dispatch(
+				addSearchCollectionOptions({ ...searchCollectionOptions, searchTerm: null }),
+			);
 		}
 		if (history.location.pathname === '/') {
 			// Search games by name in the API
-			dispatch(addSearchOptions({ searchTerm: searchTerm }));
+			dispatch(addSearchOptions({ ...searchOptions, searchTerm: searchTerm }));
 			dispatch(searchGames());
+			return;
 		}
 		// If the user is on the collection page and the search bar is not empty
 		if (history.location.pathname === '/collection') {
 			// Search games by name in user's collection
-			dispatch(addSearchCollectionOptions({ searchTerm: searchTerm }));
+			dispatch(
+				addSearchCollectionOptions({
+					...searchCollectionOptions,
+					searchTerm: searchTerm,
+				}),
+			);
 			dispatch(searchCollection());
+			return;
 		}
 	};
 
@@ -56,9 +69,10 @@ function Header() {
 	const handleSignout = () => {
 		// Reset the collection state
 		dispatch(resetCollection());
+		dispatch(resetCollectionSearch());
 		// Sign out the user
 		dispatch(signout());
-		window.location.href = '/';
+		history.navigate('/');
 	};
 
 	const shouldDisplaySearchBar =
@@ -85,6 +99,18 @@ function Header() {
 		dispatch(resetCollectionSearch());
 		setSearchTerm('');
 	};
+
+	useEffect(() => {
+		if (history.location.pathname === '/' && !searchOptions.searchTerm) {
+			setSearchTerm('');
+		}
+		if (
+			history.location.pathname === '/collection' &&
+			!searchCollectionOptions.searchTerm
+		) {
+			setSearchTerm('');
+		}
+	}, [searchOptions, searchCollectionOptions]);
 
 	return (
 		<div className="header">

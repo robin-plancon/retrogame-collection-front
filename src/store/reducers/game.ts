@@ -8,15 +8,19 @@ interface GameState {
 	isLoading: boolean;
 	games: Array<Game>;
 	searchGames: Array<Game> | null;
-	searchOptions?: SearchOptions;
+	searchOptions: SearchOptions;
+	pagination: {
+		page: number;
+		pageSize: number;
+	};
 	status?: 'ok' | 'error';
 	message?: string;
 }
 
 interface SearchOptions {
-	pageSize?: number;
-	page?: number;
-	searchTerm?: string;
+	pageSize: number;
+	page: number;
+	searchTerm: string | null;
 	platform?: number;
 }
 
@@ -25,7 +29,13 @@ const initialState: GameState = {
 	games: [],
 	searchGames: null,
 	searchOptions: {
-		pageSize: 4,
+		searchTerm: null,
+		pageSize: 10,
+		page: 0,
+	},
+	pagination: {
+		page: 0,
+		pageSize: 10,
 	},
 };
 
@@ -126,6 +136,7 @@ export const searchGames = createAsyncThunk<
 	}
 });
 
+export const changePage = createAction<number>('game/changePage');
 export const addSearchOptions = createAction<SearchOptions>('game/addSearchOptions');
 export const resetGamesSearch = createAction('game/resetSearch');
 
@@ -176,6 +187,7 @@ const gameReducer = createReducer(initialState, (builder) => {
 		})
 		.addCase(searchGames.fulfilled, (state, action) => {
 			if (action.payload.status === 'Error') {
+				state.searchOptions = { ...state.searchOptions, page: 0 };
 				state.isLoading = false;
 				state.status = 'error';
 				state.message = action.payload.message;
@@ -192,6 +204,9 @@ const gameReducer = createReducer(initialState, (builder) => {
 		.addCase(resetGamesSearch, (state) => {
 			state.searchOptions = { ...initialState.searchOptions };
 			state.searchGames = null;
+		})
+		.addCase(changePage, (state, action) => {
+			state.pagination = { ...state.pagination, page: action.payload };
 		})
 		.addCase(addSearchOptions, (state, action) => {
 			state.searchOptions = { ...state.searchOptions, ...action.payload };
