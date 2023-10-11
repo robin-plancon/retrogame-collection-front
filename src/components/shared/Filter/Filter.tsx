@@ -45,6 +45,7 @@ function Filter() {
 				addSearchCollectionOptions({
 					...searchOptions,
 					platform: parseInt((e.target as HTMLButtonElement).value),
+					page: 0,
 				}),
 			);
 			dispatch(searchCollection());

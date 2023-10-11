@@ -39,7 +39,7 @@ function Header() {
 		}
 		if (history.location.pathname === '/') {
 			// Search games by name in the API
-			dispatch(addSearchOptions({ ...searchOptions, searchTerm: searchTerm }));
+			dispatch(addSearchOptions({ ...searchOptions, searchTerm: searchTerm, page: 0 }));
 			dispatch(searchGames());
 			return;
 		}
@@ -50,6 +50,7 @@ function Header() {
 				addSearchCollectionOptions({
 					...searchCollectionOptions,
 					searchTerm: searchTerm,
+					page: 0,
 				}),
 			);
 			dispatch(searchCollection());
