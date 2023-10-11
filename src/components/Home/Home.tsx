@@ -14,14 +14,9 @@ function Home() {
 	const dispatch = useAppDispatch();
 	const { isLoading, games, status, searchGames, searchOptions, pagination } =
 		useAppSelector((state) => state.games);
-	// const [visibleGames, setVisibleGames] = useState(4); // Number of cards to display initially
-	const [isFirst, setIsFirst] = useState(true); // To avoid displaying the "Afficher plus" button on the first render
-	const [displayedGames, setDisplayedGames] = useState<Game[]>([]); // To avoid displaying the "Afficher plus" button on the first render
-	const [itemOffset, setItemOffset] = useState(0); // To avoid displaying the "Afficher plus" button on the first render
-
-	const pageCount = Math.ceil(
-		displayedGames.length / (searchGames ? searchOptions.pageSize : pagination.pageSize),
-	);
+	const [isFirst, setIsFirst] = useState(true); // To avoid displaying the "Afficher plus" button on the first render/ To avoid displaying the "Afficher plus" button on the first render
+	const [pageCount, setPageCount] = useState(0);
+	const [currentItems, setCurrentItems] = useState<Game[]>([]);
 
 	useEffect(() => {
 		if (isFirst) {
@@ -31,16 +26,21 @@ function Home() {
 	}, [isFirst]);
 
 	useEffect(() => {
-		setDisplayedGames(games);
+		setPageCount(Math.ceil(games.length / pagination.pageSize));
+		const itemOffset = pagination.pageSize * pagination.page;
+		setCurrentItems(games.slice(itemOffset, itemOffset + pagination.pageSize));
 	}, [games]); // Add games to the dependency array to avoid a warning
 
 	useEffect(() => {
 		if (searchGames) {
-			setDisplayedGames(searchGames);
-		} else {
-			setDisplayedGames(games);
+			setPageCount(Math.ceil(searchGames.length / searchOptions.pageSize));
+			const itemOffset = searchOptions.pageSize * searchOptions.page;
+			setCurrentItems(searchGames.slice(itemOffset, itemOffset + searchOptions.pageSize));
+			return;
 		}
-		// setVisibleGames(4);
+		setPageCount(Math.ceil(games.length / pagination.pageSize));
+		const itemOffset = pagination.pageSize * pagination.page;
+		setCurrentItems(games.slice(itemOffset, itemOffset + pagination.pageSize));
 	}, [searchGames]); // Add games to the dependency array to avoid a warning
 
 	const platformName = (platformId: number) => {
@@ -54,18 +54,16 @@ function Home() {
 		);
 	};
 
-	const currentItems = displayedGames.slice(itemOffset, itemOffset + pagination.pageSize);
-
 	const handlePageClick = (event: { selected: number }) => {
 		if (searchGames) {
 			dispatch(addSearchOptions({ ...searchOptions, page: event.selected }));
-			const newOffset = (event.selected * searchOptions.pageSize) % displayedGames.length;
-			setItemOffset(newOffset);
+			const newOffset = event.selected * searchOptions.pageSize;
+			setCurrentItems(searchGames.slice(newOffset, newOffset + searchOptions.pageSize));
 			return;
 		}
 		dispatch(changePage(event.selected));
-		const newOffset = (event.selected * pagination.pageSize) % displayedGames.length;
-		setItemOffset(newOffset);
+		const newOffset = event.selected * pagination.pageSize;
+		setCurrentItems(games.slice(newOffset, newOffset + pagination.pageSize));
 	};
 
 	return (
@@ -101,13 +99,15 @@ function Home() {
 							</h2>
 						)}
 					<div className="game-list">
-						{isLoading && <p>Chargement...</p>}
-						{!isLoading && status === 'error' && (
-							<p>Erreur lors du chargement des jeux.</p>
-						)}
-						{!isLoading && displayedGames.length === 0 && <p>Aucun jeu trouvé.</p>}
+						<div className="games-cards">
+							{isLoading && <p>Chargement...</p>}
+							{!isLoading && status === 'error' && (
+								<p>Erreur lors du chargement des jeux.</p>
+							)}
+							{!isLoading && currentItems.length === 0 && <p>Aucun jeu trouvé.</p>}
 
-						{!isLoading && <GameList games={currentItems} />}
+							{!isLoading && <GameList games={currentItems} />}
+						</div>
 						<ReactPaginate
 							breakLabel="..."
 							nextLabel="Suivant"

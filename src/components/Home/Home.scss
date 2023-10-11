@@ -34,30 +34,18 @@
 
 .game-list {
 	display: flex;
+	flex-direction: column;
 	flex-wrap: wrap;
 	justify-content: center;
-	gap: v.$halfGutter; /* Space between the cards */
+	align-items: center;
+	gap: v.$halfGutter;
 }
 
-.load-more {
-	align-self: center;
-	margin-top: v.$gutter;
-
-	&--button {
-		background-color: #0e121d;
-		border: 2px solid v.$tertiary-color;
-		color: #fa3294;
-		padding: 0.5rem 1rem;
-		border-radius: 4px;
-		cursor: pointer;
-		transition: background-color 0.3s, color 0.3s;
-		font-size: 1.2rem;
-
-		&hover {
-			background-color: v.$tertiary-color;
-			color: #0e121d;
-		}
-	}
+.games-cards {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: v.$halfGutter;
 }
 
 .pagination {

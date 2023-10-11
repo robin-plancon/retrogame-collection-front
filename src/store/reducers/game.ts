@@ -186,6 +186,7 @@ const gameReducer = createReducer(initialState, (builder) => {
 		})
 		.addCase(searchGames.fulfilled, (state, action) => {
 			if (action.payload.status === 'Error') {
+				state.searchOptions = { ...state.searchOptions, page: 0 };
 				state.isLoading = false;
 				state.status = 'error';
 				state.message = action.payload.message;
