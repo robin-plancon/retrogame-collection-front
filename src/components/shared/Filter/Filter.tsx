@@ -92,12 +92,12 @@ function Filter() {
 						<div className="filter-menu--submenu" key={platforms.platform_family}>
 							<button
 								className="filter-menu--subtitle"
-								onClick={() => toggleSubMenu(platforms.platform_family)} // Gérer le clic sur le sous-titre
+								onClick={() => toggleSubMenu(platforms.platform_family)} // Handle the submenu on click
 							>
 								{platforms.platform_family}
 							</button>
 							<div className="filter-menu--values">
-								{platformSubMenuState[platforms.platform_family] && // Afficher si le sous-menu est ouvert
+								{platformSubMenuState[platforms.platform_family] && // Display informations when the submenu is open
 									platforms.platforms
 										.sort((a, b) => (a.name > b.name ? 1 : -1))
 										.map((platform) => (
