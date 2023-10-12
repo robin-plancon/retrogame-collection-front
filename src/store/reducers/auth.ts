@@ -53,7 +53,7 @@ export const signup = createAsyncThunk('auth/signup', async (formData: SignupPro
 		const { data } = await axiosInstance.post('/signup', formData);
 		return data;
 	} catch (err) {
-		console.log(err);
+		// console.log(err);
 		if (isAxiosError(err)) {
 			return err.response?.data;
 		}
@@ -68,7 +68,7 @@ export const signin = createAsyncThunk('auth/signin', async (formData: SigninPro
 		const { data } = await axiosInstance.post('/login', formData);
 		return data;
 	} catch (err) {
-		console.log(err);
+		// console.log(err);
 		if (isAxiosError(err)) {
 			return err.response?.data;
 		}
@@ -87,7 +87,7 @@ export const update = createAsyncThunk('auth/update', async (formData: UpdatePro
 		const { data } = await axiosInstance.patch('/user/update', formData);
 		return data;
 	} catch (err) {
-		console.log(err);
+		// console.log(err);
 		if (isAxiosError(err)) {
 			return err.response?.data;
 		}
@@ -131,7 +131,7 @@ export const resetPasswordWithToken = createAsyncThunk(
 			const { data } = await axiosInstance.post('/reset-form', formData);
 			return data;
 		} catch (err) {
-			console.log(err);
+			// console.log(err);
 			if (isAxiosError(err)) {
 				return err.response?.data;
 			}
@@ -176,6 +176,7 @@ const authReducer = createReducer(initialState, (builder) => {
 				return;
 			}
 			// if the action is fulfilled we set the isLoading to false
+			delete state.message;
 			state.isLoading = false;
 			state.status = 'ok';
 		})
@@ -197,6 +198,7 @@ const authReducer = createReducer(initialState, (builder) => {
 				return;
 			}
 			// if the action is fulfilled we set the isLoading to false
+			delete state.message;
 			state.isLoading = false;
 			state.status = 'ok';
 			state.user = action.payload.user;
@@ -284,6 +286,7 @@ const authReducer = createReducer(initialState, (builder) => {
 		.addCase(signout, (state) => {
 			state.user = null;
 			state.token = null;
+			delete state.message;
 			localStorage.removeItem('user');
 			localStorage.removeItem('token');
 			axiosInstance.defaults.headers.common['Authorization'] = '';
