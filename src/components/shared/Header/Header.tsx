@@ -3,7 +3,8 @@ import './Header.scss';
 import React, { KeyboardEvent, useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 
-import searchIcon from '../../../assets/icons/search.svg';
+import searchIcon from '../../../assets/icons/search-menthol.svg';
+//import gameIcon from '../../../assets/icons/video-game.svg';
 import Logo from '../../../assets/logo.png';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { signout } from '../../../store/reducers/auth';

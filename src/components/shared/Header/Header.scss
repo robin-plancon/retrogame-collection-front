@@ -20,9 +20,11 @@
     display: flex;
     align-items: center;
     
-    background-color: #111725; 
-    padding: 0.5rem; 
-    border-radius: 1rem;
+    background-color: #0e121d; 
+    color: #0fd7b0;
+    padding: 0.1rem; 
+    border-radius: 0.8rem;
+    border: 1px solid #0fd7b0;
   }
 
   &-search-input {
@@ -30,9 +32,14 @@
     padding: v.$halfGutter;
     border: none;
     background-color: transparent; 
-    color: white; 
+    color: rgb(158, 156, 156); 
     font-size: 1rem;
   }
+
+  &-search-input::placeholder {
+    color: #77a4a4;
+  }
+
   
   &-search-icon {
     width: 1rem;
@@ -66,7 +73,7 @@
     }
 
     &-search-bar {
-      width: 50%;
+      width: 40%;
     }
 
     .header-buttons {
