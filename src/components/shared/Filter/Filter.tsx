@@ -20,7 +20,7 @@ import { history } from '../../../utils/history';
 function Filter() {
 	const dispatch = useAppDispatch();
 
-	const { searchOptions } = useAppSelector((state) => state.games);
+	const { searchOptions, isLoading } = useAppSelector((state) => state.games);
 
 	const [isFilterOpen, setIsFilterOpen] = useState(false);
 	const mediumBreakpoint = 1000;
@@ -29,26 +29,26 @@ function Filter() {
 		setIsFilterOpen(!isFilterOpen);
 	};
 
-	const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+	const handleClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
 		if (history.location.pathname === '/') {
-			dispatch(
+			await dispatch(
 				addSearchOptions({
 					...searchOptions,
 					page: 0,
 					platform: parseInt((e.target as HTMLButtonElement).value),
 				}),
 			);
-			dispatch(searchGames());
+			await dispatch(searchGames());
 		}
 		if (history.location.pathname === '/collection') {
-			dispatch(
+			await dispatch(
 				addSearchCollectionOptions({
 					...searchOptions,
 					platform: parseInt((e.target as HTMLButtonElement).value),
 					page: 0,
 				}),
 			);
-			dispatch(searchCollection());
+			await dispatch(searchCollection());
 		}
 	};
 
@@ -85,7 +85,7 @@ function Filter() {
 		}));
 	};
 
-	const handleReset = () => {
+	const handleReset = async () => {
 		dispatch(resetGamesSearch());
 		dispatch(resetCollectionSearch());
 	};
@@ -106,7 +106,13 @@ function Filter() {
 			)}
 			{(isFilterOpen || currentWidth >= mediumBreakpoint) && (
 				<div className="filter-menu--section">
-					<button className="filter-menu--reset" onClick={handleReset}>
+					<button
+						className={
+							isLoading ? 'filter-menu--reset deactivated' : 'filter-menu--reset'
+						}
+						onClick={handleReset}
+						disabled={isLoading}
+					>
 						réinitialiser les filtres
 					</button>
 					<h3 className="filter-menu--title">Consoles</h3>
