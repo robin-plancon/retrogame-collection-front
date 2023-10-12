@@ -16,9 +16,9 @@ function Home() {
 	const dispatch = useAppDispatch();
 	const { isLoading, games, status, searchGames, searchOptions, pagination } =
 		useAppSelector((state) => state.games);
-	const [isFirst, setIsFirst] = useState(true); // To avoid displaying the "Afficher plus" button on the first render/ To avoid displaying the "Afficher plus" button on the first render
-	const [pageCount, setPageCount] = useState(0);
-	const [currentItems, setCurrentItems] = useState<Game[]>([]);
+	const [isFirst, setIsFirst] = useState(true);
+	const [pageCount, setPageCount] = useState(0); // State to control the number of pages
+	const [currentItems, setCurrentItems] = useState<Game[]>([]); // State to control the items to display
 	const [showScrollButton, setShowScrollButton] = useState(false); // State to control the visibility of the scroll button
 
 	useEffect(() => {
@@ -28,24 +28,31 @@ function Home() {
 		}
 	}, [isFirst]);
 
+	// Update the current items when the games change
 	useEffect(() => {
+		// Update the page count
 		setPageCount(Math.ceil(games.length / pagination.pageSize));
+		// Update items to display
 		const itemOffset = pagination.pageSize * pagination.page;
 		setCurrentItems(games.slice(itemOffset, itemOffset + pagination.pageSize));
-	}, [games]); // Add games to the dependency array to avoid a warning
+	}, [games]);
 
+	// Update the current items when the search results change
 	useEffect(() => {
+		// If there are search results, update the page count and items to display
 		if (searchGames) {
 			setPageCount(Math.ceil(searchGames.length / searchOptions.pageSize));
 			const itemOffset = searchOptions.pageSize * searchOptions.page;
 			setCurrentItems(searchGames.slice(itemOffset, itemOffset + searchOptions.pageSize));
 			return;
 		}
+		// If there are no search results, update the page count and items to display
 		setPageCount(Math.ceil(games.length / pagination.pageSize));
 		const itemOffset = pagination.pageSize * pagination.page;
 		setCurrentItems(games.slice(itemOffset, itemOffset + pagination.pageSize));
-	}, [searchGames]); // Add games to the dependency array to avoid a warning
+	}, [searchGames]);
 
+	// Function to get the name of a platform from its id
 	const platformName = (platformId: number) => {
 		return platforms.map((platform_family) =>
 			platform_family.platforms.map((platform) => {
@@ -57,13 +64,16 @@ function Home() {
 		);
 	};
 
+	// Function to handle the pagination
 	const handlePageClick = (event: { selected: number }) => {
+		// If there are search results, update the page count and items to display
 		if (searchGames) {
 			dispatch(addSearchOptions({ ...searchOptions, page: event.selected }));
 			const newOffset = event.selected * searchOptions.pageSize;
 			setCurrentItems(searchGames.slice(newOffset, newOffset + searchOptions.pageSize));
 			return;
 		}
+		// If there are no search results, update the page count and items to display
 		dispatch(changePage(event.selected));
 		const newOffset = event.selected * pagination.pageSize;
 		setCurrentItems(games.slice(newOffset, newOffset + pagination.pageSize));

@@ -6,7 +6,7 @@ import { NavLink } from 'react-router-dom';
 import searchIcon from '../../../assets/icons/search.svg';
 import Logo from '../../../assets/logo.png';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
-import { signout } from '../../../store/reducers/auth';
+import { resetStatus, signout } from '../../../store/reducers/auth';
 import {
 	addSearchCollectionOptions,
 	resetCollection,
@@ -31,7 +31,7 @@ function Header() {
 
 	const handleSearch = () => {
 		if (searchTerm.trim() === '') {
-			// Reset the search state
+			// If the search bar is empty we set the searchTerm to null
 			dispatch(addSearchOptions({ ...searchOptions, searchTerm: null }));
 			dispatch(
 				addSearchCollectionOptions({ ...searchCollectionOptions, searchTerm: null }),
@@ -73,6 +73,7 @@ function Header() {
 		dispatch(resetCollectionSearch());
 		// Sign out the user
 		dispatch(signout());
+		// Redirect to the home page
 		history.navigate('/');
 	};
 
@@ -82,6 +83,7 @@ function Header() {
 	// const isCollectionPage = history.location.pathname === '/collection';
 	// Click on the logo reset the search state and redirect to the home page
 	const handleClick = () => {
+		dispatch(resetStatus());
 		// If the user is on the home page
 		if (history.location.pathname === '/') {
 			// Reset the search state
@@ -97,14 +99,23 @@ function Header() {
 	};
 
 	const handleCollectionClick = () => {
+		dispatch(resetStatus());
+		dispatch(resetCollectionSearch());
+		setSearchTerm('');
+	};
+
+	const handleProfileClick = () => {
+		dispatch(resetStatus());
 		dispatch(resetCollectionSearch());
 		setSearchTerm('');
 	};
 
 	useEffect(() => {
+		// If the user is on the home page and the search bar is empty
 		if (history.location.pathname === '/' && !searchOptions.searchTerm) {
 			setSearchTerm('');
 		}
+		// If the user is on the collection page and the search bar is empty
 		if (
 			history.location.pathname === '/collection' &&
 			!searchCollectionOptions.searchTerm
@@ -121,7 +132,11 @@ function Header() {
 
 			<div className="header-buttons">
 				{!user && (
-					<NavLink to="/signup" className="header-button">
+					<NavLink
+						to="/signup"
+						className="header-button"
+						onClick={() => dispatch(resetStatus())}
+					>
 						Inscription
 					</NavLink>
 				)}
@@ -130,12 +145,17 @@ function Header() {
 						to="/signin"
 						state={{ from: history.location }}
 						className="header-button"
+						onClick={() => dispatch(resetStatus())} // Reset message and status in the auth state
 					>
 						Connexion
 					</NavLink>
 				)}
 				{user && !isUserProfilePage && (
-					<NavLink to="/user/profile" className="header-button">
+					<NavLink
+						to="/user/profile"
+						className="header-button"
+						onClick={handleProfileClick}
+					>
 						Mon profil
 					</NavLink>
 				)}

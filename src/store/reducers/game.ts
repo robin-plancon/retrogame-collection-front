@@ -80,6 +80,7 @@ export const searchGamesByName = createAsyncThunk(
 	},
 );
 
+// Search games by name and platform
 export const searchGames = createAsyncThunk<
 	{
 		result: Array<Game>;
@@ -92,13 +93,16 @@ export const searchGames = createAsyncThunk<
 	}
 >('game/searchGames', async (_, thunkAPI) => {
 	try {
+		// If there is no search options, return
 		if (!thunkAPI.getState().games.searchOptions) {
 			return;
 		}
 		const searchOptions = thunkAPI.getState().games.searchOptions;
+		// If there is no search term and no platform, return
 		if (searchOptions === undefined) {
 			return [];
 		}
+		// If there is a search term and a platform, search by both
 		if (
 			searchOptions.searchTerm &&
 			searchOptions.searchTerm.length > 0 &&
@@ -113,6 +117,7 @@ export const searchGames = createAsyncThunk<
 			const data = response.data;
 			return data;
 		}
+		// If there is a search term but no platform, search by name
 		if (searchOptions.searchTerm && searchOptions.searchTerm.length > 0) {
 			const response = await axiosInstance.get('/search', {
 				params: {
@@ -122,6 +127,7 @@ export const searchGames = createAsyncThunk<
 			const data = response.data;
 			return data;
 		}
+		// If there is a platform but no search term, search by platform
 		if (searchOptions.platform) {
 			const response = await axiosInstance.get(
 				`/platform/${searchOptions.platform}/games`,
