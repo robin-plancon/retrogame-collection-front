@@ -5,6 +5,8 @@ import ReactPaginate from 'react-paginate';
 
 import platforms from '../../../data/platforms.json';
 import { Game } from '../../@types/game';
+import upIcon from '../../assets/icons/arrow-up.svg';
+import ghostIcon from '../../assets/icons/ghost.svg';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { addSearchOptions, changePage } from '../../store/reducers/game';
 import GameList from '../GameList/GameList';
@@ -17,6 +19,7 @@ function Home() {
 	const [isFirst, setIsFirst] = useState(true); // To avoid displaying the "Afficher plus" button on the first render/ To avoid displaying the "Afficher plus" button on the first render
 	const [pageCount, setPageCount] = useState(0);
 	const [currentItems, setCurrentItems] = useState<Game[]>([]);
+	const [showScrollButton, setShowScrollButton] = useState(false); // State to control the visibility of the scroll button
 
 	useEffect(() => {
 		if (isFirst) {
@@ -66,6 +69,31 @@ function Home() {
 		setCurrentItems(games.slice(newOffset, newOffset + pagination.pageSize));
 	};
 
+	const handleScrollUp = () => {
+		window.scrollTo({
+			top: 0,
+			behavior: 'smooth',
+		});
+	};
+
+	const handleScroll = () => {
+		// Check if the user has scrolled down by a certain amount
+		if (window.scrollY > 100) {
+			setShowScrollButton(true);
+		} else {
+			setShowScrollButton(false);
+		}
+	};
+
+	useEffect(() => {
+		// Add a scroll event listener to track scrolling
+		window.addEventListener('scroll', handleScroll);
+		return () => {
+			// Remove the event listener when the component unmounts
+			window.removeEventListener('scroll', handleScroll);
+		};
+	}, []);
+
 	return (
 		<>
 			<div className="home">
@@ -100,7 +128,13 @@ function Home() {
 						)}
 					<div className="game-list">
 						<div className="games-cards">
-							{isLoading && <p>Chargement...</p>}
+							{isLoading && (
+								<img
+									src={ghostIcon}
+									alt="Chargement..."
+									style={{ width: '150px', opacity: 0.8 }}
+								/>
+							)}
 							{!isLoading && status === 'error' && (
 								<p>Erreur lors du chargement des jeux.</p>
 							)}
@@ -124,6 +158,13 @@ function Home() {
 							previousClassName="pagination-previous"
 							nextClassName="pagination-next"
 						/>
+						{showScrollButton && (
+							<div className="scroll-button-container">
+								<button className="scroll-button" onClick={handleScrollUp}>
+									<img src={upIcon} alt="Scroll to Top" />
+								</button>
+							</div>
+						)}
 					</div>
 				</div>
 			</div>

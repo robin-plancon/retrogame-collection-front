@@ -126,6 +126,14 @@
     animation: neon-border-secondary 1.5s infinite alternate;
   }
 
+  .loading {
+    display: flex;
+    justify-content: center; /* Centre horizontalement */
+    align-items: center; /* Centre verticalement */
+    height: 100vh; /* Hauteur de 100% de la hauteur de la fenêtre */
+  }
+  
+
     
   
 
