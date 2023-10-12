@@ -1,6 +1,7 @@
 import './UserProfile.scss';
 
 import React, { useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 
 import closeIcon from '../../assets/icons/close.svg';
@@ -8,52 +9,63 @@ import mushroom from '../../assets/icons/mushroom.svg';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { remove, signout, update } from '../../store/reducers/auth';
 
+type FormProps = {
+	currentPassword?: string;
+	newPassword?: string;
+	confirmation?: string;
+};
+
 const UserProfile = () => {
 	const dispatch = useAppDispatch();
 
+	const {
+		register,
+		handleSubmit,
+		watch,
+		reset,
+		formState: { errors },
+	} = useForm({
+		mode: 'onSubmit',
+		shouldUseNativeValidation: false,
+		reValidateMode: 'onSubmit',
+	});
+
+	const watchPassword: string = watch('newPassword');
+
 	const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
 	const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-	const [currentPassword, setCurrentPassword] = useState('');
-	const [newPassword, setNewPassword] = useState('');
-	const [confirmPassword, setConfirmPassword] = useState('');
+	// const [currentPassword, setCurrentPassword] = useState('');
+	// const [newPassword, setNewPassword] = useState('');
+	// const [confirmPassword, setConfirmPassword] = useState('');
 	const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
-	const [errorText, setErrorText] = useState('');
+	// const [errorText, setErrorText] = useState('');
 	const userDetails = useAppSelector((state) => state.auth);
 
-	const handlePasswordChange = () => {
-		console.log('handlePasswordChange');
+	const onSubmit: SubmitHandler<FormProps> = (data, event) => {
+		if (event) {
+			event.preventDefault();
+		}
 		if (userDetails.user && userDetails.token) {
-			if (
-				!currentPassword ||
-				!newPassword ||
-				!confirmPassword ||
-				newPassword !== confirmPassword
-			) {
-				setErrorText(
-					'Oops ! Assurez-vous que le mot de passe contient au min :8, au max: 14 caractères, au moins une majuscule, une minuscule, un chiffre et un caractère spécial. Tous les champs doivent être renseignés.',
-				);
-			} else {
-				// dispatch action to change password
-				dispatch(
-					update({
-						currentPassword: currentPassword,
-						newPassword: newPassword,
-						confirmation: confirmPassword,
-					}),
-				).then((resultAction) => {
-					const { error, message } = resultAction.payload;
-					console.log(resultAction.payload);
-					if (!error) {
-						setTimeout(() => {
-							setIsSuccessModalOpen(true);
-							closePasswordModal();
-							// dispatch(signout());
-						}, 1000);
-					} else {
-						console.error(message);
-					}
-				});
-			}
+			const { currentPassword, newPassword, confirmation } = data;
+			// dispatch action to change password
+			dispatch(
+				update({
+					currentPassword: currentPassword,
+					newPassword: newPassword,
+					confirmation: confirmation,
+				}),
+			).then((resultAction) => {
+				const { error, message } = resultAction.payload;
+				if (!error) {
+					setTimeout(() => {
+						setIsSuccessModalOpen(true);
+						closePasswordModal();
+						// dispatch(signout());
+					}, 1000);
+				} else {
+					console.error(message);
+				}
+			});
 		}
 	};
 
@@ -63,7 +75,6 @@ const UserProfile = () => {
 			// Dispatch action to delete the account
 			dispatch(remove()).then((resultAction) => {
 				const { error, message } = resultAction.payload;
-				console.log('Result Action:', resultAction);
 				if (!error) {
 					console.log('Account deleted successfully');
 					setIsDeleteModalOpen(true);
@@ -89,10 +100,12 @@ const UserProfile = () => {
 
 	const closePasswordModal = () => {
 		// Reset the fields and the error message
-		setCurrentPassword('');
-		setNewPassword('');
-		setConfirmPassword('');
-		setErrorText('');
+		// setErrorText('');
+		reset({
+			currentPassword: '',
+			newPassword: '',
+			confirmation: '',
+		});
 		setIsPasswordModalOpen(false);
 	};
 
@@ -129,35 +142,64 @@ const UserProfile = () => {
 							>
 								<img src={closeIcon} alt="Fermer la modale" />
 							</button>
-							<input
-								type="password"
-								placeholder="Mot de passe actuel"
-								value={currentPassword}
-								onChange={(e) => setCurrentPassword(e.target.value)}
-							/>
-							<input
-								type="password"
-								placeholder="Nouveau mot de passe"
-								value={newPassword}
-								onChange={(e) => setNewPassword(e.target.value)}
-							/>
-							<input
-								type="password"
-								placeholder="Confirmer le mot de passe"
-								value={confirmPassword}
-								onChange={(e) => setConfirmPassword(e.target.value)}
-							/>
-							{errorText && (
-								<div className="error-text">
-									<p>{errorText}</p>
-								</div>
-							)}
-							<button className="modal-button" onClick={handlePasswordChange}>
-								Confirmer
-							</button>
-							<button className="modal-link" onClick={closePasswordModal}>
-								Annuler
-							</button>
+							<form className="change-password-form">
+								<input
+									type="password"
+									placeholder="Mot de passe actuel"
+									{...register('currentPassword', {
+										required: 'Ce champ est requis',
+									})}
+								/>
+								{errors.currentPassword && (
+									<p className="error-text">{errors.currentPassword.message as string}</p>
+								)}
+								<input
+									type="password"
+									placeholder="Nouveau mot de passe"
+									{...register('newPassword', {
+										required: 'Ce champ est requis',
+										minLength: {
+											value: 8,
+											message: 'Le mot de passe doit contenir au moins 8 caractères',
+										},
+										maxLength: {
+											value: 14,
+											message: 'Le mot de passe doit contenir au maximum 14 caractères',
+										},
+										pattern: {
+											value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).*$/i,
+											message:
+												'Le mot de passe doit contenir au moins une majuscule, une minuscule, un chiffre et un caractère spécial',
+										},
+									})}
+								/>
+								{errors.newPassword && (
+									<p className="error-text">{errors.newPassword.message as string}</p>
+								)}
+								<input
+									type="password"
+									placeholder="Confirmer le mot de passe"
+									{...register('confirmation', {
+										required: 'Ce champ est requis',
+										validate: (value) => {
+											return (
+												value === watchPassword ||
+												'Les mots de passe ne correspondent pas'
+											);
+										},
+									})}
+								/>
+								{errors.confirmation && (
+									<p className="error-text">{errors.confirmation.message as string}</p>
+								)}
+
+								<button className="modal-button" onClick={handleSubmit(onSubmit)}>
+									Confirmer
+								</button>
+								<button type="button" className="modal-link" onClick={closePasswordModal}>
+									Annuler
+								</button>
+							</form>
 						</div>
 					</div>
 				)}
@@ -166,6 +208,7 @@ const UserProfile = () => {
 						<div className="modal-content">
 							<h2>Votre mot de passe a été modifié avec succès !</h2>
 							<button
+								type="button"
 								onClick={() => setIsSuccessModalOpen(false)}
 								className="modal-closed"
 								aria-label="Fermer la modale"
@@ -182,10 +225,10 @@ const UserProfile = () => {
 					<div className="window">
 						<div className="window-content">
 							<h2>Êtes-vous sûr(e) de vouloir supprimer ce compte ?</h2>
-							<button className="window-button" onClick={handleDelete}>
+							<button type="button" className="window-button" onClick={handleDelete}>
 								Confirmer
 							</button>
-							<button className="window-link" onClick={closeDeleteModal}>
+							<button type="button" className="window-link" onClick={closeDeleteModal}>
 								Annuler
 							</button>
 						</div>
