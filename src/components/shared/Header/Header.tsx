@@ -13,11 +13,8 @@ import {
 	resetCollectionSearch,
 	searchCollection,
 } from '../../../store/reducers/collection';
-import {
-	addSearchOptions,
-	resetGamesSearch,
-	searchGames,
-} from '../../../store/reducers/game';
+import { addSearchOptions, searchGames } from '../../../store/reducers/game';
+//import { resetGamesSearch } from '../../../store/reducers/game';
 import { history } from '../../../utils/history';
 
 function Header() {
@@ -87,8 +84,9 @@ function Header() {
 		// If the user is on the home page
 		if (history.location.pathname === '/') {
 			// Reset the search state
-			dispatch(resetGamesSearch());
-			setSearchTerm('');
+			//dispatch(resetGamesSearch());
+			//setSearchTerm('');
+			window.location.reload();
 		}
 		// If the user is on the collection page
 		if (history.location.pathname === '/collection') {
