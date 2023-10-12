@@ -2,8 +2,8 @@ import './Collection.scss';
 
 import React, { useEffect, useState } from 'react';
 
-// import { history } from '../../utils/history';
 import platforms from '../../../data/platforms.json';
+import ghostIcon from '../../assets/icons/ghost.svg';
 import { useAppSelector } from '../../hooks/redux';
 import GameCard from '../GameCard/GameCard';
 import Filter from '../shared/Filter/Filter';
@@ -31,6 +31,9 @@ function Collection() {
 			}),
 		);
 	};
+
+	// Checks if there is a game to display
+	const noGamesFound = !isLoading && searchResults && searchResults.length === 0;
 
 	return (
 		<div className="collection">
@@ -63,7 +66,14 @@ function Collection() {
 						</h2>
 					)}
 				<div className="collection-list">
-					{isLoading && games.length === 0 && <p>Chargement...</p>}
+					{noGamesFound && <p className="no-games-message">Aucun jeu à afficher</p>}
+					{isLoading && games.length === 0 && (
+						<img
+							src={ghostIcon}
+							alt="Chargement..."
+							style={{ width: '150px', opacity: 0.8 }}
+						/>
+					)}
 					{!isLoading && status === 'error' && <p>Erreur lors du chargement des jeux.</p>}
 					{!isLoading && games.length === 0 && <p>Aucun jeu dans votre collection.</p>}
 					{searchResults &&

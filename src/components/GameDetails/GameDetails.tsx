@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 
+import ghostIcon from '../../assets/icons/ghost.svg';
 import placeholder from '../../assets/placeholder_image.png';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import {
@@ -52,7 +53,17 @@ function GameDetails() {
 	};
 
 	if ((!game && slug) || isLoading) {
-		return <p className="game-details--message">Chargement...</p>;
+		return (
+			<p className="game-details--message">
+				<div className="centered">
+					<img
+						src={ghostIcon}
+						alt="Chargement..."
+						style={{ width: '150px', opacity: 0.8 }}
+					/>
+				</div>
+			</p>
+		);
 	}
 
 	// Check if the game does exist
