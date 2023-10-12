@@ -60,6 +60,8 @@
   }
 
   @media (min-width: v.$medium) {
+    justify-content: space-between;
+
     &-logo {
       height: 6rem;
     }
