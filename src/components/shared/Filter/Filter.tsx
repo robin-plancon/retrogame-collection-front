@@ -30,21 +30,33 @@ function Filter() {
 	};
 
 	const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+		// On récupère le bouton cliqué
+		const clickedButton = e.target as HTMLButtonElement;
+
+		if (clickedButton.classList.contains('selected')) {
+			// Le bouton a déjà la classe "selected", donc on la supprime
+			clickedButton.classList.remove('selected');
+		} else {
+			// Le bouton n'a pas la classe "selected", donc on l'ajoute
+			clickedButton.classList.add('selected');
+		}
+
 		if (history.location.pathname === '/') {
 			dispatch(
 				addSearchOptions({
 					...searchOptions,
 					page: 0,
-					platform: parseInt((e.target as HTMLButtonElement).value),
+					platform: parseInt(clickedButton.value),
 				}),
 			);
 			dispatch(searchGames());
 		}
+
 		if (history.location.pathname === '/collection') {
 			dispatch(
 				addSearchCollectionOptions({
 					...searchOptions,
-					platform: parseInt((e.target as HTMLButtonElement).value),
+					platform: parseInt(clickedButton.value),
 					page: 0,
 				}),
 			);
@@ -52,32 +64,26 @@ function Filter() {
 		}
 	};
 
-	// État local pour suivre l'état d'ouverture des sous-menus par nom de plate-forme
 	const [platformSubMenuState, setPlatformSubMenuState] = useState<{
 		[key: string]: boolean;
 	}>({});
 
-	// Get the current width of the window to display the clickable filter button only on mobile
 	const getCurrentDimensions = () => {
 		return {
 			width: window.innerWidth,
 		};
 	};
 
-	// State to update the current width of the window when it is resized
 	const [currentWidth, setCurrentWidth] = useState(getCurrentDimensions().width);
 
 	useEffect(() => {
-		// Update the current width of the window when it is resized
 		const updateDimensions = () => {
 			setCurrentWidth(getCurrentDimensions().width);
 		};
-		// Add an event listener to the window to update the current width when it is resized
 		window.addEventListener('resize', updateDimensions);
 		return () => window.removeEventListener('resize', updateDimensions);
 	}, [currentWidth]);
 
-	// Fonction pour basculer l'état d'ouverture d'un sous-menu
 	const toggleSubMenu = (platformFamily: string) => {
 		setPlatformSubMenuState((prevState) => ({
 			...prevState,
@@ -114,12 +120,12 @@ function Filter() {
 						<div className="filter-menu--submenu" key={platforms.platform_family}>
 							<button
 								className="filter-menu--subtitle"
-								onClick={() => toggleSubMenu(platforms.platform_family)} // Handle the submenu on click
+								onClick={() => toggleSubMenu(platforms.platform_family)}
 							>
 								{platforms.platform_family}
 							</button>
 							<div className="filter-menu--values">
-								{platformSubMenuState[platforms.platform_family] && // Display informations when the submenu is open
+								{platformSubMenuState[platforms.platform_family] &&
 									platforms.platforms
 										.sort((a, b) => (a.name > b.name ? 1 : -1))
 										.map((platform) => (
@@ -137,18 +143,6 @@ function Filter() {
 					))}
 				</div>
 			)}
-			{/* {(isFilterOpen || currentWidth >= mediumBreakpoint) && (
-        <div className="filter-menu--section">
-          <h3 className="filter-menu--title">Genres</h3>
-          <p className="filter-menu--value italic">Choix multiples</p>
-        </div>
-      )}
-      {(isFilterOpen || currentWidth >= mediumBreakpoint) && (
-        <div className="filter-menu--section">
-          <h3 className="filter-menu--title">Date de sortie</h3>
-          <p className="filter-menu--value italic">Champs nombre</p>
-        </div>
-      )} */}
 		</div>
 	);
 }

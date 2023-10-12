@@ -89,6 +89,11 @@
       background-color: v.$tertiary-color; // Change background color on hover
       color: v.$primary-color; // Change text color on hover
     }
+
+	&.selected {
+		background-color: v.$tertiary-color; // Change background color when selected
+		color: v.$primary-color; // Change text color when selected
+  }
   }
 
   @media (min-width: v.$medium) {
@@ -108,5 +113,6 @@
   font-style: italic;
   color: #e2e2e4;
 }
+
 
 
