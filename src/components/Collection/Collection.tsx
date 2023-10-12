@@ -3,6 +3,7 @@ import './Collection.scss';
 import React, { useEffect, useState } from 'react';
 
 import platforms from '../../../data/platforms.json';
+import arrowIcon from '../../assets/icons/arrow-circle-up.svg';
 import ghostIcon from '../../assets/icons/ghost.svg';
 import { useAppSelector } from '../../hooks/redux';
 import GameCard from '../GameCard/GameCard';
@@ -34,6 +35,33 @@ function Collection() {
 
 	// Checks if there is a game to display
 	const noGamesFound = !isLoading && searchResults && searchResults.length === 0;
+
+	const [showScrollButton, setShowScrollButton] = useState(false);
+
+	const handleScrollUp = () => {
+		window.scrollTo({
+			top: 0,
+			behavior: 'smooth',
+		});
+	};
+
+	const handleScroll = () => {
+		// Check if the user has scrolled down by a certain amount
+		if (window.scrollY > 100) {
+			setShowScrollButton(true);
+		} else {
+			setShowScrollButton(false);
+		}
+	};
+
+	useEffect(() => {
+		// Add a scroll event listener to track scrolling
+		window.addEventListener('scroll', handleScroll);
+		return () => {
+			// Remove the event listener when the component unmounts
+			window.removeEventListener('scroll', handleScroll);
+		};
+	}, []);
 
 	return (
 		<div className="collection">
@@ -75,7 +103,11 @@ function Collection() {
 						/>
 					)}
 					{!isLoading && status === 'error' && <p>Erreur lors du chargement des jeux.</p>}
-					{!isLoading && games.length === 0 && <p>Aucun jeu dans votre collection.</p>}
+					{!isLoading && games.length === 0 && (
+						<p className="no-games-collection">
+							Il n&apos;y a aucun jeu dans votre collection :/
+						</p>
+					)}
 					{searchResults &&
 						searchResults.length > 0 &&
 						searchResults.map((game) => <GameCard key={game.id} game={game} />)}
@@ -83,6 +115,13 @@ function Collection() {
 						games.length > 0 &&
 						games.map((game) => <GameCard key={game.id} game={game} />)}
 				</div>
+				{showScrollButton && (
+					<div className="scroll-button-container">
+						<button className="scroll-button" onClick={handleScrollUp}>
+							<img src={arrowIcon} alt="Scroll to Top" />
+						</button>
+					</div>
+				)}
 			</div>
 		</div>
 	);

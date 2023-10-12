@@ -1,44 +1,68 @@
 @use '../../styles/variables' as v;
 
 .collection {
-	flex-grow: 1;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: space-between;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
 
-	&-container {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		width: 100%;
-		margin-bottom: v.$gutter;
-	}
+  &-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: v.$gutter;
+  }
 
-	&-title {
-		color: #fbe377;
-		font-weight: bold;
-		font-family: BebbasNeue;
-		font-size: 2rem;
-		margin-bottom: v.$gutter;
-	}
+  &-title {
+    color: #fbe377;
+    font-weight: bold;
+    font-family: BebbasNeue;
+    font-size: 2rem;
+    margin-bottom: v.$gutter;
+  }
 
-	&-list {
-		display: flex;
-		flex-wrap: wrap;
-		justify-content: center;
-		gap: v.$halfGutter; /* Space between the cards */
-	}
+  &-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: v.$halfGutter; /* Space between the cards */
+  }
 
-	@media (min-width: v.$medium) {
-		flex-direction: row;
-		align-items: flex-start;
-		justify-content: space-between;
-	}
+  .no-games-message {
+    color: rgb(182, 178, 178);
+  }
 
-	.no-games-message {
-		color: rgb(182, 178, 178); 
-	  }
-	  
+  .no-games-collection {
+    color: rgb(182, 178, 178); // Couleur grise
+  }
+
+  .scroll-button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+
+    .scroll-button {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+
+      &:hover {
+        filter: brightness(0.8);
+      }
+
+      img {
+        width: 40px;
+        height: 40px;
+      }
+    }
+  }
+
+  @media (min-width: v.$medium) {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
 }
