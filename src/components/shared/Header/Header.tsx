@@ -1,9 +1,10 @@
 import './Header.scss';
 
-import React, { KeyboardEvent, useEffect, useState } from 'react';
+import React, { KeyboardEvent, useEffect, useRef, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 
-import searchIcon from '../../../assets/icons/search.svg';
+import searchIcon from '../../../assets/icons/search-menthol.svg';
+//import ToggleGameIcon from '../../../assets/icons/video-game.svg';
 import Logo from '../../../assets/logo.png';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { resetStatus, signout } from '../../../store/reducers/auth';
@@ -52,6 +53,24 @@ function Header() {
 			);
 			dispatch(searchCollection());
 			return;
+		}
+	};
+
+	// Declare a reference to the search field using useRef
+	const searchInputRef = useRef<HTMLInputElement | null>(null);
+
+	// Handle click on the search icon
+	const handleSearchIconClick = () => {
+		// Check if the reference to the search field exists
+		if (searchInputRef.current) {
+			// Get the value of the search field
+			const newSearchTerm = searchInputRef.current.value;
+
+			// Update the search term
+			setSearchTerm(newSearchTerm);
+
+			// Call the search function
+			handleSearch();
 		}
 	};
 
@@ -180,6 +199,7 @@ function Header() {
 			{shouldDisplaySearchBar && (
 				<div className="header-search-bar">
 					<input
+						ref={searchInputRef}
 						type="text"
 						className="header-search-input"
 						placeholder="Rechercher..."
@@ -187,7 +207,13 @@ function Header() {
 						onChange={(e) => setSearchTerm(e.target.value)}
 						onKeyPress={handleKeyPress}
 					/>
-					<img className="header-search-icon" src={searchIcon} alt="SearchIcon" />
+					<button
+						className="header-search-icon-button"
+						onClick={handleSearchIconClick}
+						aria-label="Rechercher"
+					>
+						<img className="header-search-icon" src={searchIcon} alt="SearchIcon" />
+					</button>
 				</div>
 			)}
 		</div>

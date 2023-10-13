@@ -55,16 +55,20 @@
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
+	padding-top: 1rem;
 	width: 100%;
 	margin-bottom: v.$gutter;
 
 	&--title {
 		color: #fbe377;
 		font-weight: bold;
+		border-radius: 1rem;
 		font-family: BebbasNeue;
+		text-align: center;
 		font-size: 2rem;
 		margin-bottom: v.$gutter;
 	}
+
 }
 
 .game-list {
