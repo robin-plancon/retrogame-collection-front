@@ -72,14 +72,14 @@
   &--values {
     display: flex;
     flex-wrap: wrap;
-    justify-content: flex-start;
+    justify-content: center;
   }
 
   &--value {
     background-color: v.$primary-color;
     border: 1px solid v.$tertiary-color;
     border-radius: .2rem;
-    text-align: left;
+    text-align: center;
     color: #e2e2e4;
     margin: .5rem;
     padding: .5rem;
