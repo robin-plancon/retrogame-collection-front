@@ -50,7 +50,6 @@ export const getCollection = createAsyncThunk('collection/getCollection', async 
 		if (data.status === 'error') {
 			return data.message;
 		}
-		// console.log(data);
 
 		return data;
 	} catch (err) {

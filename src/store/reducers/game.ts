@@ -180,7 +180,10 @@ const gameReducer = createReducer(initialState, (builder) => {
 				state.message = action.payload.message;
 				return;
 			}
-			state.games = [action.payload.result, ...state.games];
+			// If the game is not already in the list, add it
+			if (!state.games.find((game) => game.slug === action.payload.slug)) {
+				state.games = [action.payload.result, ...state.games];
+			}
 			state.isLoading = false;
 			state.status = 'ok';
 		})
