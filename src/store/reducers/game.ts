@@ -54,7 +54,7 @@ export const getGameBySlug = createAsyncThunk(
 	'game/getGameBySlug',
 	async (slug: string) => {
 		try {
-			const { data } = await axiosInstance.get(`/game/${slug}`);
+			const { data } = await axiosInstance.get(`/game/slug/${slug}`);
 			return data;
 		} catch (err) {
 			console.log(err);
