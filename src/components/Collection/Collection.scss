@@ -31,6 +31,10 @@
     gap: v.$halfGutter; /* Space between the cards */
   }
 
+  .loading-error {
+    color: rgb(182, 178, 178);
+  }
+
   .no-games-message {
     color: rgb(182, 178, 178);
   }

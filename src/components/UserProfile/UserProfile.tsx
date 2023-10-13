@@ -1,14 +1,40 @@
 import './UserProfile.scss';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
+import ball from '../../assets/icons/ball.svg';
 import closeIcon from '../../assets/icons/close.svg';
+import elf from '../../assets/icons/elf.svg';
+import gameConsole from '../../assets/icons/game-console.svg';
+import helmet from '../../assets/icons/helmet.svg';
+import knight from '../../assets/icons/knight.svg';
+import monster from '../../assets/icons/monster.svg';
 import mushroom from '../../assets/icons/mushroom.svg';
+import orc from '../../assets/icons/orc.svg';
+import potion from '../../assets/icons/potion.svg';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { remove, signout, update } from '../../store/reducers/auth';
 
 const UserProfile = () => {
+	const [randomIconIndex, setRandomIconIndex] = useState(0);
+	const iconList = [
+		ball,
+		elf,
+		helmet,
+		knight,
+		monster,
+		orc,
+		potion,
+		mushroom,
+		gameConsole,
+	];
+
+	useEffect(() => {
+		const randomIndex = Math.floor(Math.random() * iconList.length);
+		setRandomIconIndex(randomIndex);
+	}, []);
+
 	const dispatch = useAppDispatch();
 
 	const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
@@ -104,7 +130,11 @@ const UserProfile = () => {
 		<Link to="/user/profile" className="user-profile">
 			<div className="user-profile--card">
 				<div className="user-profile--header">
-					<img src={mushroom} alt="Mushroom" className="user-profile--icon" />
+					<img
+						src={iconList[randomIconIndex]}
+						alt="Icon"
+						className="user-profile--icon"
+					/>
 					<h1 className="user-profile--title">Mes informations personnelles</h1>
 				</div>
 				<div className="user-profile--info">
