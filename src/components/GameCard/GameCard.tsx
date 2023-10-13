@@ -28,8 +28,11 @@ function GameCard({ game }: { game: Game }) {
 
 	const dispatch = useAppDispatch();
 
+	// Checks if the game belongs to the user's collection
+	const isInCollection = collection.find((g) => g.id === game.id);
+
 	const handleClick = () => {
-		if (collection.find((g) => g.id === game.id)) {
+		if (isInCollection) {
 			// Remove game from collection
 			dispatch(removeGameFromCollection(game));
 		} else {
@@ -39,7 +42,7 @@ function GameCard({ game }: { game: Game }) {
 	};
 
 	return (
-		<div className="game-card">
+		<div className={`game-card ${isInCollection ? 'in-collection' : ''}`}>
 			<Link
 				to={`/game/${game.slug}`}
 				state={{ from: history.location }}
@@ -61,10 +64,11 @@ function GameCard({ game }: { game: Game }) {
 				</div>
 			</Link>
 			{user && token && (
-				<button className="game-card--button" onClick={handleClick}>
-					{collection.find((g) => g.id === game.id)
-						? 'Retirer de ma collection'
-						: 'Ajouter à ma collection'}
+				<button
+					className={`game-card--button ${isInCollection ? 'in-collection' : ''}`}
+					onClick={handleClick}
+				>
+					{isInCollection ? 'Retirer de ma collection' : 'Ajouter à ma collection'}
 				</button>
 			)}
 		</div>

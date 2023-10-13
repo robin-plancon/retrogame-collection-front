@@ -2,27 +2,32 @@ import { createAction, createAsyncThunk, createReducer } from '@reduxjs/toolkit'
 
 import { Game } from '../../@types/game';
 import { axiosInstance } from '../../utils/axios';
-import { loadState } from '../../utils/sessionStorage';
+import { loadState } from '../../utils/localStorage';
 
 interface CollectionState {
 	isLoading: boolean;
 	games: Array<Game>;
 	searchResults?: Array<Game> | null;
-	searchOptions?: SearchOptions;
+	searchOptions: SearchOptions;
 	status?: 'ok' | 'error';
 	message?: string;
 }
 
 interface SearchOptions {
-	pageSize?: number;
-	page?: number;
-	searchTerm?: string;
+	pageSize: number;
+	page: number;
+	searchTerm: string | null;
 	platform?: number;
 }
 
 const initialState: CollectionState = {
 	isLoading: false,
 	games: [],
+	searchOptions: {
+		searchTerm: null,
+		pageSize: 10,
+		page: 0,
+	},
 };
 
 export const getCollection = createAsyncThunk('collection/getCollection', async () => {
@@ -45,7 +50,6 @@ export const getCollection = createAsyncThunk('collection/getCollection', async 
 		if (data.status === 'error') {
 			return data.message;
 		}
-		// console.log(data);
 
 		return data;
 	} catch (err) {
@@ -187,7 +191,7 @@ const collectionReducer = createReducer(initialState, (builder) => {
 			state.searchOptions = { ...state.searchOptions, ...action.payload };
 		})
 		.addCase(resetCollectionSearch, (state) => {
-			delete state.searchOptions;
+			state.searchOptions = initialState.searchOptions;
 			state.searchResults = null;
 		})
 		.addCase(resetCollection, (state) => {

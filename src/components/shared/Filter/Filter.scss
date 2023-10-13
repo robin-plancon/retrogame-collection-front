@@ -2,82 +2,115 @@
 
 .filter-menu {
   width: 100%;
-	background-color: #090d19;
-	border-top-right-radius: 8px;
-	border-radius: 8px;
-	//border-bottom-right-radius: 8px;
-	padding: 5px;
-	color: #fbe377;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
+  background-color: #090d19;
+  border-top-right-radius: 8px;
+  border-radius: 8px;
+  padding: 5px;
+  color: #fbe377;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
-	&--button {
-		background-color: #090d19;
-		border: none;
-	}
+  &--button {
+    background-color: #090d19;
+    border: none;
+  }
 
-	&--icon {
-		width: 1.5rem;
-		height: 1.5rem;
-		margin-bottom: 5px;
-		cursor: pointer;
-	}
+  &--icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-bottom: 5px;
+    cursor: pointer;
+  }
 
-	&--section {
-		margin-bottom: v.$halfGutter;
-	}
+  &--section {
+    margin-bottom: v.$halfGutter;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+  }
 
-	&--title {
-		text-align: center;
-		color: #fbe377;
-		margin: v.$halfGutter 0;
-		font-weight: bold;
-		font-size: 1.2rem;
-	}
+  &--reset {
+    color: v.$secondary-color;
+    margin: v.$halfGutter 0;
+    padding: v.$halfGutter;
+    background-color: v.$primary-color;
+    border: 1px solid v.$secondary-color;
+    border-radius: .5rem;
+    transition: background-color 0.3s, color 0.3s; // Transition for smooth animation
 
-	// &--submenu {
+    &:hover {
+      background-color: v.$secondary-color; // Change background color on hover
+      color: v.$primary-color; // Change text color on hover
+    }
+  }
 
-	// }
+  &--title {
+    text-align: center;
+    color: #fbe377;
+    margin: v.$halfGutter 0;
+    font-weight: bold;
+    font-size: 1.2rem;
+  }
 
-	&--subtitle {
-		text-align: center;
-		color: v.$secondary-color;
-		font-size: 1rem;
-		font-weight: bold;
-		margin: v.$halfGutter 0;
-	}
+  &--submenu {
+    text-align: center;
+  }
 
-	&--values {
-		display: flex;
-		flex-wrap: wrap;
-		justify-content: flex-start;
-	}
+  &--subtitle {
+    text-align: center;
+    color: v.$secondary-color;
+    background: #090d19;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    margin: v.$halfGutter 0;
+  }
+
+  &--values {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
 
   &--value {
-		background-color: v.$primary-color;
-		border: 1px solid v.$tertiary-color;
-		border-radius: .2rem;
-		text-align: left;
+    background-color: v.$primary-color;
+    border: 1px solid v.$tertiary-color;
+    border-radius: .2rem;
+    text-align: left;
     color: #e2e2e4;
-		margin: .5rem;
-		padding: .5rem;
+    margin: .5rem;
+    padding: .5rem;
+    transition: background-color 0.3s, color 0.3s; // Transition for smooth animation
+
+    &:hover {
+      background-color: v.$tertiary-color; // Change background color on hover
+      color: v.$primary-color; // Change text color on hover
+    }
   }
 
   @media (min-width: v.$medium) {
-		flex: 0 0 20rem;
+    flex: 0 0 20rem;
     height: 100%;
-    
-		&--icon {
-			cursor: auto;
-			width: 3.5rem;
-			height: 3.5rem;
-			padding: v.$halfGutter;
-		}
+
+    &--icon {
+      cursor: auto;
+      width: 3.5rem;
+      height: 3.5rem;
+      padding: v.$halfGutter;
+    }
   }
 }
 
-.italic {
-	font-style: italic;
-	color: #e2e2e4;
+.deactivated {
+  cursor: wait;
 }
+
+.italic {
+  font-style: italic;
+  color: #e2e2e4;
+}
+
+

@@ -5,18 +5,21 @@ import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
 import store from '../store';
+import { checkAuth } from '../store/reducers/auth';
 import { getCollection } from '../store/reducers/collection';
 import { getGames } from '../store/reducers/game';
 import { history } from '../utils/history';
-import { saveState } from '../utils/sessionStorage';
+import { saveState } from '../utils/localStorage';
 import About from './About/About';
 import Collection from './Collection/Collection';
 import GameDetails from './GameDetails/GameDetails';
 import Home from './Home/Home';
+import ResetPassword from './ResetPassword/ResetPassword';
 import Footer from './shared/Footer/Footer';
 import Header from './shared/Header/Header';
 import Signin from './Signin/Signin';
 import Signup from './Signup/Signup';
+import UserProfile from './UserProfile/UserProfile';
 
 function App() {
 	// To save the state in the sessionStorage
@@ -42,6 +45,7 @@ function App() {
 			setIsFirst(false);
 			return;
 		}
+		dispatch(checkAuth());
 		dispatch(getGames());
 	}, [isFirst]);
 
@@ -59,9 +63,12 @@ function App() {
 					<Route path="/" element={<Home />} />
 					<Route path="/game/:slug" element={<GameDetails />} />
 					<Route path="/about" element={<About />} />
+					<Route path="/reset-form" element={<ResetPassword />} />
 					{(!user || !token) && <Route path="/signup" element={<Signup />} />}
 					{(!user || !token) && <Route path="/signin" element={<Signin />} />}
 					{user && token && <Route path="/collection" element={<Collection />} />}
+					{user && token && <Route path="/user/profile" element={<UserProfile />} />}
+					{(!user || !token) && <Route path="/user/delete" element={<UserProfile />} />}
 					<Route path="*" element={<div>404</div>} />
 				</Routes>
 			</div>

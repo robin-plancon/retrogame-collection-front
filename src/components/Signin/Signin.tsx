@@ -1,11 +1,12 @@
 import './Signin.scss';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { signin } from '../../store/reducers/auth';
 import { history } from '../../utils/history';
+import ResetPasswordMailForm from './ResetPasswordForm/ResetPasswordMailForm';
 
 type FormProps = {
 	nickname?: string;
@@ -28,6 +29,9 @@ function Signin() {
 	const isLoading = useAppSelector((state) => state.auth.isLoading);
 	const status = useAppSelector((state) => state.auth.status);
 	const message = useAppSelector((state) => state.auth.message);
+
+	// useState to display the password reset form
+	const [isPasswordReset, setIsPasswordReset] = useState(false);
 
 	const {
 		register,
@@ -55,9 +59,11 @@ function Signin() {
 		<div className="signin">
 			<h1 className="signin-title">Connexion</h1>
 			{isLoading && <p className="signin-error">Chargement...</p>}
-			{status === 'error' && <p className="signin-error">{message}</p>}
+			{status === 'error' && !isPasswordReset && (
+				<p className="signin-error">{message}</p>
+			)}
 			<form className="signin-form" onSubmit={handleSubmit(onSubmit)}>
-				<label htmlFor="pseudo" className="signin-label">
+				<label htmlFor="nickname" className="signin-label">
 					Pseudo
 				</label>
 				<input
@@ -66,19 +72,6 @@ function Signin() {
 					className="signin-input"
 					{...register('nickname', {
 						required: 'Ce champ est requis',
-						minLength: {
-							value: 3,
-							message: 'Le pseudo doit contenir au moins 3 caractères',
-						},
-						maxLength: {
-							value: 20,
-							message: 'Le pseudo doit contenir au maximum 20 caractères',
-						},
-						pattern: {
-							value: /^[a-zA-Z][a-zA-Z0-9_-]{2,14}$/,
-							message:
-								'Le pseudo ne doit contenir que des lettres, des chiffres, des tirets et des underscores',
-						},
 					})}
 				/>
 				{errors.nickname && (
@@ -93,19 +86,6 @@ function Signin() {
 					className="signin-input"
 					{...register('password', {
 						required: 'Ce champ est requis',
-						minLength: {
-							value: 8,
-							message: 'Le mot de passe doit contenir au moins 8 caractères',
-						},
-						maxLength: {
-							value: 14,
-							message: 'Le mot de passe doit contenir au maximum 14 caractères',
-						},
-						pattern: {
-							value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).*$/i,
-							message:
-								'Le mot de passe doit contenir au moins une majuscule, une minuscule, un chiffre et un caractère spécial',
-						},
 					})}
 				/>
 				{errors.password && (
@@ -115,6 +95,15 @@ function Signin() {
 					Se connecter
 				</button>
 			</form>
+			<button
+				className="reset-password-button"
+				onClick={() => setIsPasswordReset(!isPasswordReset)}
+			>
+				Mot de passe oublié ?
+			</button>
+			{isPasswordReset && (
+				<ResetPasswordMailForm setIsPasswordReset={setIsPasswordReset} />
+			)}
 		</div>
 	);
 }
