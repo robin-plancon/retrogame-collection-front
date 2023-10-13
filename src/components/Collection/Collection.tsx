@@ -47,7 +47,7 @@ function Collection() {
 
 	const handleScroll = () => {
 		// Check if the user has scrolled down by a certain amount
-		if (window.scrollY > 100) {
+		if (window.scrollY > 700) {
 			setShowScrollButton(true);
 		} else {
 			setShowScrollButton(false);
@@ -102,7 +102,9 @@ function Collection() {
 							style={{ width: '150px', opacity: 0.8 }}
 						/>
 					)}
-					{!isLoading && status === 'error' && <p>Erreur lors du chargement des jeux.</p>}
+					{!isLoading && status === 'error' && (
+						<p className="loading-error">Erreur lors du chargement des jeux.</p>
+					)}
 					{!isLoading && games.length === 0 && (
 						<p className="no-games-collection">
 							Il n&apos;y a aucun jeu dans votre collection :/
