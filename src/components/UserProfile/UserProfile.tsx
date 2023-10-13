@@ -1,9 +1,9 @@
 import './UserProfile.scss';
 
-
 import React, { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
+
 import ball from '../../assets/icons/ball.svg';
 import closeIcon from '../../assets/icons/close.svg';
 import elf from '../../assets/icons/elf.svg';
