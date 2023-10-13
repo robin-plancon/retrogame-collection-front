@@ -76,7 +76,7 @@ function Header() {
 
 	const shouldDisplaySearchBar =
 		history.location.pathname === '/' || history.location.pathname === '/collection';
-	const isUserProfilePage = history.location.pathname === '/user/profile';
+	//const isUserProfilePage = history.location.pathname === '/user/profile';
 	// const isCollectionPage = history.location.pathname === '/collection';
 	// Click on the logo reset the search state and redirect to the home page
 	const handleClick = () => {
@@ -143,16 +143,21 @@ function Header() {
 						to="/signin"
 						state={{ from: history.location }}
 						className="header-button"
-						onClick={() => dispatch(resetStatus())} // Reset message and status in the auth state
+						onClick={() => dispatch(resetStatus())}
 					>
 						Connexion
 					</NavLink>
 				)}
-				{user && !isUserProfilePage && (
+				{user && (
 					<NavLink
 						to="/user/profile"
 						className="header-button"
-						onClick={handleProfileClick}
+						onClick={() => {
+							handleProfileClick();
+							if (window.location.pathname === '/user/profile') {
+								window.location.reload();
+							}
+						}}
 					>
 						Mon profil
 					</NavLink>

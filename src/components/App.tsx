@@ -14,6 +14,7 @@ import About from './About/About';
 import Collection from './Collection/Collection';
 import GameDetails from './GameDetails/GameDetails';
 import Home from './Home/Home';
+import NotFound from './NotFound/NotFound';
 import ResetPassword from './ResetPassword/ResetPassword';
 import Footer from './shared/Footer/Footer';
 import Header from './shared/Header/Header';
@@ -69,7 +70,7 @@ function App() {
 					{user && token && <Route path="/collection" element={<Collection />} />}
 					{user && token && <Route path="/user/profile" element={<UserProfile />} />}
 					{(!user || !token) && <Route path="/user/delete" element={<UserProfile />} />}
-					<Route path="*" element={<div>404</div>} />
+					<Route path="*" element={<NotFound />} />
 				</Routes>
 			</div>
 			<Footer />
