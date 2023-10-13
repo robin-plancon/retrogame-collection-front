@@ -70,15 +70,12 @@ const UserProfile = () => {
 	};
 
 	const handleDelete = () => {
-		console.log('handleDelete');
 		if (userDetails.user && userDetails.token) {
 			// Dispatch action to delete the account
 			dispatch(remove()).then((resultAction) => {
 				const { error, message } = resultAction.payload;
 				if (!error) {
-					console.log('Account deleted successfully');
 					setIsDeleteModalOpen(true);
-					console.log('isSuccessModalOpen set to true');
 					setTimeout(() => {
 						dispatch(signout());
 						window.location.href = '/';

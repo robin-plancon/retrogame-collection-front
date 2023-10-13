@@ -39,11 +39,10 @@ function ResetPassword() {
 		}
 		const { password, confirmation } = data;
 		const sendData = {
-			newPassword: password as string,
+			password: password as string,
 			confirmation: confirmation as string,
 			token: token as string,
 		};
-		console.log(sendData);
 		// dispatch signin action with data from the form
 		dispatch(resetPasswordWithToken(sendData)).then((res) => {
 			if (res.payload.status === 'Success') {
