@@ -159,7 +159,7 @@ function Header() {
 							}
 						}}
 					>
-						Mon profil
+						Profil
 					</NavLink>
 				)}
 				{user && (
@@ -168,7 +168,7 @@ function Header() {
 						className="header-button"
 						onClick={handleCollectionClick}
 					>
-						Ma collection
+						Collection
 					</NavLink>
 				)}
 				{user && (
