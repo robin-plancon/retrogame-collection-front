@@ -38,7 +38,6 @@ function ResetPasswordForm({
 			email: email?.trim() || '', // provide a default value for email
 		};
 		dispatch(resetPasswordMail(sendData)).then((res) => {
-			console.log(res.payload);
 			if (res.payload.status === 'Success') {
 				dispatch(resetStatus());
 				setIsPasswordReset(false);

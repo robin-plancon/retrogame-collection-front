@@ -39,7 +39,7 @@ function ResetPassword() {
 		}
 		const { password, confirmation } = data;
 		const sendData = {
-			password: password as string,
+			newPassword: password as string,
 			confirmation: confirmation as string,
 			token: token as string,
 		};
