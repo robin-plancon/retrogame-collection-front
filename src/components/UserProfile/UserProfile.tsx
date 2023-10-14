@@ -67,13 +67,24 @@ const UserProfile = () => {
 	// const [errorText, setErrorText] = useState('');
 	const userDetails = useAppSelector((state) => state.auth);
 
+	const [passwordError, setPasswordError] = useState('');
+
 	const onSubmit: SubmitHandler<FormProps> = (data, event) => {
 		if (event) {
 			event.preventDefault();
 		}
 		if (userDetails.user && userDetails.token) {
 			const { currentPassword, newPassword, confirmation } = data;
-			// dispatch action to change password
+
+			// Check the actual password
+			if (currentPassword !== userDetails.user.password) {
+				setPasswordError('Mot de passe actuel incorrect');
+				return; // Exit the function if the password is incorrect
+			}
+
+			// If the current password is correct, reset the error
+			setPasswordError('');
+			// dispatch action to change the password
 			dispatch(
 				update({
 					currentPassword: currentPassword,
@@ -183,6 +194,7 @@ const UserProfile = () => {
 								{errors.currentPassword && (
 									<p className="error-text">{errors.currentPassword.message as string}</p>
 								)}
+								{passwordError && <p className="error-text">{passwordError}</p>}
 								<input
 									type="password"
 									placeholder="Nouveau mot de passe"

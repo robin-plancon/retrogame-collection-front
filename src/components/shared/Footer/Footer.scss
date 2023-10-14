@@ -25,4 +25,10 @@
 	@media (min-width: v.$small) {
 		flex-direction: row;
 	}
-}
+
+	@media (min-width: v.$large) and (min-width: v.$medium) {
+		&.home-footer {
+		  margin-left: 20.5rem;
+		}
+	  }
+	} 

@@ -1,10 +1,13 @@
 import './Footer.scss';
 
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 function Footer() {
+	const location = useLocation();
+	const isHomePage = location.pathname === '/' || location.pathname === '/collection';
+
 	return (
-		<footer className="footer">
+		<footer className={`footer ${isHomePage ? 'home-footer' : ''}`}>
 			<Link to="/about" className="footer-link">
 				A propos
 			</Link>
