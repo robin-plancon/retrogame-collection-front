@@ -52,7 +52,7 @@ function Filter() {
 		}
 	};
 
-	// État local pour suivre l'état d'ouverture des sous-menus par nom de plate-forme
+	// Local state to track the open/closed state of sub-menus by platform name.
 	const [platformSubMenuState, setPlatformSubMenuState] = useState<{
 		[key: string]: boolean;
 	}>({});
