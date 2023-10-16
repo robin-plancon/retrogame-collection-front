@@ -19,6 +19,10 @@ import { addSearchOptions, searchGames } from '../../../store/reducers/game';
 import { history } from '../../../utils/history';
 
 function Header() {
+	const isButtonActive = (path: string) => {
+		return history.location.pathname === path;
+	};
+
 	const [searchTerm, setSearchTerm] = useState('');
 	const user = useAppSelector((state) => state.auth.user);
 	const { searchOptions } = useAppSelector((state) => state.games);
@@ -151,7 +155,7 @@ function Header() {
 				{!user && (
 					<NavLink
 						to="/signup"
-						className="header-button"
+						className={`header-button ${isButtonActive('/signup') ? 'active' : ''}`}
 						onClick={() => dispatch(resetStatus())}
 					>
 						Inscription
@@ -161,7 +165,7 @@ function Header() {
 					<NavLink
 						to="/signin"
 						state={{ from: history.location }}
-						className="header-button"
+						className={`header-button ${isButtonActive('/signup') ? 'active' : ''}`}
 						onClick={() => dispatch(resetStatus())}
 					>
 						Connexion
@@ -170,7 +174,7 @@ function Header() {
 				{user && (
 					<NavLink
 						to="/user/profile"
-						className="header-button"
+						className={`header-button ${isButtonActive('/signup') ? 'active' : ''}`}
 						onClick={() => {
 							handleProfileClick();
 							if (window.location.pathname === '/user/profile') {
@@ -184,7 +188,7 @@ function Header() {
 				{user && (
 					<NavLink
 						to="/collection"
-						className="header-button"
+						className={`header-button ${isButtonActive('/signup') ? 'active' : ''}`}
 						onClick={handleCollectionClick}
 					>
 						Collection
