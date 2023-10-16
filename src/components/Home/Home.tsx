@@ -92,7 +92,7 @@ function Home() {
 
 	const handleScroll = () => {
 		// Check if the user has scrolled down by a certain amount
-		if (window.scrollY > 100) {
+		if (window.scrollY > 700) {
 			setShowScrollButton(true);
 		} else {
 			setShowScrollButton(false);
