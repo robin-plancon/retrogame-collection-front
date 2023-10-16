@@ -46,6 +46,7 @@
   }
 
   .scroll-button-container {
+    padding-top: 1rem;
     display: flex;
     justify-content: center;
     margin-top: 10px;
@@ -64,6 +65,39 @@
         height: 40px;
       }
     }
+  }
+  .pagination-previous:hover,
+  .pagination-next:hover {
+    color: v.$secondary-color;
+    transition: 0.3s;
+  }
+
+  .pagination {
+    padding-top: 1rem;
+    display: flex;
+    align-items: center;
+    color: rgb(198, 196, 196);
+    gap: v.$halfGutter;
+  
+    &-active {
+      color: v.$secondary-color;
+      border: 1px solid v.$secondary-color;
+      padding: 0.5rem 1rem;
+      border-radius: 1rem;
+    }
+  
+    &-item:not(&-active) {
+      cursor: pointer;
+  
+      &:hover {
+        color: v.$secondary-color;
+      }
+    }
+  
+    &-previous, &-next {
+      cursor: pointer;
+    }
+    
   }
 
   @media (min-width: v.$medium) {

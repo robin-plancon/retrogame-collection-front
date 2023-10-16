@@ -97,6 +97,7 @@ function Filter() {
 	const handleReset = async () => {
 		dispatch(resetGamesSearch());
 		dispatch(resetCollectionSearch());
+		setActivePlatformId(null); // Reset the active button on click of the button "reintialiser les filtres"
 	};
 
 	return (
