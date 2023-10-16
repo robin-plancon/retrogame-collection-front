@@ -5,6 +5,7 @@ import ReactPaginate from 'react-paginate';
 
 import platforms from '../../../data/platforms.json';
 import { Game } from '../../@types/game';
+import upIcon from '../../assets/icons/arrow-up.svg';
 import ghostIcon from '../../assets/icons/ghost.svg';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { addSearchOptions, changePage } from '../../store/reducers/game';
@@ -19,6 +20,7 @@ function Home() {
 	const [isFirst, setIsFirst] = useState(true);
 	const [pageCount, setPageCount] = useState(0); // State to control the number of pages
 	const [currentItems, setCurrentItems] = useState<Game[]>([]); // State to control the items to display
+	const [showScrollButton, setShowScrollButton] = useState(false); // State to control the visibility of the scroll button
 
 	useEffect(() => {
 		if (isFirst) {
@@ -80,6 +82,31 @@ function Home() {
 			(contentRef.current as HTMLElement).scrollIntoView({ behavior: 'smooth' });
 		}
 	};
+
+	const handleScrollUp = () => {
+		window.scrollTo({
+			top: 0,
+			behavior: 'smooth',
+		});
+	};
+
+	const handleScroll = () => {
+		// Check if the user has scrolled down by a certain amount
+		if (window.scrollY > 100) {
+			setShowScrollButton(true);
+		} else {
+			setShowScrollButton(false);
+		}
+	};
+
+	useEffect(() => {
+		// Add a scroll event listener to track scrolling
+		window.addEventListener('scroll', handleScroll);
+		return () => {
+			// Remove the event listener when the component unmounts
+			window.removeEventListener('scroll', handleScroll);
+		};
+	}, []);
 
 	return (
 		<>
@@ -146,6 +173,13 @@ function Home() {
 								previousClassName="pagination-previous"
 								nextClassName="pagination-next"
 							/>
+							{showScrollButton && (
+								<div className="scroll-button-container">
+									<button className="scroll-button" onClick={handleScrollUp}>
+										<img src={upIcon} alt="Scroll to Top" />
+									</button>
+								</div>
+							)}
 						</div>
 					</div>
 				</div>
