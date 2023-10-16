@@ -17,9 +17,11 @@
   }
 
   &-title {
+    padding-top: 1rem;
     color: #fbe377;
     font-weight: bold;
     font-family: BebbasNeue;
+    text-align: center;
     font-size: 2rem;
     margin-bottom: v.$gutter;
   }

@@ -9,6 +9,7 @@
   align-items: center;
   gap: v.$halfGutter;
   margin: v.$halfGutter auto;
+  background-color: #0e121d;
   padding: v.$halfGutter;
 
   &-logo {
@@ -19,9 +20,11 @@
     width: 100%;
     display: flex;
     align-items: center;
-    background-color: #111725; 
-    padding: 0.5rem; 
-    border-radius: 1rem;
+    background-color: #0e121d;
+    color: #0fd7b0; 
+    padding: 0.1rem; 
+    border-radius: 0.8rem;
+    border: 1px solid #0fd7b0;
   }
 
   &-search-input {
@@ -29,8 +32,12 @@
     padding: v.$halfGutter;
     border: none;
     background-color: transparent; 
-    color: white; 
+    color: #77a4a4; 
     font-size: 1rem;
+  }
+
+  &-search-input::placeholder {
+    color: #0fd7b0;
   }
   
   &-search-icon {
@@ -39,24 +46,34 @@
     margin-right: v.$halfGutter;
   }
 
+  &-search-icon-button {
+    background: #0e121d;
+    border: none;
+  }
+
   .header-buttons {
     display: flex;
     justify-content: center;
     gap: v.$halfGutter;
-  }
 
-  .header-button {
-    border: 1px solid v.$secondary-color;
-    padding: v.$halfGutter;
-    border-radius: 0.5rem;
-    color: v.$secondary-color;
-    background-color: color.scale(v.$primary-color, $lightness: 5%);
-    font-size: 1rem;
-  }
+    .header-button {
+      border: 1px solid v.$secondary-color;
+      padding: v.$halfGutter;
+      border-radius: 0.5rem;
+      color: v.$secondary-color;
+      background-color: color.scale(v.$primary-color, $lightness: 5%);
+      font-size: 1rem;
 
-  .header-button:hover {
-    color: v.$primary-color;
-    background-color: v.$secondary-color;
+      &:hover {
+        color: v.$primary-color;
+        background-color: v.$secondary-color;
+      }
+
+      &.active {
+        color: v.$primary-color;
+        background-color: v.$secondary-color;
+      }
+    }
   }
 
   @media (min-width: v.$medium) {
@@ -76,3 +93,4 @@
     }
   }
 }
+

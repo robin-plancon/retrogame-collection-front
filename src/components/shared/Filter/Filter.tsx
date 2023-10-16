@@ -29,7 +29,16 @@ function Filter() {
 		setIsFilterOpen(!isFilterOpen);
 	};
 
+	// Initialize a state variable 'activePlatformId' to keep track of the currently active platform ID. It's initially set to null.
+	const [activePlatformId, setActivePlatformId] = useState<number | null>(null);
+
 	const handleClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
+		// Extract the platform ID from the clicked button
+		const platformId = parseInt(e.currentTarget.value);
+		// Update 'activePlatformId' with the ID of the selected platform
+		setActivePlatformId(platformId);
+		// Set 'activePlatformId' to the newly selected platform's ID, which helps track the active platform button.
+
 		if (history.location.pathname === '/') {
 			await dispatch(
 				addSearchOptions({
@@ -52,7 +61,7 @@ function Filter() {
 		}
 	};
 
-	// État local pour suivre l'état d'ouverture des sous-menus par nom de plate-forme
+	// Local state to track the open/closed state of sub-menus by platform name.
 	const [platformSubMenuState, setPlatformSubMenuState] = useState<{
 		[key: string]: boolean;
 	}>({});
@@ -130,7 +139,9 @@ function Filter() {
 										.sort((a, b) => (a.name > b.name ? 1 : -1))
 										.map((platform) => (
 											<button
-												className="filter-menu--value"
+												className={`filter-menu--value ${
+													activePlatformId === platform.id ? 'active' : ''
+												}`}
 												key={platform.id}
 												onClick={handleClick}
 												value={platform.id}

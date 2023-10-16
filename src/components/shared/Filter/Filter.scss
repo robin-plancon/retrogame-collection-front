@@ -85,6 +85,12 @@
     padding: .5rem;
     transition: background-color 0.3s, color 0.3s; // Transition for smooth animation
 
+    &.active {
+      background-color: v.$tertiary-color;
+      color: v.$primary-color;
+    }
+    
+
     &:hover {
       background-color: v.$tertiary-color; // Change background color on hover
       color: v.$primary-color; // Change text color on hover

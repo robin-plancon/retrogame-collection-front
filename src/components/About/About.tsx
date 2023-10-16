@@ -12,9 +12,9 @@ import TeamCard from './TeamCard/TeamCard';
 function About() {
 	return (
 		<div className="about">
-			<h2 className="about-title">Le Projet</h2>
+			<h2 className="about-title">RETRO GAME COLLECTION</h2>
 			<p className="about-resume">
-				Ce projet vise à développer une plateforme de gestion de bibliothèque de jeux
+				RetrO&apos;Game Collection est une plateforme de gestion de bibliothèque de jeux
 				vidéo physique, en ayant à l&apos;esprit le <em>retro gaming</em>. Les
 				utilisateurs pourront ajouter des jeux à leur collection.
 			</p>

@@ -18,6 +18,7 @@
 		text-transform: uppercase;
 		color: v.$secondary-color;
 		background-color: color.scale(v.$primary-color, $lightness: 5%);
+
 	}
 
 	&-team {
@@ -33,7 +34,7 @@
 		width: 90%;
 		margin: 0 auto v.$gutter;
 		padding: v.$halfGutter;
-		text-align: center;
+		text-align: justify;
 		color: lightgray;
 	}
 
@@ -49,6 +50,8 @@
 	@media (min-width: v.$medium) {
 		&-title {
 			width: 40%;
+			border-top-right-radius: 0.5rem;
+			border-bottom-right-radius: 0.5rem;
 		}
 	}		
 }
