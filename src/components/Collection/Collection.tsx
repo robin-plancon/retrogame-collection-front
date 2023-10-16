@@ -1,6 +1,7 @@
 import './Collection.scss';
 
 import React, { useEffect, useState } from 'react';
+import ReactPaginate from 'react-paginate';
 
 import platforms from '../../../data/platforms.json';
 import arrowIcon from '../../assets/icons/arrow-circle-up.svg';
@@ -35,6 +36,25 @@ function Collection() {
 
 	// Checks if there is a game to display
 	const noGamesFound = !isLoading && searchResults && searchResults.length === 0;
+
+	// Pagination - Number of games per page
+	const gamesPerPage = 10;
+
+	// Calculate page count
+	const totalPages = Math.ceil(
+		searchResults ? searchResults.length : games.length / gamesPerPage,
+	);
+
+	const [currentPage, setCurrentPage] = useState(0);
+
+	const handlePageClick = (selected: { selected: number }) => {
+		setCurrentPage(selected.selected);
+
+		window.scrollTo({
+			top: 0,
+			behavior: 'smooth',
+		});
+	};
 
 	const [showScrollButton, setShowScrollButton] = useState(false);
 
@@ -107,16 +127,35 @@ function Collection() {
 					)}
 					{!isLoading && games.length === 0 && (
 						<p className="no-games-collection">
-							Il n&apos;y a aucun jeu dans votre collection :/
+							Il n y a aucun jeu dans votre collection :/
 						</p>
 					)}
-					{searchResults &&
-						searchResults.length > 0 &&
-						searchResults.map((game) => <GameCard key={game.id} game={game} />)}
-					{!searchResults &&
-						games.length > 0 &&
-						games.map((game) => <GameCard key={game.id} game={game} />)}
+
+					{searchResults
+						? searchResults
+								.slice(currentPage * gamesPerPage, (currentPage + 1) * gamesPerPage)
+								.map((game) => <GameCard key={game.id} game={game} />)
+						: games
+								.slice(currentPage * gamesPerPage, (currentPage + 1) * gamesPerPage)
+								.map((game) => <GameCard key={game.id} game={game} />)}
 				</div>
+
+				{totalPages > 1 && (
+					<ReactPaginate
+						breakLabel="..."
+						nextLabel="Suivant"
+						onPageChange={handlePageClick}
+						pageCount={totalPages}
+						pageRangeDisplayed={2}
+						marginPagesDisplayed={2}
+						previousLabel="Précédent"
+						containerClassName="pagination"
+						activeClassName="pagination-active"
+						pageClassName="pagination-item"
+						previousClassName="pagination-previous"
+						nextClassName="pagination-next"
+					/>
+				)}
 				{showScrollButton && (
 					<div className="scroll-button-container">
 						<button className="scroll-button" onClick={handleScrollUp}>

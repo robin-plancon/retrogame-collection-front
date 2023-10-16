@@ -86,7 +86,7 @@ function Filter() {
 		return () => window.removeEventListener('resize', updateDimensions);
 	}, [currentWidth]);
 
-	// Fonction pour basculer l'état d'ouverture d'un sous-menu
+	// Function to toggle the open/closed state of a submenu
 	const toggleSubMenu = (platformFamily: string) => {
 		setPlatformSubMenuState((prevState) => ({
 			...prevState,
@@ -97,6 +97,7 @@ function Filter() {
 	const handleReset = async () => {
 		dispatch(resetGamesSearch());
 		dispatch(resetCollectionSearch());
+		setActivePlatformId(null); // Reset the active button on click of the button "reintialiser les filtres"
 	};
 
 	return (
